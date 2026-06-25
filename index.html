@@ -4642,7 +4642,7 @@
     }
 
     .keys-photo:nth-child(3) img {
-      object-position: 52% 38%;
+      object-position: 72% 34%;
     }
 
     .keys-photo:nth-child(4) {
@@ -5301,7 +5301,7 @@
       margin-top: 16px;
     }
 
-    .contact-sticker img {
+    .contact-profile img {
       position: relative;
       z-index: 1;
       width: min(100%, 178px);
@@ -5759,19 +5759,19 @@
 
       .main-menu {
         left: auto;
-        right: 16px;
+        right: 10px;
         bottom: 34px;
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        width: 168px;
+        width: 138px;
         gap: 6px;
       }
 
       .main-menu a {
-        min-height: 34px;
-        padding: 0 9px;
-        font-size: 12px;
+        min-height: 32px;
+        padding: 0 8px;
+        font-size: 11px;
         letter-spacing: 0.04em;
       }
 
@@ -5855,23 +5855,29 @@
       }
 
       .course-panel {
-        min-height: 156px;
+        min-height: 224px;
       }
 
       .course-content {
-        inset: auto 16px 16px;
+        inset: auto 18px 18px;
+        padding-right: 132px;
       }
 
       .course-content h3 {
         writing-mode: horizontal-tb;
         min-height: 0;
-        font-size: 26px;
+        font-size: 25px;
+        line-height: 1.18;
+        letter-spacing: 0.02em;
       }
 
       .course-content p {
         opacity: 1;
         transform: none;
         margin-top: 8px;
+        max-width: 100%;
+        font-size: 15px;
+        line-height: 1.65;
       }
 
       .vocal-page {
@@ -7018,7 +7024,7 @@
         text-align: center;
       }
 
-      .contact-sticker img {
+      .contact-profile img {
         width: min(62vw, 168px);
       }
 
@@ -7027,8 +7033,24 @@
       }
 
       .contact-qr-row {
-        grid-template-columns: 112px minmax(0, 1fr);
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 12px;
         padding: 12px;
+        text-align: center;
+      }
+
+      .contact-qr-image {
+        width: min(58vw, 180px);
+        max-width: 100%;
+      }
+
+      .contact-qr-note {
+        width: 100%;
+      }
+
+      .contact-qr-note a {
+        display: inline-block;
       }
 
       .contact-map-frame {
@@ -7192,6 +7214,53 @@
       </div>
     </div>
 
+    <section class="feature-page" id="news" aria-label="最新消息">
+      <div class="feature-wrap">
+        <div class="feature-copy">
+          <p class="eyebrow">Latest News</p>
+          <h2>最新消息</h2>
+          <p class="feature-lead">最新的課程與活動，我們都在這裡。</p>
+          <div class="news-preview-photos" aria-label="最新消息候選照片">
+            <button class="news-preview-photo service-card" type="button" data-service="newsCatShirt" aria-label="查看貓黨團T預購最新消息">
+              <img src="assets/news-preview-cat-shirt-preorder.jpg" alt="鹽與光貓黨團T預購公告">
+            </button>
+            <figure class="news-preview-photo">
+              <img src="assets/news-preview-workshop-room.jpg" alt="鹽與光講座課程現場">
+            </figure>
+            <figure class="news-preview-photo">
+              <img src="assets/news-preview-live-stage.jpg" alt="鹽與光活動演出現場">
+            </figure>
+          </div>
+        </div>
+        <div class="news-grid" aria-label="最新消息列表">
+          <button class="news-card service-card" type="button" data-service="newsSongCamp" aria-label="查看歌唱進階團體班最美和聲第十一期已額滿">
+            <img src="assets/news-harmony-11-full.jpg" alt="最美和聲第十一期已額滿">
+            <span class="news-card__content"><span class="news-card__tag">Harmony</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">最美和聲-第十一期已額滿</span></h3><p>和聲聆聽、聲部穩定與合唱練習。</p></span>
+          </button>
+          <button class="news-card service-card" type="button" data-service="newsVocalTrial" aria-label="查看歌唱基礎團體班搶救五音大作戰第66期招生中">
+            <img src="assets/news-vocal-basic-66-ig.jpg" alt="搶救五音大作戰歌唱初級班海報">
+            <span class="news-card__content"><span class="news-card__tag">Vocal Basic</span><h3 class="is-stacked"><span class="news-title-main">歌唱基礎團體班</span><span class="news-title-sub">搶救五音大作戰-第66期招生中</span></h3><p>從音準、節奏與開口練習開始。</p></span>
+          </button>
+          <button class="news-card service-card" type="button" data-service="newsBandRoom" aria-label="查看歌唱進階團體班飆高音第八期招生中">
+            <img src="assets/news-high-note-8-banner.png" alt="飆高音班第八期招生中">
+            <span class="news-card__content"><span class="news-card__tag">Advanced Vocal</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">飆高音-第八期招生中</span></h3><p>高音支撐、位置與歌曲應用。</p></span>
+          </button>
+          <button class="news-card service-card" type="button" data-service="newsTheoryCertificate" aria-label="查看初階樂理函授線上課程最新消息">
+            <img src="assets/news-theory-certificate.jpg" alt="初階樂理函授線上課程">
+            <span class="news-card__content"><span class="news-card__tag">Music Theory</span><h3 class="is-stacked"><span class="news-title-main">初階樂理函授</span><span class="news-title-sub">線上課程</span></h3><p>線上學習，建立樂理基礎。</p></span>
+          </button>
+          <button class="news-card service-card" type="button" data-service="newsArrangement" aria-label="查看智慧助理鹽小光上線最新消息">
+            <img src="assets/salt-assistant-yenxiaoguang.png" alt="智慧助理鹽小光">
+            <span class="news-card__content"><span class="news-card__tag">Assistant</span><h3 class="is-stacked"><span class="news-title-main">智慧助理鹽小光</span><span class="news-title-sub">上線</span></h3><p>協助整理課程與活動詢問。</p></span>
+          </button>
+          <button class="news-card service-card" type="button" data-service="newsGroupClass" aria-label="查看暑期半價體驗課最新消息">
+            <img src="assets/news-half-price-all-courses-poster.png" alt="鹽與光體驗課半價招生海報">
+            <span class="news-card__content"><span class="news-card__tag">Trial Lesson</span><h3 class="is-stacked"><span class="news-title-main">暑期半價</span><span class="news-title-sub">體驗課</span></h3><p>歌唱與樂器課皆可體驗。</p></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <section class="courses" id="courses" aria-label="課程介紹">
       <div class="courses-head">
         <p class="eyebrow">Lessons</p>
@@ -7272,7 +7341,7 @@
               <small>南部團班No.1<br>米娜流行歌唱系統</small>
             </div>
           </button>
-          <button class="teacher-card" type="button" data-name="心瑜(Cindy)老師" data-role="表演藝術、音樂理論與歌唱引導" data-img="assets/vocal-teacher-cindy-20260617.jpg" data-focus="表演狀態、音樂基礎、聲音與舞台整理" data-bio="高雄人，堂堂正正的忠實狗派。高雄師範大學表演藝術研究所、台中教育大學音樂學系畢業，主修笛簫，副修鋼琴&理論作曲；和鋼琴相處的時間超過20年，現為詩班伴奏、指揮及鋼琴教師。">
+          <button class="teacher-card" type="button" data-name="心瑜(Cindy)老師" data-role="表演藝術、音樂理論與歌唱引導" data-img="assets/vocal-teacher-cindy-20260617.jpg" data-focus="歌曲發聲、歌唱技巧、聲音與身體認識" data-bio="自己的聲音就是最棒的樂器，透過練習不同的歌曲增加對自己聲音和身體的認識。&#10;&#10;上課將會從歌曲中會遇到的練習點做發聲和技巧的練習，再套入樂曲中實作。">
             <img src="assets/vocal-teacher-cindy-20260617.jpg" alt="心瑜(Cindy)老師">
             <div class="teacher-caption">
               <strong>心瑜(Cindy)老師</strong>
@@ -7410,23 +7479,23 @@
           <div class="keys-dot-grid" aria-hidden="true"></div>
           <div class="keys-circle-text" aria-hidden="true">Harmony<br>Touch<br>Pop</div>
           <div class="keys-lineup">
-            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="士傑(Capp)老師" data-role="觸鍵與音色控制" data-img="assets/keys-lineup-c-display.jpg" data-focus="觸鍵穩定、手感建立、音色細節整理" data-bio="從每一次下鍵的重量、速度與聲音表情開始，建立能在古典鋼琴與流行鍵盤之間自由轉換的基本手感。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
-              <img src="assets/keys-lineup-c-display.jpg" alt="鍵盤課程老師照片">
+            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="士傑(Capp)老師" data-role="爵士鋼琴、鍵盤合成器與編曲教學" data-img="assets/keys-teacher-capp-modal-20260625.jpg" data-photo-fit="contain" data-focus="爵士鋼琴、爵士和聲、爵士作曲、鍵盤、硬體／軟體合成器演奏教學" data-bio="學歷&#10;• 2024 年 台南大學音樂系演奏碩士畢業&#10;• 2012 年 Booth College Diploma of Ministry&#10;• 2010 年 澳洲 Hillsong International Leadership College Worship and Creative Arts 創意藝術&#10;• 1998 年 崑山科技大學電子工程&#10;&#10;專長／任教科目&#10;爵士鋼琴、爵士和聲、爵士作曲、鍵盤、硬體／軟體合成器演奏教學。&#10;&#10;教學經歷&#10;台南藝術大學講師、台南應用科技大學流行音樂系兼任講師、樹德科技大學表演藝術系個授課講師、中信（遠東）科技大學流行音樂產業系兼任講師、嘉義大學音樂系流行音樂學程流行音樂編創教師、高雄鹽與光音樂工作室爵士鋼琴／鍵盤合成器教師、1001 創意藝術工作室爵士鋼琴／鍵盤合成器教師、學友樂器爵士鋼琴／鍵盤合成器教師、南台科技大學流行音樂系兼任講師。&#10;&#10;現職&#10;P/asma 樂團鍵盤編曲、1001 創意藝術工作室負責人、高雄鹽與光工作室教師、台南應用科技大學流行音樂系兼任講師、樹德科技大學表演藝術系個授課講師、遠東科技大學流行音樂產業系兼任講師。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
+              <img src="assets/keys-teacher-capp-main-20260625.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>士傑(Capp)老師</strong><span>Jazz Piano<br>Improvisation and Arrangement</span></span>
             </button>
-            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="心瑜(Cindy)老師" data-role="古典鋼琴基礎" data-img="assets/keys-lineup-b-display.jpg" data-focus="讀譜、手型、基礎技巧與樂句表情" data-bio="以古典鋼琴訓練作為根基，整理手型、讀譜、節奏與音樂表情，讓演奏有穩定支撐。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
+            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="心瑜(Cindy)老師" data-role="古典鋼琴基礎" data-img="assets/keys-lineup-b-display.jpg" data-focus="基礎樂理、聽寫、伴奏法、讀譜、音樂元素分析" data-bio="希望每個人不要害怕黑白鍵和看譜，可以快樂的享受鋼琴帶來的美好。&#10;&#10;依照學生希望的發展方向進行課程，包含基礎樂理、聽寫、伴奏法運用、讀譜小撇步、音樂元素分析等。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
               <img src="assets/keys-lineup-b-display.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>心瑜(Cindy)老師</strong><span>Piano<br>Pop Piano Accompaniment</span></span>
             </button>
             <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="心媛老師" data-role="和聲與伴奏設計" data-img="assets/keys-lineup-third-replacement-display.png" data-focus="和聲配置、流行伴奏、歌曲段落鋪陳" data-bio="從和弦理解、左手配置到歌曲情緒推進，幫助學生把鍵盤變成能支撐歌唱與樂團的完整聲音。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
-              <img src="assets/keys-lineup-third-replacement-display.png" alt="鍵盤課程老師照片">
+              <img src="assets/keys-teacher-xinyuan-main-20260625.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>心媛老師</strong><span>Piano</span></span>
             </button>
             <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="睦妮老師" data-role="流行鍵盤應用" data-img="assets/keys-teacher-muni-modal-a-20260625.jpg" data-imgs="assets/keys-teacher-muni-modal-a-20260625.jpg|assets/keys-teacher-muni-modal-b-20260625.jpg" data-focus="流行歌曲伴奏、合奏音色、舞台應用" data-bio="把鍵盤放進現代流行音樂脈絡中，練習音色選擇、節奏型與歌曲編制，讓演奏更貼近實際舞台。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
               <img src="assets/keys-teacher-muni-main-20260625.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>睦妮老師</strong><span>Piano</span></span>
             </button>
-            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="Ray老師" data-role="鍵盤舞台表現" data-img="assets/keys-lineup-new-teacher-display.jpg" data-focus="Keytar、舞台互動、流行樂現場演奏" data-bio="以鍵盤樂器的舞台表現為核心，整理演奏姿態、音色切換與現場互動，讓鍵盤不只在角落伴奏，也能成為舞台亮點。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
+            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="Ray老師" data-role="Piano, Keyboard, Sing and Play" data-img="assets/keys-teacher-ray-modal-20260625.jpg" data-focus="鋼琴、合成器／伴奏琴、自彈自唱、Pop、Jazz、Funk、Rock" data-bio="Ray 老師擅長鋼琴、Keyboard、合成器／伴奏琴與自彈自唱，具備豐富上手場演出經驗。&#10;&#10;商業演出經歷包含台積電人資部尾牙樂團演出、日立冷氣年終感恩聚餐演出、台灣電力北區尾牙演出、黑松經銷商年會演出、雄獅旅遊同業餐會樂團演出、國泰人壽資訊部門忘年會演出、富邦人壽尾牙樂團演出、新光人壽尾牙樂團演出、遠雄人壽南區部尾牙樂團演出、高雄國城定潮爵美秋夜樂團演出、國稅局 EasyGo 樂團演出、聯上集團尾牙表演樂團演出、Licci 古典純釀酒聖誕演出、高雄乘風而騎林園海洋音樂樂團、嘉豐海洋國際年終尾牙樂團演出、台灣通力尾牙樂團演出、久陽子公司尾牙樂團演出、英特威高雄＆台中餐會樂團演出、山富旅遊遊艇鍵盤彈唱與婚禮鍵盤彈唱樂手。&#10;&#10;駐點演出經歷包含藍色狂想鍵盤伴奏、英迪格空中酒吧鍵盤駐唱、義大皇家酒店大廳鍵盤彈唱、1928 燒肉高流店鍵盤彈唱、巴塞隆納 Live House 鍵盤手、花季溫泉飯店鍵盤駐唱、駁二 BeerTalk 鍵盤駐唱、Foggy 餐酒館鍵盤駐唱、放輕鬆美式餐廳鍵盤駐唱、金茂宜咖啡旗艦店鍵盤伴奏、愛河啤酒花園鍵盤駐唱與 Small 萱鍵盤駐唱。&#10;&#10;擅長曲風包含流行 Pop、爵士 Jazz、放克 Funk、搖滾 Rock，演唱語言包含國語、英語與台語。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
               <img src="assets/keys-lineup-new-teacher-display.jpg" alt="鍵盤課程新老師照片">
               <span class="keys-photo-caption"><strong>Ray老師</strong><span>Pop Piano Accompaniment<br>Singing with Piano</span></span>
             </button>
@@ -7451,7 +7520,7 @@
             <img src="assets/drums-teacher-a-display.jpg" alt="爵士鼓課程老師舞台演奏照">
             <span class="drums-name-tag"><strong>宛庭老師</strong><span>心靈宇宙女神</span></span>
           </button>
-          <button class="drums-teacher-card drums-teacher-card-b teacher-card-trigger" type="button" data-eyebrow="Drums Teacher" data-name="爵士鼓老師｜基礎手感" data-role="打點、手感與節奏穩定" data-img="assets/drums-teacher-b-original.jpg" data-focus="握棒、打點、節拍穩定、流行與搖滾節奏型" data-bio="從握棒、打點與節拍穩定開始，逐步建立能自在應用在流行、搖滾與樂團合奏中的鼓組手感。" data-contact="想詢問爵士鼓課程，可加 Line：gtluto721" aria-label="查看爵士鼓老師基礎手感介紹">
+          <button class="drums-teacher-card drums-teacher-card-b teacher-card-trigger" type="button" data-eyebrow="Drums Teacher" data-name="林妤老師｜爵士鼓課程" data-role="打點、手感與節奏穩定" data-img="assets/drums-teacher-b-original.jpg" data-focus="協調練習、打點運棒、節拍穩定、流行與搖滾節奏型" data-bio="爵士鼓聲音的樣貌，有絢麗的，也有紮實穩重的。&#10;&#10;我是林妤老師，我看重學習者學起來的步調，我最喜歡聽到學生的回饋是「我聽得懂耶！跟著步驟做，敲起來真的變容易了～」&#10;&#10;學音樂有時候就是急不來咩。我精通四種語言，爵士鼓、英文、法文，這些都是語言，相信我，凡事要循序漸進，多接觸。然後，協調練習跟打點運棒在我這很常實作喔！" data-contact="想詢問爵士鼓課程，可加 Line：gtluto721" aria-label="查看林妤老師爵士鼓課程介紹">
             <img src="assets/drums-teacher-b-display.jpg" alt="爵士鼓課程老師形象照">
             <span class="drums-name-tag"><strong>林妤老師</strong><span>節奏手感小太陽</span></span>
           </button>
@@ -7506,53 +7575,6 @@
       </div>
     </section>
 
-    <section class="feature-page" id="news" aria-label="最新消息">
-      <div class="feature-wrap">
-        <div class="feature-copy">
-          <p class="eyebrow">Latest News</p>
-          <h2>最新消息</h2>
-          <p class="feature-lead">最新的課程與活動，我們都在這裡。</p>
-          <div class="news-preview-photos" aria-label="最新消息候選照片">
-            <button class="news-preview-photo service-card" type="button" data-service="newsCatShirt" aria-label="查看貓黨團T預購最新消息">
-              <img src="assets/news-preview-cat-shirt-preorder.jpg" alt="鹽與光貓黨團T預購公告">
-            </button>
-            <figure class="news-preview-photo">
-              <img src="assets/news-preview-workshop-room.jpg" alt="鹽與光講座課程現場">
-            </figure>
-            <figure class="news-preview-photo">
-              <img src="assets/news-preview-live-stage.jpg" alt="鹽與光活動演出現場">
-            </figure>
-          </div>
-        </div>
-        <div class="news-grid" aria-label="最新消息列表">
-          <button class="news-card service-card" type="button" data-service="newsSongCamp" aria-label="查看歌唱進階團體班最美和聲第十一期已額滿">
-            <img src="assets/news-harmony-11-full.jpg" alt="最美和聲第十一期已額滿">
-            <span class="news-card__content"><span class="news-card__tag">Harmony</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">最美和聲-第十一期已額滿</span></h3><p>和聲聆聽、聲部穩定與合唱練習。</p></span>
-          </button>
-          <button class="news-card service-card" type="button" data-service="newsVocalTrial" aria-label="查看歌唱基礎團體班搶救五音大作戰第66期招生中">
-            <img src="assets/news-vocal-basic-66-ig.jpg" alt="搶救五音大作戰歌唱初級班海報">
-            <span class="news-card__content"><span class="news-card__tag">Vocal Basic</span><h3 class="is-stacked"><span class="news-title-main">歌唱基礎團體班</span><span class="news-title-sub">搶救五音大作戰-第66期招生中</span></h3><p>從音準、節奏與開口練習開始。</p></span>
-          </button>
-          <button class="news-card service-card" type="button" data-service="newsBandRoom" aria-label="查看歌唱進階團體班飆高音第八期招生中">
-            <img src="assets/news-high-note-8-banner.png" alt="飆高音班第八期招生中">
-            <span class="news-card__content"><span class="news-card__tag">Advanced Vocal</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">飆高音-第八期招生中</span></h3><p>高音支撐、位置與歌曲應用。</p></span>
-          </button>
-          <button class="news-card service-card" type="button" data-service="newsTheoryCertificate" aria-label="查看初階樂理函授線上課程最新消息">
-            <img src="assets/news-theory-certificate.jpg" alt="初階樂理函授線上課程">
-            <span class="news-card__content"><span class="news-card__tag">Music Theory</span><h3 class="is-stacked"><span class="news-title-main">初階樂理函授</span><span class="news-title-sub">線上課程</span></h3><p>線上學習，建立樂理基礎。</p></span>
-          </button>
-          <button class="news-card service-card" type="button" data-service="newsArrangement" aria-label="查看智慧助理鹽小光上線最新消息">
-            <img src="assets/salt-assistant-yenxiaoguang.png" alt="智慧助理鹽小光">
-            <span class="news-card__content"><span class="news-card__tag">Assistant</span><h3 class="is-stacked"><span class="news-title-main">智慧助理鹽小光</span><span class="news-title-sub">上線</span></h3><p>協助整理課程與活動詢問。</p></span>
-          </button>
-          <button class="news-card service-card" type="button" data-service="newsGroupClass" aria-label="查看暑期半價體驗課最新消息">
-            <img src="assets/news-half-price-all-courses-poster.png" alt="鹽與光體驗課半價招生海報">
-            <span class="news-card__content"><span class="news-card__tag">Trial Lesson</span><h3 class="is-stacked"><span class="news-title-main">暑期半價</span><span class="news-title-sub">體驗課</span></h3><p>歌唱與樂器課皆可體驗。</p></span>
-          </button>
-        </div>
-      </div>
-    </section>
-
     <section class="feature-page" id="camp" aria-label="創作營">
       <div class="feature-wrap">
         <div class="feature-copy">
@@ -7600,7 +7622,6 @@
               <img src="https://i.ytimg.com/vi/ovrFc_RKVpU/hqdefault.jpg" alt="第五屆創作營作品 Someday">
             </figure>
             <div class="camp-media-label">Salt with Light Camp</div>
-            <div class="camp-media-title">Song<br>Camp</div>
           </div>
           <div class="camp-work-gallery" aria-label="歷屆創作營作品">
             <button class="camp-work-card service-card" type="button" data-service="campWork1" aria-label="查看第一屆創作營作品">
@@ -7725,8 +7746,8 @@
 
     <nav class="main-menu" aria-label="主選單">
       <a href="#studio"><span>工作室介紹</span></a>
-      <a href="#courses"><span>課程介紹</span></a>
       <a class="is-news-link" href="#news"><span>最新消息</span></a>
+      <a href="#courses"><span>課程介紹</span></a>
       <a href="#camp"><span>創作營</span></a>
       <a href="#room"><span>練團室租借</span></a>
       <a href="#contact"><span>聯絡我們</span></a>
