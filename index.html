@@ -1077,6 +1077,72 @@
         rgba(8, 2, 2, 0.88);
     }
 
+    .teacher-modal__photo.is-editorial-collage {
+      min-height: 560px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 248, 236, 0.18), rgba(255, 248, 236, 0.06)),
+        url("assets/teacher-modal-paper-collage-bg-20260625.png") center / cover;
+    }
+
+    .teacher-modal__photo.is-editorial-collage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 88% 16%, rgba(255, 255, 255, 0.82) 0 7px, transparent 8px),
+        radial-gradient(circle at 84% 20%, rgba(255, 255, 255, 0.72) 0 6px, transparent 7px),
+        radial-gradient(circle at 92% 20%, rgba(255, 255, 255, 0.7) 0 6px, transparent 7px),
+        radial-gradient(circle at 88% 24%, rgba(255, 255, 255, 0.74) 0 6px, transparent 7px),
+        radial-gradient(circle at 88% 20%, rgba(235, 210, 186, 0.42) 0 4px, transparent 5px),
+        radial-gradient(circle at 12% 82%, rgba(255, 255, 255, 0.74) 0 6px, transparent 7px),
+        radial-gradient(circle at 8% 86%, rgba(255, 255, 255, 0.66) 0 5px, transparent 6px),
+        radial-gradient(circle at 16% 86%, rgba(255, 255, 255, 0.62) 0 5px, transparent 6px),
+        radial-gradient(circle at 12% 90%, rgba(255, 255, 255, 0.66) 0 5px, transparent 6px),
+        radial-gradient(circle at 12% 86%, rgba(235, 210, 186, 0.34) 0 3px, transparent 4px);
+      opacity: 0.72;
+      filter: blur(0.2px);
+      pointer-events: none;
+    }
+
+    .teacher-modal__photo.is-editorial-collage img {
+      position: absolute;
+      z-index: 2;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border: 10px solid rgba(255, 252, 244, 0.94);
+      background: rgba(255, 252, 244, 0.94);
+      box-shadow: 0 18px 38px rgba(72, 42, 30, 0.22);
+      filter: sepia(0.04) saturate(1.02) brightness(0.98) contrast(0.98);
+    }
+
+    .teacher-modal__photo.is-editorial-collage img:nth-of-type(1) {
+      left: -2%;
+      top: 4%;
+      width: 86%;
+      height: 44%;
+      object-position: 50% 20%;
+      transform: rotate(-1.2deg);
+    }
+
+    .teacher-modal__photo.is-editorial-collage img:nth-of-type(2) {
+      right: -3%;
+      bottom: 4%;
+      width: 88%;
+      height: 44%;
+      object-position: 50% 28%;
+      transform: rotate(1.4deg);
+    }
+
+    .teacher-modal__photo.is-editorial-collage::after {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(68, 28, 20, 0.08)),
+        radial-gradient(circle at 88% 8%, rgba(255, 255, 255, 0.36), transparent 24%);
+      mix-blend-mode: soft-light;
+    }
+
     .teacher-modal__photo::after {
       content: "";
       position: absolute;
@@ -5946,6 +6012,24 @@
         font-size: 30px;
       }
 
+      .teacher-modal__photo.is-editorial-collage img {
+        border-width: 7px;
+      }
+
+      .teacher-modal__photo.is-editorial-collage img:nth-of-type(1) {
+        left: -2%;
+        top: 4%;
+        width: 86%;
+        height: 44%;
+      }
+
+      .teacher-modal__photo.is-editorial-collage img:nth-of-type(2) {
+        right: -3%;
+        bottom: 4%;
+        width: 88%;
+        height: 44%;
+      }
+
       .service-modal {
         padding: 18px;
       }
@@ -7338,7 +7422,7 @@
         </div>
 
         <div class="teacher-wall" aria-label="歌唱課程老師">
-          <button class="teacher-card" type="button" data-name="米娜(Mina)老師" data-role="米娜流行歌唱教學系統" data-img="assets/vocal-teacher-mina.jpg" data-focus="聲音系統、團體班、教會與歌唱課指導" data-bio="鹽與光老闆娘，日月光歌唱社指導老師。南部歌唱授課10年以上經歷，各類團體班、教會、歌唱課指導。">
+          <button class="teacher-card" type="button" data-name="米娜(Mina)老師" data-role="米娜流行歌唱教學系統" data-img="assets/vocal-teacher-mina-modal-20260625.jpg" data-focus="精準發聲、情感表達、多國語系與多曲風歌唱引導" data-bio="嗨，我是個熱愛音樂的米娜老師！13 年的教唱生涯，讓我深信每首歌都是獨一無二的生命劇本。我樂於挑戰多國語系與曲風，因為在音符間能反覆挖掘自我的更多可能。&#10;&#10;我擅長根據學生特質，引導精準發聲與細膩的情感表達；對我而言，歌唱不僅是技巧展現，更是靈魂的投射。&#10;&#10;我很享受分享音樂的純粹，陪伴每位學生在音樂裡看見不同的自己，希望也能陪你一起唱出最動人的故事！">
             <img src="assets/vocal-teacher-mina.jpg" alt="米娜(Mina)老師">
             <div class="teacher-caption">
               <strong>米娜(Mina)老師</strong>
@@ -7362,7 +7446,7 @@
               <small>小麻雀樂團</small>
             </div>
           </button>
-          <button class="teacher-card" type="button" data-name="宛庭老師" data-role="現代流行歌唱" data-img="assets/vocal-teacher-wanting.jpg" data-focus="介紹後續補上" data-bio="介紹後續補上。">
+          <button class="teacher-card" type="button" data-name="宛庭老師" data-role="現代流行歌唱" data-img="assets/vocal-teacher-wanting-modal-a-20260625.jpg" data-focus="介紹後續補上" data-bio="介紹後續補上。">
             <img src="assets/vocal-teacher-wanting.jpg" alt="宛庭老師">
             <div class="teacher-caption">
               <strong>宛庭老師</strong>
@@ -7496,7 +7580,7 @@
               <img src="assets/keys-teacher-xinyuan-main-20260625.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>心媛老師</strong><span>Piano</span></span>
             </button>
-            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="睦妮老師" data-role="流行鍵盤應用" data-img="assets/keys-teacher-muni-modal-a-20260625.jpg" data-imgs="assets/keys-teacher-muni-modal-a-20260625.jpg|assets/keys-teacher-muni-modal-b-20260625.jpg" data-focus="流行歌曲伴奏、合奏音色、舞台應用" data-bio="把鍵盤放進現代流行音樂脈絡中，練習音色選擇、節奏型與歌曲編制，讓演奏更貼近實際舞台。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
+            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="睦妮老師" data-role="流行鍵盤應用" data-img="assets/keys-teacher-muni-modal-a-20260625.jpg" data-imgs="assets/keys-teacher-muni-modal-a-20260625.jpg|assets/keys-teacher-muni-modal-b-20260625.jpg" data-gallery-layout="editorial-collage" data-focus="流行歌曲伴奏、合奏音色、舞台應用" data-bio="把鍵盤放進現代流行音樂脈絡中，練習音色選擇、節奏型與歌曲編制，讓演奏更貼近實際舞台。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
               <img src="assets/keys-teacher-muni-main-20260625.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>睦妮老師</strong><span>Piano</span></span>
             </button>
@@ -8354,14 +8438,17 @@
       card.addEventListener("click", () => {
         lastTeacherTrigger = card;
         const teacherImages = card.dataset.imgs ? card.dataset.imgs.split("|").filter(Boolean) : [];
+        const teacherGalleryLayout = card.dataset.galleryLayout || "";
         if (teacherImages.length && teacherModalPhoto) {
-          teacherModalPhoto.classList.add("is-gallery");
+          teacherModalPhoto.classList.toggle("is-gallery", teacherGalleryLayout !== "editorial-collage");
+          teacherModalPhoto.classList.toggle("is-editorial-collage", teacherGalleryLayout === "editorial-collage");
           teacherModalPhoto.classList.remove("is-contain");
           teacherModalPhoto.innerHTML = teacherImages.map((src, index) => (
             `<img src="${src}" alt="${card.dataset.name}照片 ${index + 1}">`
           )).join("");
         } else if (teacherModalPhoto) {
           teacherModalPhoto.classList.remove("is-gallery");
+          teacherModalPhoto.classList.remove("is-editorial-collage");
           teacherModalPhoto.classList.toggle("is-contain", card.dataset.photoFit === "contain");
           teacherModalPhoto.innerHTML = '<img id="teacher-modal-img" src="" alt="">';
           const currentTeacherModalImg = teacherModalPhoto.querySelector("img");
