@@ -1143,6 +1143,137 @@
       mix-blend-mode: soft-light;
     }
 
+    .teacher-modal__photo.is-guitar-team-collage {
+      min-height: 560px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(255, 237, 178, 0.24), transparent 28%),
+        linear-gradient(135deg, rgba(46, 13, 8, 0.96), rgba(102, 25, 15, 0.88) 48%, rgba(22, 6, 5, 0.96)),
+        rgba(18, 4, 4, 0.96);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage::before {
+      content: "GUITAR TEAM";
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      z-index: 4;
+      color: rgba(255, 229, 170, 0.68);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure {
+      position: absolute;
+      z-index: 2;
+      margin: 0;
+      overflow: visible;
+      border: 8px solid rgba(247, 228, 184, 0.94);
+      border-radius: 5px;
+      background: rgba(247, 228, 184, 0.94);
+      box-shadow: 0 22px 52px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(255, 246, 215, 0.2);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2px;
+      filter: sepia(0.08) saturate(1.08) brightness(0.94) contrast(1.02);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure span {
+      position: absolute;
+      left: 50%;
+      bottom: -18px;
+      z-index: 3;
+      min-width: 94px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 225, 157, 0.74);
+      border-radius: 7px;
+      background:
+        linear-gradient(180deg, rgba(255, 238, 178, 0.98), rgba(224, 176, 91, 0.96)),
+        var(--gold-soft);
+      color: rgba(47, 9, 8, 0.9);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34), inset 0 1px rgba(255, 255, 255, 0.48);
+      transform: translateX(-50%) rotate(-3deg);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure span small {
+      display: block;
+      margin-top: 3px;
+      color: rgba(104, 16, 21, 0.72);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      line-height: 1.15;
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(1) {
+      left: 7%;
+      top: 5%;
+      width: 68%;
+      height: 55%;
+      transform: rotate(-2.2deg);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(1) img {
+      object-position: 50% 22%;
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(1) span {
+      min-width: 116px;
+      font-size: 13px;
+      transform: translateX(-50%) rotate(2deg);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(2) {
+      right: 6%;
+      top: 40%;
+      width: 38%;
+      height: 25%;
+      z-index: 3;
+      transform: rotate(4deg);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(2) img {
+      object-position: 48% 42%;
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(3) {
+      left: 8%;
+      bottom: 7%;
+      width: 40%;
+      height: 28%;
+      transform: rotate(3.2deg);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(3) img {
+      object-position: 48% 32%;
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(4) {
+      right: 8%;
+      bottom: 6%;
+      width: 40%;
+      height: 30%;
+      transform: rotate(-3.4deg);
+    }
+
+    .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(4) img {
+      object-position: 54% 34%;
+    }
+
     .teacher-modal__photo::after {
       content: "";
       position: absolute;
@@ -6030,6 +6161,47 @@
         height: 44%;
       }
 
+      .teacher-modal__photo.is-guitar-team-collage figure {
+        border-width: 6px;
+      }
+
+      .teacher-modal__photo.is-guitar-team-collage figure span {
+        bottom: -15px;
+        min-width: 82px;
+        padding: 6px 8px;
+        font-size: 11px;
+      }
+
+      .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(1) {
+        left: 5%;
+        top: 5%;
+        width: 58%;
+        height: 58%;
+      }
+
+      .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(2) {
+        right: 5%;
+        top: 8%;
+        width: 34%;
+        height: 25%;
+      }
+
+      .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(3) {
+        right: 5%;
+        left: auto;
+        bottom: 9%;
+        width: 34%;
+        height: 25%;
+      }
+
+      .teacher-modal__photo.is-guitar-team-collage figure:nth-of-type(4) {
+        left: 30%;
+        right: auto;
+        bottom: 5%;
+        width: 36%;
+        height: 27%;
+      }
+
       .service-modal {
         padding: 18px;
       }
@@ -6940,13 +7112,63 @@
       }
 
       .keys-board {
-        min-height: 720px;
+        min-height: 690px;
+        overflow: hidden;
       }
 
       .keys-lineup {
-        inset: 0 0 104px;
-        gap: 6px;
-        padding: 0 8px;
+        inset: 96px 0 120px;
+        display: flex;
+        gap: 12px;
+        padding: 0 18px 16px;
+        overflow-x: auto;
+        overflow-y: visible;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .keys-lineup::-webkit-scrollbar {
+        display: none;
+      }
+
+      .keys-photo,
+      .keys-photo:nth-child(1),
+      .keys-photo:nth-child(2),
+      .keys-photo:nth-child(3),
+      .keys-photo:nth-child(4),
+      .keys-photo:nth-child(5) {
+        flex: 0 0 min(72vw, 286px);
+        height: 460px;
+        margin: 0;
+        border-color: rgba(246, 232, 200, 0.52);
+        border-radius: 8px;
+        scroll-snap-align: center;
+      }
+
+      .keys-photo img {
+        object-fit: cover;
+        filter: sepia(0.1) saturate(0.98) contrast(1.04) brightness(0.9);
+      }
+
+      .keys-photo:nth-child(1) img {
+        object-position: 52% 32%;
+      }
+
+      .keys-photo:nth-child(2) img {
+        object-position: 46% 28%;
+      }
+
+      .keys-photo:nth-child(3) img {
+        object-position: 67% 24%;
+      }
+
+      .keys-photo:nth-child(4) img {
+        object-position: 50% 30%;
+      }
+
+      .keys-photo:nth-child(5) img {
+        object-position: 52% 30%;
       }
 
       .keys-mark {
@@ -6957,24 +7179,26 @@
       }
 
       .keys-photo-caption {
-        padding: 8px 5px 7px;
+        bottom: 18px;
+        width: min(86%, 208px);
+        padding: 10px 9px 8px;
       }
 
       .keys-photo-caption::before {
-        font-size: 5px;
-        letter-spacing: 0;
+        font-size: 6.5px;
+        letter-spacing: 0.02em;
       }
 
       .keys-photo-caption strong {
-        font-size: 8.5px;
-        line-height: 1.15;
-        white-space: normal;
+        font-size: 15px;
+        line-height: 1.1;
+        white-space: nowrap;
       }
 
       .keys-photo-caption span {
-        padding: 4px 4px;
-        font-size: 6.5px;
-        line-height: 1.12;
+        padding: 6px 7px;
+        font-size: 10px;
+        line-height: 1.18;
       }
 
       .keys-topline {
@@ -7446,7 +7670,7 @@
               <small>小麻雀樂團</small>
             </div>
           </button>
-          <button class="teacher-card" type="button" data-name="宛庭老師" data-role="現代流行歌唱" data-img="assets/vocal-teacher-wanting-modal-a-20260625.jpg" data-focus="介紹後續補上" data-bio="介紹後續補上。">
+          <button class="teacher-card" type="button" data-name="宛庭老師" data-role="現代流行歌唱" data-img="assets/vocal-teacher-wanting-modal-a-20260625.jpg" data-focus="流行歌曲演唱、發聲基礎、音準節奏、情感表達、舞台自信與自我探索" data-bio="投入歌唱教學、樂團演出與療癒歌唱工作坊。教學內容包含流行歌曲演唱、發聲基礎、音準節奏、情感表達、舞台自信與自我探索。&#10;&#10;課程會從放鬆身體、穩定呼吸、找到自然發聲開始，陪伴學生慢慢打開自己的聲音與情感。教學風格溫柔細膩、支持感強，適合想學會唱歌、想更有自信表達，或希望透過歌唱療癒與探索自己的學生。&#10;&#10;希望每個人都能在音樂裡感受到：「自己的存在，是值得被聽見的。」">
             <img src="assets/vocal-teacher-wanting.jpg" alt="宛庭老師">
             <div class="teacher-caption">
               <strong>宛庭老師</strong>
@@ -7506,7 +7730,7 @@
           <figure class="poster-photo poster-photo-b">
             <img src="assets/guitar-session-a-display.jpg" alt="吉他課程上課現場">
           </figure>
-          <button class="poster-photo poster-photo-c teacher-card-trigger" type="button" data-eyebrow="Guitar Teacher" data-name="TC老師｜吉他課程" data-role="電吉他與木吉他教學" data-img="assets/course-guitar.jpg" data-focus="木吉他、電吉他、流行、Funk、R&B、搖滾、金屬、爵士、彈唱、爵士和聲樂理" data-bio="上課要有樂趣，學生開心，老師也開心。只是想要吉他，不管是木吉他或電吉他，都可以從喜歡的聲音開始，慢慢找到自己的風格與手感。" data-contact="想詢問吉他課程，可加 Line：gtluto721" aria-label="查看TC老師吉他課程介紹">
+          <button class="poster-photo poster-photo-c teacher-card-trigger" type="button" data-eyebrow="Guitar Teacher" data-name="TC的音樂教育世界" data-role="吉他教學、音樂教育與課程規劃" data-img="assets/course-guitar.jpg" data-imgs="assets/course-guitar.jpg|assets/guitar-reserve-weikai-20260626.jpg|assets/guitar-reserve-hongzhu-20260626.jpg|assets/guitar-reserve-kuangkuang-20260626.jpg" data-img-captions="TC老師|韋愷老師|宏竹老師|匡匡老師" data-img-subtitles="|吉他儲備教師|吉他儲備教師|吉他儲備教師" data-gallery-layout="guitar-team-collage" data-focus="木吉他、電吉他、Rock、Metal、Funk、Blues、Jazz、Fusion、爵士和聲、爵士作曲／編曲、爵士即興" data-bio="上課要有樂趣，學生開心，老師也開心。只是想要吉他，不管是木吉他或電吉他，都可以從喜歡的聲音開始，慢慢找到自己的風格與手感。&#10;&#10;高雄深耕十年的音樂工作者與教師。&#10;Musician Institute 2013 GIT（電吉他系畢業）。&#10;台南藝術大學爵士和聲、爵士作曲／編曲、爵士即興隨班附讀與學分。&#10;曲風涉略 Rock / Metal / Funk / Blues / Jazz / Fusion。&#10;鹽與光音樂工作室負責人，負責課程與講座規劃。" data-contact="想詢問吉他課程，可加 Line：gtluto721" aria-label="查看TC的音樂教育世界介紹">
             <img src="assets/guitar-teacher-display.jpg" alt="吉他課程老師形象照">
           </button>
           <div class="guitar-name-tag" aria-hidden="true">
@@ -7605,7 +7829,7 @@
         </div>
         <div class="drums-teacher-board" aria-label="爵士鼓課程老師">
           <h3 class="drums-board-title">DRUM<br>TEACHERS</h3>
-          <button class="drums-teacher-card drums-teacher-card-a teacher-card-trigger" type="button" data-eyebrow="Drums Teacher" data-name="爵士鼓老師｜舞台節奏" data-role="爵士鼓演奏與舞台實作" data-img="assets/drums-teacher-a-original.jpg" data-focus="基本節奏、手腳協調、Groove建立、舞台演奏" data-bio="從基本節奏、手腳協調到舞台演奏，幫助學生把鼓點變成能推動歌曲情緒的能量。" data-contact="想詢問爵士鼓課程，可加 Line：gtluto721" aria-label="查看爵士鼓老師舞台節奏介紹">
+          <button class="drums-teacher-card drums-teacher-card-a teacher-card-trigger" type="button" data-eyebrow="Drums Teacher" data-name="宛庭老師｜爵士鼓課程" data-role="YAMAHA 認證爵士鼓課程講師" data-img="assets/drums-teacher-a-original.jpg" data-focus="爵士鼓檢定、基礎節奏、肢體協調、歌曲實作、舞台表現" data-bio="具備 YAMAHA 認證爵士鼓課程講師資格，可協助學生爵士鼓檢定考試。陪伴學生從基礎節奏、肢體協調、歌曲實作到舞台表現，逐步建立穩定而有自信的演奏能力。&#10;&#10;我的爵士鼓教學重視「聽見節奏，也感受節奏」。課程不只是訓練技巧與速度，更希望學生能透過鼓找到身體的律動、情緒的出口，以及與音樂連結的方式。&#10;&#10;教學風格溫暖、清楚、有耐心，會依照每位學生的程度與個性調整練習方向，讓初學者不害怕開始，也讓有經驗的學生能更細緻地掌握歌曲律動、穩定度與歌曲詮釋。" data-contact="想詢問爵士鼓課程，可加 Line：gtluto721" aria-label="查看宛庭老師爵士鼓課程介紹">
             <img src="assets/drums-teacher-a-display.jpg" alt="爵士鼓課程老師舞台演奏照">
             <span class="drums-name-tag"><strong>宛庭老師</strong><span>心靈宇宙女神</span></span>
           </button>
@@ -8439,16 +8663,36 @@
         lastTeacherTrigger = card;
         const teacherImages = card.dataset.imgs ? card.dataset.imgs.split("|").filter(Boolean) : [];
         const teacherGalleryLayout = card.dataset.galleryLayout || "";
+        const teacherImageCaptions = card.dataset.imgCaptions ? card.dataset.imgCaptions.split("|") : [];
+        const teacherImageSubtitles = card.dataset.imgSubtitles ? card.dataset.imgSubtitles.split("|") : [];
+        const escapeModalText = (value) => String(value || "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[char]));
         if (teacherImages.length && teacherModalPhoto) {
-          teacherModalPhoto.classList.toggle("is-gallery", teacherGalleryLayout !== "editorial-collage");
+          const isEditorialCollage = teacherGalleryLayout === "editorial-collage";
+          const isGuitarTeamCollage = teacherGalleryLayout === "guitar-team-collage";
+          teacherModalPhoto.classList.toggle("is-gallery", !isEditorialCollage && !isGuitarTeamCollage);
           teacherModalPhoto.classList.toggle("is-editorial-collage", teacherGalleryLayout === "editorial-collage");
+          teacherModalPhoto.classList.toggle("is-guitar-team-collage", isGuitarTeamCollage);
           teacherModalPhoto.classList.remove("is-contain");
-          teacherModalPhoto.innerHTML = teacherImages.map((src, index) => (
-            `<img src="${src}" alt="${card.dataset.name}照片 ${index + 1}">`
-          )).join("");
+          teacherModalPhoto.innerHTML = isGuitarTeamCollage
+            ? teacherImages.map((src, index) => {
+                const caption = teacherImageCaptions[index] || `${card.dataset.name} ${index + 1}`;
+                const subtitle = teacherImageSubtitles[index] || "";
+                const subtitleMarkup = subtitle ? `<small>${escapeModalText(subtitle)}</small>` : "";
+                return `<figure><img src="${src}" alt="${escapeModalText(caption)}"><span>${escapeModalText(caption)}${subtitleMarkup}</span></figure>`;
+              }).join("")
+            : teacherImages.map((src, index) => (
+                `<img src="${src}" alt="${card.dataset.name}照片 ${index + 1}">`
+              )).join("");
         } else if (teacherModalPhoto) {
           teacherModalPhoto.classList.remove("is-gallery");
           teacherModalPhoto.classList.remove("is-editorial-collage");
+          teacherModalPhoto.classList.remove("is-guitar-team-collage");
           teacherModalPhoto.classList.toggle("is-contain", card.dataset.photoFit === "contain");
           teacherModalPhoto.innerHTML = '<img id="teacher-modal-img" src="" alt="">';
           const currentTeacherModalImg = teacherModalPhoto.querySelector("img");
