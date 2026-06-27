@@ -6229,10 +6229,17 @@
       }
 
       .service-modal__gallery.is-theory-wall {
-        height: min(520px, 58svh);
+        height: min(560px, 56svh);
+        min-height: 0;
         grid-template-columns: 1fr;
+        grid-template-rows: none;
         grid-auto-rows: auto;
-        padding: 10px;
+        gap: 12px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 12px;
+        align-content: start;
+        background: #fbfaf6;
       }
 
       .service-modal__gallery.is-theory-wall .service-modal__shot,
@@ -6246,11 +6253,26 @@
       .service-modal__gallery.is-theory-wall .service-modal__shot:nth-child(8) {
         grid-column: 1;
         grid-row: auto;
+        width: 100%;
+        min-height: 0;
         aspect-ratio: 4 / 3;
+        background: #f5f0e7;
       }
 
       .service-modal__gallery.is-theory-wall .service-modal__shot:nth-child(5) {
+        aspect-ratio: 4 / 3;
         padding: 14px;
+      }
+
+      .service-modal__gallery.is-theory-wall .service-modal__shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: none;
+      }
+
+      .service-modal__gallery.is-theory-wall .service-modal__shot:nth-child(5) img {
+        object-fit: contain;
       }
 
       .service-modal__gallery.is-camp-work {
