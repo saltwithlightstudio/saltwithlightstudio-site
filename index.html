@@ -5426,6 +5426,40 @@
       font-weight: 600;
     }
 
+    .calendar-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .calendar-control {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(216, 173, 91, 0.36);
+      border-radius: 999px;
+      background: rgba(18, 4, 4, 0.62);
+      color: rgba(246, 232, 200, 0.92);
+      cursor: pointer;
+      transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
+    }
+
+    .calendar-control:hover,
+    .calendar-control:focus-visible {
+      border-color: rgba(255, 223, 153, 0.72);
+      background: rgba(104, 16, 21, 0.74);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .calendar-month-label {
+      min-width: 104px;
+      color: rgba(246, 232, 200, 0.86);
+      font-size: 14px;
+      text-align: center;
+    }
+
     .calendar-note {
       color: rgba(246, 232, 200, 0.66);
       font-size: 13px;
@@ -5443,13 +5477,213 @@
       background: rgba(10, 3, 3, 0.72);
     }
 
-    .calendar-frame iframe {
+    .room-calendar-status {
       position: absolute;
       inset: 0;
-      width: 100%;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: rgba(246, 232, 200, 0.78);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      text-align: center;
+      background: rgba(10, 3, 3, 0.76);
+    }
+
+    .room-calendar-status[hidden] {
+      display: none;
+    }
+
+    .room-calendar-grid {
       height: 100%;
-      border: 0;
-      filter: sepia(0.16) saturate(0.9) brightness(0.92);
+      min-height: 480px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      color: rgba(246, 232, 200, 0.82);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+    }
+
+    .room-calendar-weekdays,
+    .room-calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    .room-calendar-weekdays {
+      border-bottom: 1px solid rgba(216, 173, 91, 0.18);
+      background: rgba(216, 173, 91, 0.08);
+    }
+
+    .room-calendar-weekdays span {
+      padding: 10px 6px;
+      color: rgba(246, 232, 200, 0.62);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .room-calendar-days {
+      grid-auto-rows: minmax(74px, 1fr);
+    }
+
+    .room-calendar-day {
+      min-width: 0;
+      padding: 8px;
+      border-right: 1px solid rgba(216, 173, 91, 0.12);
+      border-bottom: 1px solid rgba(216, 173, 91, 0.12);
+      background: rgba(12, 3, 3, 0.38);
+    }
+
+    .room-calendar-day:nth-child(7n) {
+      border-right: 0;
+    }
+
+    .room-calendar-day.is-muted {
+      opacity: 0.42;
+    }
+
+    .room-calendar-date {
+      display: block;
+      margin-bottom: 6px;
+      color: rgba(246, 232, 200, 0.72);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .room-calendar-event {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      margin-top: 4px;
+      padding: 5px 7px;
+      border: 1px solid rgba(216, 173, 91, 0.24);
+      border-radius: 5px;
+      background: rgba(104, 16, 21, 0.72);
+      color: rgba(246, 232, 200, 0.92);
+      font: inherit;
+      font-size: 12px;
+      line-height: 1.35;
+      text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .room-calendar-event:hover,
+    .room-calendar-event:focus-visible {
+      border-color: rgba(255, 223, 153, 0.72);
+      background: rgba(128, 23, 21, 0.88);
+      box-shadow: 0 0 18px rgba(216, 173, 91, 0.18);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .room-booking-popover {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(8, 2, 2, 0.46);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+    }
+
+    .room-booking-popover.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .room-booking-card {
+      position: relative;
+      width: min(360px, 100%);
+      padding: 24px 24px 22px;
+      border: 1px solid rgba(240, 212, 154, 0.66);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(216, 173, 91, 0.2), transparent 38%),
+        linear-gradient(145deg, rgba(55, 8, 9, 0.96), rgba(12, 3, 3, 0.98));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42), inset 0 0 24px rgba(216, 173, 91, 0.08);
+      color: var(--ivory);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      transform: translateY(8px) scale(0.98);
+      transition: transform 180ms ease;
+    }
+
+    .room-booking-popover.is-open .room-booking-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .room-booking-card::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(216, 173, 91, 0.18);
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .room-booking-card h3 {
+      margin: 0 38px 18px 0;
+      color: var(--gold-soft);
+      font-family: "Noto Serif TC", "Songti TC", "PingFang TC", serif;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .room-booking-detail {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+    }
+
+    .room-booking-detail div {
+      display: grid;
+      gap: 4px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(216, 173, 91, 0.18);
+    }
+
+    .room-booking-detail dt {
+      color: rgba(246, 232, 200, 0.58);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .room-booking-detail dd {
+      margin: 0;
+      color: rgba(246, 232, 200, 0.94);
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .room-booking-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 1;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(216, 173, 91, 0.34);
+      border-radius: 50%;
+      background: rgba(10, 3, 3, 0.44);
+      color: rgba(246, 232, 200, 0.88);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .room-booking-close:hover,
+    .room-booking-close:focus-visible {
+      border-color: rgba(255, 223, 153, 0.78);
+      background: rgba(104, 16, 21, 0.78);
+      color: var(--gold-soft);
+      outline: none;
     }
 
     .contact-page {
@@ -8182,17 +8416,36 @@
             <div>
               <strong>練團室預定狀況</strong>
             </div>
+            <div class="calendar-controls" aria-label="切換月份">
+              <button class="calendar-control" type="button" data-room-calendar-prev aria-label="上一個月">‹</button>
+              <span class="calendar-month-label" data-room-calendar-label></span>
+              <button class="calendar-control" type="button" data-room-calendar-next aria-label="下一個月">›</button>
+            </div>
           </div>
-          <div class="calendar-frame">
-            <iframe
-              title="鹽與光音樂工作室練團室行事曆"
-              src="https://calendar.google.com/calendar/embed?src=saltlight2103%40gmail.com&ctz=Asia%2FTaipei&mode=MONTH&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0"
-              loading="lazy">
-            </iframe>
+          <div class="calendar-frame" aria-label="鹽與光音樂工作室練團室公開行事曆">
+            <div class="room-calendar-status" data-room-calendar-status>公開行事曆設定中。</div>
+            <div class="room-calendar-grid" data-room-calendar-grid></div>
           </div>
         </div>
       </div>
     </section>
+
+    <div class="room-booking-popover" data-room-booking-popover aria-hidden="true">
+      <div class="room-booking-card" role="dialog" aria-modal="true" aria-labelledby="room-booking-title">
+        <button class="room-booking-close" type="button" data-room-booking-close aria-label="關閉預約資訊">×</button>
+        <h3 id="room-booking-title">預約資訊</h3>
+        <dl class="room-booking-detail">
+          <div>
+            <dt>預約時間</dt>
+            <dd data-room-booking-time>--</dd>
+          </div>
+          <div>
+            <dt>登記人</dt>
+            <dd data-room-booking-name>--</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
 
     <section class="contact-page" id="contact" aria-label="聯絡我們">
       <div class="contact-wrap">
@@ -8283,6 +8536,211 @@
     window.setTimeout(revealVisibleSections, 250);
     window.addEventListener("hashchange", revealVisibleSections);
     window.addEventListener("scroll", revealVisibleSections, { passive: true });
+
+    const ROOM_CALENDAR_API_URL = "https://script.google.com/macros/s/AKfycbwMdXRncrPO3DhumMD3xYpaYp53MbkHBPyUQ8Vm_u9sPI1hKnZmdRdJy4hn3uz-XTDD/exec";
+    const roomCalendarGrid = document.querySelector("[data-room-calendar-grid]");
+    const roomCalendarStatus = document.querySelector("[data-room-calendar-status]");
+    const roomCalendarLabel = document.querySelector("[data-room-calendar-label]");
+    const roomCalendarPrev = document.querySelector("[data-room-calendar-prev]");
+    const roomCalendarNext = document.querySelector("[data-room-calendar-next]");
+    const roomBookingPopover = document.querySelector("[data-room-booking-popover]");
+    const roomBookingClose = document.querySelector("[data-room-booking-close]");
+    const roomBookingTime = document.querySelector("[data-room-booking-time]");
+    const roomBookingName = document.querySelector("[data-room-booking-name]");
+    let roomCalendarCursor = new Date();
+    roomCalendarCursor = new Date(roomCalendarCursor.getFullYear(), roomCalendarCursor.getMonth(), 1);
+    let roomCalendarVisibleEvents = [];
+
+    const roomWeekdays = ["日", "一", "二", "三", "四", "五", "六"];
+    const phonePattern = /(?:\+?886[-\s]?)?0?9\d{2}[-\s]?\d{3}[-\s]?\d{3}|0\d{1,2}[-\s]?\d{6,8}/g;
+    const sanitizePublicCalendarText = (value) => String(value || "")
+      .replace(/[０-９]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) - 0xfee0))
+      .replace(phonePattern, "****")
+      .replace(/(?:聯絡電話|電話|手機)[:：]?\s*/g, "")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+    const escapeCalendarHtml = (value) => String(value || "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[char]));
+
+    const formatDateKey = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    const formatTime = (value) => {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+    };
+
+    const formatRoomBookingTime = (event) => {
+      const startLabel = formatTime(event.start);
+      const endLabel = formatTime(event.end);
+      if (startLabel && endLabel) return `${startLabel} - ${endLabel}`;
+      return startLabel || "未標示";
+    };
+
+    const extractRoomBookingName = (title) => {
+      const name = String(title || "")
+        .replace(/\*+/g, "")
+        .replace(/^\d+/, "")
+        .replace(/Room\s*335|Room/gi, "")
+        .replace(/大練團室|大練|練團室/g, "")
+        .replace(/預[定訂]/g, "")
+        .replace(/\bfor\b/gi, "")
+        .replace(/姓/g, "")
+        .replace(/[()（）]/g, " ")
+        .replace(/\s{2,}/g, " ")
+        .trim();
+      return name || "未標示";
+    };
+
+    const setRoomCalendarStatus = (message) => {
+      if (!roomCalendarStatus) return;
+      roomCalendarStatus.textContent = message;
+      roomCalendarStatus.hidden = !message;
+    };
+
+    const openRoomBookingPopover = (event) => {
+      if (!roomBookingPopover || !roomBookingTime || !roomBookingName) return;
+      roomBookingTime.textContent = formatRoomBookingTime(event);
+      roomBookingName.textContent = extractRoomBookingName(event.title);
+      roomBookingPopover.classList.add("is-open");
+      roomBookingPopover.setAttribute("aria-hidden", "false");
+      roomBookingClose?.focus();
+    };
+
+    const closeRoomBookingPopover = () => {
+      if (!roomBookingPopover) return;
+      roomBookingPopover.classList.remove("is-open");
+      roomBookingPopover.setAttribute("aria-hidden", "true");
+    };
+
+    const jsonpRoomCalendar = (url, params) => new Promise((resolve, reject) => {
+      const callbackName = `roomCalendarCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement("script");
+      const requestUrl = new URL(url);
+      Object.entries(params).forEach(([key, value]) => requestUrl.searchParams.set(key, value));
+      requestUrl.searchParams.set("callback", callbackName);
+      const cleanup = () => {
+        delete window[callbackName];
+        script.remove();
+      };
+      window[callbackName] = (payload) => {
+        cleanup();
+        resolve(payload);
+      };
+      script.onerror = () => {
+        cleanup();
+        reject(new Error("calendar-load-failed"));
+      };
+      script.src = requestUrl.toString();
+      document.head.appendChild(script);
+    });
+
+    const normalizeRoomCalendarEvents = (payload) => {
+      const events = Array.isArray(payload) ? payload : payload?.events || [];
+      return events.map((event) => {
+        const start = event.start || event.startTime || event.startDate;
+        const end = event.end || event.endTime || event.endDate;
+        const title = sanitizePublicCalendarText(event.title || event.summary || "已預約") || "已預約";
+        return { start, end, title };
+      }).filter((event) => event.start);
+    };
+
+    const renderRoomCalendar = (events = []) => {
+      if (!roomCalendarGrid || !roomCalendarLabel) return;
+      roomCalendarVisibleEvents = events;
+      const year = roomCalendarCursor.getFullYear();
+      const month = roomCalendarCursor.getMonth();
+      roomCalendarLabel.textContent = `${year}.${String(month + 1).padStart(2, "0")}`;
+
+      const firstDay = new Date(year, month, 1);
+      const start = new Date(year, month, 1 - firstDay.getDay());
+      const eventMap = new Map();
+      events.forEach((event, eventIndex) => {
+        const key = formatDateKey(new Date(event.start));
+        const list = eventMap.get(key) || [];
+        const timeLabel = formatTime(event.start);
+        list.push({
+          text: `${timeLabel ? `${timeLabel} ` : ""}${event.title}`,
+          eventIndex
+        });
+        eventMap.set(key, list);
+      });
+
+      const weekdayMarkup = `<div class="room-calendar-weekdays">${roomWeekdays.map((day) => `<span>${day}</span>`).join("")}</div>`;
+      const dayMarkup = Array.from({ length: 42 }, (_, index) => {
+        const day = new Date(start);
+        day.setDate(start.getDate() + index);
+        const key = formatDateKey(day);
+        const isMuted = day.getMonth() !== month;
+        const eventsForDay = eventMap.get(key) || [];
+        return `
+          <div class="room-calendar-day${isMuted ? " is-muted" : ""}">
+            <span class="room-calendar-date">${day.getDate()}</span>
+            ${eventsForDay.slice(0, 3).map((eventItem) => `<button class="room-calendar-event" type="button" data-room-event-index="${eventItem.eventIndex}">${escapeCalendarHtml(eventItem.text)}</button>`).join("")}
+          </div>
+        `;
+      }).join("");
+
+      roomCalendarGrid.innerHTML = `${weekdayMarkup}<div class="room-calendar-days">${dayMarkup}</div>`;
+    };
+
+    const loadRoomCalendar = async () => {
+      renderRoomCalendar([]);
+      if (!ROOM_CALENDAR_API_URL) {
+        setRoomCalendarStatus("公開行事曆設定中。部署 Apps Script 後，將網址填入 ROOM_CALENDAR_API_URL。");
+        return;
+      }
+      setRoomCalendarStatus("行事曆載入中...");
+      const year = roomCalendarCursor.getFullYear();
+      const month = roomCalendarCursor.getMonth();
+      const start = formatDateKey(new Date(year, month, 1));
+      const end = formatDateKey(new Date(year, month + 1, 1));
+      try {
+        const payload = await jsonpRoomCalendar(ROOM_CALENDAR_API_URL, { start, end });
+        const events = normalizeRoomCalendarEvents(payload);
+        renderRoomCalendar(events);
+        setRoomCalendarStatus("");
+      } catch (error) {
+        setRoomCalendarStatus("公開行事曆暫時無法載入，請稍後再試。");
+      }
+    };
+
+    roomCalendarPrev?.addEventListener("click", () => {
+      roomCalendarCursor = new Date(roomCalendarCursor.getFullYear(), roomCalendarCursor.getMonth() - 1, 1);
+      loadRoomCalendar();
+    });
+
+    roomCalendarNext?.addEventListener("click", () => {
+      roomCalendarCursor = new Date(roomCalendarCursor.getFullYear(), roomCalendarCursor.getMonth() + 1, 1);
+      loadRoomCalendar();
+    });
+
+    roomCalendarGrid?.addEventListener("click", (event) => {
+      const target = event.target.closest("[data-room-event-index]");
+      if (!target) return;
+      const booking = roomCalendarVisibleEvents[Number(target.dataset.roomEventIndex)];
+      if (booking) openRoomBookingPopover(booking);
+    });
+
+    roomBookingClose?.addEventListener("click", closeRoomBookingPopover);
+    roomBookingPopover?.addEventListener("click", (event) => {
+      if (event.target === roomBookingPopover) closeRoomBookingPopover();
+    });
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeRoomBookingPopover();
+    });
+
+    loadRoomCalendar();
 
     const serviceModalData = {
       newsCatShirt: {
