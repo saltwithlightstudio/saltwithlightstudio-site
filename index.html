@@ -459,6 +459,59 @@
       background: linear-gradient(90deg, transparent, rgba(216, 173, 91, 0.56), transparent);
     }
 
+    .studio-info .service-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(8, 2, 2, 0.18), rgba(8, 2, 2, 0.76)),
+        radial-gradient(circle at 50% 35%, rgba(216, 173, 91, 0.12), transparent 48%);
+      opacity: 0;
+      transform: none;
+      transition: opacity 320ms ease;
+      pointer-events: none;
+    }
+
+    .studio-info .service-card::after {
+      content: "點看介紹";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 2;
+      height: auto;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      padding: 9px 16px;
+      border: 1px solid rgba(255, 223, 153, 0.62);
+      border-radius: 999px;
+      background: rgba(14, 4, 4, 0.72);
+      color: rgba(255, 244, 214, 0.95);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32);
+      transition:
+        opacity 320ms ease,
+        transform 320ms ease;
+      pointer-events: none;
+    }
+
+    .studio-info .service-card:hover::before,
+    .studio-info .service-card:focus-visible::before {
+      opacity: 1;
+      animation: none;
+    }
+
+    .studio-info .service-card:hover::after,
+    .studio-info .service-card:focus-visible::after {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+
     .info-label {
       display: block;
       margin-bottom: 8px;
@@ -1140,6 +1193,94 @@
       background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(68, 28, 20, 0.08)),
         radial-gradient(circle at 88% 8%, rgba(255, 255, 255, 0.36), transparent 24%);
+      mix-blend-mode: soft-light;
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage {
+      min-height: 560px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.86), transparent 24%),
+        radial-gradient(circle at 86% 82%, rgba(224, 176, 91, 0.16), transparent 30%),
+        linear-gradient(135deg, rgba(255, 248, 236, 0.96), rgba(232, 217, 198, 0.94) 48%, rgba(112, 34, 30, 0.72));
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage::before {
+      content: "PIANO MOMENTS";
+      position: absolute;
+      left: 22px;
+      top: 22px;
+      z-index: 4;
+      color: rgba(104, 16, 21, 0.48);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage img {
+      position: absolute;
+      z-index: 2;
+      width: auto;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border: 8px solid rgba(255, 252, 244, 0.96);
+      border-radius: 4px;
+      background: rgba(255, 252, 244, 0.96);
+      box-shadow: 0 18px 44px rgba(70, 39, 30, 0.24), 0 0 0 1px rgba(120, 67, 42, 0.08);
+      filter: sepia(0.02) saturate(0.96) brightness(1.02) contrast(0.96);
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(1) {
+      left: 6%;
+      top: 8%;
+      width: 58%;
+      height: 34%;
+      object-position: 42% 48%;
+      transform: rotate(-2.2deg);
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(2) {
+      right: 5%;
+      top: 7%;
+      width: 36%;
+      height: 33%;
+      object-position: 66% 42%;
+      transform: rotate(2.4deg);
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(3) {
+      left: 6%;
+      bottom: 7%;
+      width: 37%;
+      height: 44%;
+      object-position: 54% 34%;
+      transform: rotate(2.1deg);
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(4) {
+      right: -12%;
+      top: 43%;
+      width: 64%;
+      height: 28%;
+      object-position: 54% 46%;
+      transform: rotate(-1.1deg);
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(5) {
+      right: 7%;
+      bottom: 7%;
+      width: 38%;
+      height: 34%;
+      object-position: 48% 42%;
+      transform: rotate(3.4deg);
+    }
+
+    .teacher-modal__photo.is-xinyuan-soft-collage::after {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(76, 22, 18, 0.14)),
+        radial-gradient(circle at 24% 86%, rgba(255, 255, 255, 0.42), transparent 24%);
       mix-blend-mode: soft-light;
     }
 
@@ -6161,6 +6302,45 @@
         height: 44%;
       }
 
+      .teacher-modal__photo.is-xinyuan-soft-collage img {
+        border-width: 6px;
+      }
+
+      .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(1) {
+        left: 4%;
+        top: 8%;
+        width: 58%;
+        height: 31%;
+      }
+
+      .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(2) {
+        right: 4%;
+        top: 7%;
+        width: 36%;
+        height: 31%;
+      }
+
+      .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(3) {
+        left: 5%;
+        bottom: 8%;
+        width: 38%;
+        height: 40%;
+      }
+
+      .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(4) {
+        right: -16%;
+        top: 40%;
+        width: 64%;
+        height: 25%;
+      }
+
+      .teacher-modal__photo.is-xinyuan-soft-collage img:nth-of-type(5) {
+        right: 5%;
+        bottom: 8%;
+        width: 40%;
+        height: 34%;
+      }
+
       .teacher-modal__photo.is-guitar-team-collage figure {
         border-width: 6px;
       }
@@ -7822,13 +8002,13 @@
               <img src="assets/keys-lineup-b-display.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>心瑜(Cindy)老師</strong><span>Piano<br>Pop Piano Accompaniment</span></span>
             </button>
-            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="心媛老師" data-role="和聲與伴奏設計" data-img="assets/keys-lineup-third-replacement-display.png" data-focus="和聲配置、流行伴奏、歌曲段落鋪陳" data-bio="從和弦理解、左手配置到歌曲情緒推進，幫助學生把鍵盤變成能支撐歌唱與樂團的完整聲音。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
+            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="心媛老師" data-role="和聲與伴奏設計" data-img="assets/keys-teacher-xinyuan-modal-02-20260627.jpg" data-imgs="assets/keys-teacher-xinyuan-modal-04-20260627.jpg|assets/keys-teacher-xinyuan-modal-02-20260627.jpg|assets/keys-teacher-xinyuan-modal-03-20260627.jpg|assets/keys-teacher-xinyuan-modal-01-20260627.jpg|assets/keys-teacher-xinyuan-modal-05-20260627.jpg" data-gallery-layout="xinyuan-soft-collage" data-focus="和聲配置、流行伴奏、歌曲段落鋪陳" data-bio="🚩你是否因為一首歌而感動過？&#10;🚩夢想自己也能彈奏喜歡的旋律？&#10;🚩或者，只是想在忙碌的生活中，找到一個屬於自己的放鬆角落？&#10;&#10;在鹽與光這裡，零基礎沒關係、不會看譜沒關係、學得慢也沒關係；在這裡，學音樂是享受成長的過程，讓你找到舒壓與快樂。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
               <img src="assets/keys-teacher-xinyuan-main-20260625.jpg" alt="鍵盤課程老師照片">
               <span class="keys-photo-caption"><strong>心媛老師</strong><span>Piano</span></span>
             </button>
-            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="睦妮老師" data-role="流行鍵盤應用" data-img="assets/keys-teacher-muni-modal-a-20260625.jpg" data-imgs="assets/keys-teacher-muni-modal-a-20260625.jpg|assets/keys-teacher-muni-modal-b-20260625.jpg" data-gallery-layout="editorial-collage" data-focus="流行歌曲伴奏、合奏音色、舞台應用" data-bio="把鍵盤放進現代流行音樂脈絡中，練習音色選擇、節奏型與歌曲編制，讓演奏更貼近實際舞台。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
+            <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="睦妮老師" data-role="流行鍵盤應用" data-img="assets/keys-teacher-muni-modal-a-20260625.jpg" data-imgs="assets/keys-teacher-muni-modal-a-20260625.jpg|assets/keys-teacher-muni-modal-b-20260625.jpg" data-gallery-layout="editorial-collage" data-focus="流行歌曲伴奏、合奏音色、舞台應用" data-bio="Play hard, Play Music harder！學習鋼琴不分年紀，喜歡跳脫框架玩音樂，每個人都可以創造屬於自己的音樂。&#10;&#10;經歷：積極參與國內外比賽演出之伴奏，曾任學校、社區合唱團伴奏、社團課老師。&#10;&#10;擅長：吃喝玩樂、鋼琴伴奏、樂理課程等。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
               <img src="assets/keys-teacher-muni-main-20260625.jpg" alt="鍵盤課程老師照片">
-              <span class="keys-photo-caption"><strong>睦妮老師</strong><span>Piano</span></span>
+              <span class="keys-photo-caption"><strong>睦妮老師</strong><span>Piano<br>Pop Piano Accompaniment</span></span>
             </button>
             <button class="keys-photo teacher-card-trigger" type="button" data-eyebrow="Keyboard & Piano Teacher" data-name="Ray老師" data-role="Piano, Keyboard, Sing and Play" data-img="assets/keys-teacher-ray-modal-20260625.jpg" data-focus="鋼琴、合成器／伴奏琴、自彈自唱、Pop、Jazz、Funk、Rock" data-bio="Ray 老師擅長鋼琴、Keyboard、合成器／伴奏琴與自彈自唱，具備豐富上手場演出經驗。&#10;&#10;商業演出經歷包含台積電人資部尾牙樂團演出、日立冷氣年終感恩聚餐演出、台灣電力北區尾牙演出、黑松經銷商年會演出、雄獅旅遊同業餐會樂團演出、國泰人壽資訊部門忘年會演出、富邦人壽尾牙樂團演出、新光人壽尾牙樂團演出、遠雄人壽南區部尾牙樂團演出、高雄國城定潮爵美秋夜樂團演出、國稅局 EasyGo 樂團演出、聯上集團尾牙表演樂團演出、Licci 古典純釀酒聖誕演出、高雄乘風而騎林園海洋音樂樂團、嘉豐海洋國際年終尾牙樂團演出、台灣通力尾牙樂團演出、久陽子公司尾牙樂團演出、英特威高雄＆台中餐會樂團演出、山富旅遊遊艇鍵盤彈唱與婚禮鍵盤彈唱樂手。&#10;&#10;駐點演出經歷包含藍色狂想鍵盤伴奏、英迪格空中酒吧鍵盤駐唱、義大皇家酒店大廳鍵盤彈唱、1928 燒肉高流店鍵盤彈唱、巴塞隆納 Live House 鍵盤手、花季溫泉飯店鍵盤駐唱、駁二 BeerTalk 鍵盤駐唱、Foggy 餐酒館鍵盤駐唱、放輕鬆美式餐廳鍵盤駐唱、金茂宜咖啡旗艦店鍵盤伴奏、愛河啤酒花園鍵盤駐唱與 Small 萱鍵盤駐唱。&#10;&#10;擅長曲風包含流行 Pop、爵士 Jazz、放克 Funk、搖滾 Rock，演唱語言包含國語、英語與台語。" data-contact="想詢問鍵盤課程，可加 Line：gtluto721">
               <img src="assets/keys-lineup-new-teacher-display.jpg" alt="鍵盤課程新老師照片">
@@ -8629,7 +8809,9 @@
         }).join("") : "";
         const isCampWork = service.layout === "camp-work";
         const videoSection = videoCards ? `<div class="service-modal__videos">${videoCards}</div>` : "";
-        const ctaLink = service.cta ? `<a class="service-modal__cta" href="${service.cta.url}" target="_blank" rel="noopener noreferrer">${service.cta.label}</a>` : "";
+        const ctaLink = service.cta
+          ? `<a class="service-modal__cta" href="${service.cta.url}"${service.cta.url.startsWith("#") ? " data-service-modal-anchor" : " target=\"_blank\" rel=\"noopener noreferrer\""}>${service.cta.label}</a>`
+          : "";
         const lineCard = service.line ? `
           <div class="service-modal__line-card">
             <img src="${service.line.qr}" alt="${service.line.label} QR code">
@@ -8656,6 +8838,11 @@
     });
 
     serviceModalClose?.addEventListener("click", closeServiceModal);
+    serviceModalList?.addEventListener("click", (event) => {
+      const anchor = event.target.closest("[data-service-modal-anchor]");
+      if (!anchor) return;
+      closeServiceModal();
+    });
     serviceModal?.addEventListener("click", (event) => {
       if (event.target === serviceModal) closeServiceModal();
     });
@@ -8697,9 +8884,11 @@
         if (teacherImages.length && teacherModalPhoto) {
           const isEditorialCollage = teacherGalleryLayout === "editorial-collage";
           const isGuitarTeamCollage = teacherGalleryLayout === "guitar-team-collage";
-          teacherModalPhoto.classList.toggle("is-gallery", !isEditorialCollage && !isGuitarTeamCollage);
+          const isXinyuanSoftCollage = teacherGalleryLayout === "xinyuan-soft-collage";
+          teacherModalPhoto.classList.toggle("is-gallery", !isEditorialCollage && !isGuitarTeamCollage && !isXinyuanSoftCollage);
           teacherModalPhoto.classList.toggle("is-editorial-collage", teacherGalleryLayout === "editorial-collage");
           teacherModalPhoto.classList.toggle("is-guitar-team-collage", isGuitarTeamCollage);
+          teacherModalPhoto.classList.toggle("is-xinyuan-soft-collage", isXinyuanSoftCollage);
           teacherModalPhoto.classList.remove("is-contain");
           teacherModalPhoto.innerHTML = isGuitarTeamCollage
             ? teacherImages.map((src, index) => {
@@ -8715,6 +8904,7 @@
           teacherModalPhoto.classList.remove("is-gallery");
           teacherModalPhoto.classList.remove("is-editorial-collage");
           teacherModalPhoto.classList.remove("is-guitar-team-collage");
+          teacherModalPhoto.classList.remove("is-xinyuan-soft-collage");
           teacherModalPhoto.classList.toggle("is-contain", card.dataset.photoFit === "contain");
           teacherModalPhoto.innerHTML = '<img id="teacher-modal-img" src="" alt="">';
           const currentTeacherModalImg = teacherModalPhoto.querySelector("img");
