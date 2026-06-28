@@ -8433,7 +8433,7 @@
         <div class="calendar-panel">
           <div class="calendar-head">
             <div>
-              <strong>練團室預定狀況</strong>
+              <strong data-room-calendar-title>練團室預定狀況</strong>
             </div>
             <div class="calendar-controls" aria-label="切換月份">
               <button class="calendar-control" type="button" data-room-calendar-prev aria-label="上一個月">‹</button>
@@ -8559,6 +8559,7 @@
     const ROOM_CALENDAR_API_URL = "https://script.google.com/macros/s/AKfycbwMdXRncrPO3DhumMD3xYpaYp53MbkHBPyUQ8Vm_u9sPI1hKnZmdRdJy4hn3uz-XTDD/exec";
     const roomCalendarGrid = document.querySelector("[data-room-calendar-grid]");
     const roomCalendarStatus = document.querySelector("[data-room-calendar-status]");
+    const roomCalendarTitle = document.querySelector("[data-room-calendar-title]");
     const roomCalendarLabel = document.querySelector("[data-room-calendar-label]");
     const roomCalendarPrev = document.querySelector("[data-room-calendar-prev]");
     const roomCalendarNext = document.querySelector("[data-room-calendar-next]");
@@ -8572,6 +8573,7 @@
 
     const roomWeekdays = ["日", "一", "二", "三", "四", "五", "六"];
     const roomWeekdayLabels = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+    const roomMonthLabels = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
     const phonePattern = /(?:\+?886[-\s]?)?0?9\d{2}[-\s]?\d{3}[-\s]?\d{3}|0\d{1,2}[-\s]?\d{6,8}/g;
     const sanitizePublicCalendarText = (value) => String(value || "")
       .replace(/[０-９]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) - 0xfee0))
@@ -8604,6 +8606,8 @@
       const today = new Date();
       return `今日 ${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} ${roomWeekdayLabels[today.getDay()]}`;
     };
+
+    const formatRoomCalendarTitle = (year, month) => `${year}${roomMonthLabels[month]}練團室預定狀況`;
 
     const getEventTime = (event) => {
       const date = new Date(event?.start);
@@ -8687,16 +8691,35 @@
         .sort((a, b) => getEventTime(a) - getEventTime(b));
     };
 
+    const getRoomCalendarWeeks = (year, month) => {
+      const firstDay = new Date(year, month, 1);
+      const calendarStart = new Date(year, month, 1 - firstDay.getDay());
+      return Array.from({ length: 6 }, (_, weekIndex) => (
+        Array.from({ length: 7 }, (_, dayIndex) => {
+          const day = new Date(calendarStart);
+          day.setDate(calendarStart.getDate() + weekIndex * 7 + dayIndex);
+          return day;
+        })
+      )).filter((week) => week.some((day) => day.getMonth() === month));
+    };
+
+    const getRoomCalendarVisibleRange = (year, month) => {
+      const calendarDays = getRoomCalendarWeeks(year, month).flat();
+      const start = calendarDays[0] || new Date(year, month, 1);
+      const end = new Date(calendarDays[calendarDays.length - 1] || new Date(year, month + 1, 0));
+      end.setDate(end.getDate() + 1);
+      return { start, end };
+    };
+
     const renderRoomCalendar = (events = []) => {
       if (!roomCalendarGrid || !roomCalendarLabel) return;
       roomCalendarVisibleEvents = [...events].sort((a, b) => getEventTime(a) - getEventTime(b));
       const year = roomCalendarCursor.getFullYear();
       const month = roomCalendarCursor.getMonth();
       const todayKey = formatDateKey(new Date());
+      if (roomCalendarTitle) roomCalendarTitle.textContent = formatRoomCalendarTitle(year, month);
       roomCalendarLabel.textContent = formatTodayCalendarLabel();
 
-      const firstDay = new Date(year, month, 1);
-      const start = new Date(year, month, 1 - firstDay.getDay());
       const eventMap = new Map();
       roomCalendarVisibleEvents.forEach((event, eventIndex) => {
         const key = formatDateKey(new Date(event.start));
@@ -8710,13 +8733,7 @@
       });
 
       const weekdayMarkup = `<div class="room-calendar-weekdays">${roomWeekdays.map((day) => `<span>${day}</span>`).join("")}</div>`;
-      const calendarWeeks = Array.from({ length: 6 }, (_, weekIndex) => (
-        Array.from({ length: 7 }, (_, dayIndex) => {
-          const day = new Date(start);
-          day.setDate(start.getDate() + weekIndex * 7 + dayIndex);
-          return day;
-        })
-      )).filter((week) => week.some((day) => day.getMonth() === month));
+      const calendarWeeks = getRoomCalendarWeeks(year, month);
 
       const dayMarkup = calendarWeeks.flat().map((day) => {
         const key = formatDateKey(day);
@@ -8743,8 +8760,9 @@
       setRoomCalendarStatus("行事曆載入中...");
       const year = roomCalendarCursor.getFullYear();
       const month = roomCalendarCursor.getMonth();
-      const start = formatDateKey(new Date(year, month, 1));
-      const end = formatDateKey(new Date(year, month + 1, 1));
+      const visibleRange = getRoomCalendarVisibleRange(year, month);
+      const start = formatDateKey(visibleRange.start);
+      const end = formatDateKey(visibleRange.end);
       try {
         const payload = await jsonpRoomCalendar(ROOM_CALENDAR_API_URL, { start, end });
         const events = normalizeRoomCalendarEvents(payload);
