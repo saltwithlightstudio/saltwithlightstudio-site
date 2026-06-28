@@ -5454,7 +5454,7 @@
     }
 
     .calendar-month-label {
-      min-width: 104px;
+      min-width: 172px;
       color: rgba(246, 232, 200, 0.86);
       font-size: 14px;
       text-align: center;
@@ -5526,12 +5526,21 @@
     }
 
     .room-calendar-day {
+      position: relative;
       min-width: 0;
       min-height: 86px;
       padding: 8px;
       border-right: 1px solid rgba(216, 173, 91, 0.12);
       border-bottom: 1px solid rgba(216, 173, 91, 0.12);
       background: rgba(12, 3, 3, 0.38);
+    }
+
+    .room-calendar-day.is-today {
+      border-color: rgba(255, 223, 153, 0.42);
+      background:
+        radial-gradient(circle at 50% 16px, rgba(255, 223, 153, 0.2), transparent 42px),
+        rgba(42, 8, 8, 0.56);
+      box-shadow: inset 0 0 22px rgba(216, 173, 91, 0.16), 0 0 18px rgba(216, 173, 91, 0.12);
     }
 
     .room-calendar-day:nth-child(7n) {
@@ -5543,11 +5552,22 @@
     }
 
     .room-calendar-date {
-      display: block;
+      display: inline-grid;
+      min-width: 22px;
+      height: 22px;
+      place-items: center;
       margin-bottom: 6px;
       color: rgba(246, 232, 200, 0.72);
       font-size: 12px;
       line-height: 1;
+    }
+
+    .room-calendar-day.is-today .room-calendar-date {
+      border: 1px solid rgba(255, 223, 153, 0.58);
+      border-radius: 50%;
+      background: rgba(216, 173, 91, 0.18);
+      color: var(--gold-soft);
+      box-shadow: 0 0 16px rgba(216, 173, 91, 0.32);
     }
 
     .room-calendar-event {
@@ -8551,6 +8571,7 @@
     let roomCalendarVisibleEvents = [];
 
     const roomWeekdays = ["日", "一", "二", "三", "四", "五", "六"];
+    const roomWeekdayLabels = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
     const phonePattern = /(?:\+?886[-\s]?)?0?9\d{2}[-\s]?\d{3}[-\s]?\d{3}|0\d{1,2}[-\s]?\d{6,8}/g;
     const sanitizePublicCalendarText = (value) => String(value || "")
       .replace(/[０-９]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) - 0xfee0))
@@ -8577,6 +8598,17 @@
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "";
       return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+    };
+
+    const formatTodayCalendarLabel = () => {
+      const today = new Date();
+      return `今日 ${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} ${roomWeekdayLabels[today.getDay()]}`;
+    };
+
+    const getEventTime = (event) => {
+      const date = new Date(event?.start);
+      const time = date.getTime();
+      return Number.isNaN(time) ? 0 : time;
     };
 
     const formatRoomBookingTime = (event) => {
@@ -8651,20 +8683,22 @@
         const end = event.end || event.endTime || event.endDate;
         const title = sanitizePublicCalendarText(event.title || event.summary || "已預約") || "已預約";
         return { start, end, title };
-      }).filter((event) => event.start);
+      }).filter((event) => event.start)
+        .sort((a, b) => getEventTime(a) - getEventTime(b));
     };
 
     const renderRoomCalendar = (events = []) => {
       if (!roomCalendarGrid || !roomCalendarLabel) return;
-      roomCalendarVisibleEvents = events;
+      roomCalendarVisibleEvents = [...events].sort((a, b) => getEventTime(a) - getEventTime(b));
       const year = roomCalendarCursor.getFullYear();
       const month = roomCalendarCursor.getMonth();
-      roomCalendarLabel.textContent = `${year}.${String(month + 1).padStart(2, "0")}`;
+      const todayKey = formatDateKey(new Date());
+      roomCalendarLabel.textContent = formatTodayCalendarLabel();
 
       const firstDay = new Date(year, month, 1);
       const start = new Date(year, month, 1 - firstDay.getDay());
       const eventMap = new Map();
-      events.forEach((event, eventIndex) => {
+      roomCalendarVisibleEvents.forEach((event, eventIndex) => {
         const key = formatDateKey(new Date(event.start));
         const list = eventMap.get(key) || [];
         const timeLabel = formatTime(event.start);
@@ -8687,11 +8721,12 @@
       const dayMarkup = calendarWeeks.flat().map((day) => {
         const key = formatDateKey(day);
         const isMuted = day.getMonth() !== month;
+        const isToday = key === todayKey;
         const eventsForDay = eventMap.get(key) || [];
         return `
-          <div class="room-calendar-day${isMuted ? " is-muted" : ""}">
+          <div class="room-calendar-day${isMuted ? " is-muted" : ""}${isToday ? " is-today" : ""}">
             <span class="room-calendar-date">${day.getDate()}</span>
-            ${eventsForDay.slice(0, 3).map((eventItem) => `<button class="room-calendar-event" type="button" data-room-event-index="${eventItem.eventIndex}">${escapeCalendarHtml(eventItem.text)}</button>`).join("")}
+            ${eventsForDay.map((eventItem) => `<button class="room-calendar-event" type="button" data-room-event-index="${eventItem.eventIndex}">${escapeCalendarHtml(eventItem.text)}</button>`).join("")}
           </div>
         `;
       }).join("");
