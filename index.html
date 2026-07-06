@@ -2595,6 +2595,55 @@
       font-size: 14px;
     }
 
+    .service-modal__equipment {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid rgba(216, 173, 91, 0.46);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(216, 173, 91, 0.14), transparent 34%),
+        linear-gradient(135deg, rgba(104, 16, 21, 0.42), rgba(18, 4, 4, 0.28));
+      box-shadow: inset 0 0 24px rgba(216, 173, 91, 0.06);
+    }
+
+    .service-modal__equipment-title {
+      color: var(--gold-soft);
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .service-modal__equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .service-modal__equipment-section {
+      min-width: 0;
+      padding: 12px 13px;
+      border: 1px solid rgba(216, 173, 91, 0.2);
+      border-radius: 6px;
+      background: rgba(10, 3, 3, 0.32);
+    }
+
+    .service-modal__equipment-section strong {
+      display: block;
+      margin-bottom: 8px;
+      color: rgba(255, 223, 153, 0.9);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+    }
+
+    .service-modal__equipment-section span {
+      display: block;
+      color: rgba(246, 232, 200, 0.82);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
     .service-modal__cta {
       display: inline-flex;
       align-items: center;
@@ -6727,6 +6776,10 @@
         grid-template-columns: 1fr;
       }
 
+      .service-modal__equipment-grid {
+        grid-template-columns: 1fr;
+      }
+
       .service-modal__list.is-camp-work {
         grid-template-columns: 1fr;
       }
@@ -9241,6 +9294,12 @@
           "最多可容納至 40 人。",
           "適合樂團排練、講座、課程與小型發表。"
         ],
+        equipment: [
+          { title: "GuitarAmp", lines: ["Boss刀 KTN-100H + KTN-212 CAB", "Marshell DSL-40"] },
+          { title: "BassAmp", lines: ["Genzler MG350(head)", "Genzler BA12-3SLT"] },
+          { title: "Drum", lines: ["Bonney Drum Japan - JAM Series 20BD SET (Ant Black)"] },
+          { title: "Mixer / PA", lines: ["Behringer XR18", "主喇叭 Superlux SF-12D * 2", "監聽 Behringer B212D * 2", "Superlux SF-10D"] }
+        ],
         images: [
           { src: "assets/room335-main.jpg", position: "50% 50%" },
           { src: "assets/room335-class-a.jpg", position: "50% 50%" },
@@ -9346,9 +9405,22 @@
           : `${moodTitle}${editorialTitle}${editorialList}${editorialNote}${galleryShots}`;
         const listItems = isCampWork ? service.instructors || [] : service.points;
         const listTitle = isCampWork ? `<div class="service-modal__works-title">指導老師</div>` : "";
+        const equipmentBox = Array.isArray(service.equipment) ? `
+          <div class="service-modal__equipment">
+            <div class="service-modal__equipment-title">器材清單</div>
+            <div class="service-modal__equipment-grid">
+              ${service.equipment.map((group) => `
+                <div class="service-modal__equipment-section">
+                  <strong>${escapeCalendarHtml(group.title)}</strong>
+                  ${(group.lines || []).map((line) => `<span>${escapeCalendarHtml(line)}</span>`).join("")}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        ` : "";
         serviceModalList.innerHTML = listTitle + listItems.map((point) => (
           `<div class="service-modal__item">${point}</div>`
-        )).join("") + (isCampWork ? "" : videoSection) + ctaLink + lineCard;
+        )).join("") + equipmentBox + (isCampWork ? "" : videoSection) + ctaLink + lineCard;
         serviceModal.classList.add("is-open");
         serviceModal.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
