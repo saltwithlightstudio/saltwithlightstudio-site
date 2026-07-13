@@ -1,14 +1,43 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-Hant-TW">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>鹽與光音樂工作室｜高雄音樂課程・練團室租借</title>
-  <meta name="description" content="鹽與光音樂工作室位於高雄鹽埕，提供歌唱、吉他、Bass、鍵盤、爵士鼓、數位音樂編曲課程，以及練團室租借與創作營企劃。">
-  <meta property="og:title" content="鹽與光音樂工作室｜高雄音樂課程・練團室租借">
-  <meta property="og:description" content="高雄鹽埕在地音樂工作室，提供音樂課程、練團室租借與創作營。">
+  <title>高雄練團室推薦｜鹽與光音樂工作室</title>
+  <meta name="description" content="高雄鹽埕區鹽與光音樂工作室，提供練團室、鼓房、琴房租借，以及吉他、貝斯、歌唱、鋼琴與編曲課程。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://saltwithlightstudio.com/">
+  <meta property="og:title" content="高雄練團室推薦｜鹽與光音樂工作室">
+  <meta property="og:description" content="高雄鹽埕區鹽與光音樂工作室，提供練團室、鼓房、琴房租借，以及吉他、貝斯、歌唱、鋼琴與編曲課程。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://saltwithlightstudio.com/">
+  <meta property="og:locale" content="zh_TW">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="高雄練團室推薦｜鹽與光音樂工作室">
+  <meta name="twitter:description" content="高雄鹽埕區鹽與光音樂工作室，提供練團室、鼓房、琴房租借，以及吉他、貝斯、歌唱、鋼琴與編曲課程。">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MusicSchool",
+      "name": "鹽與光音樂工作室",
+      "url": "https://saltwithlightstudio.com/",
+      "description": "高雄鹽埕區的音樂工作室，提供練團室、鼓房、琴房租借，以及吉他、貝斯、歌唱、鋼琴與編曲課程。",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "五福四路151-1號2F",
+        "addressLocality": "鹽埕區",
+        "addressRegion": "高雄市",
+        "addressCountry": "TW"
+      },
+      "telephone": "+886-7-5211073",
+      "email": "saltlight2103@gmail.com",
+      "sameAs": [
+        "https://www.instagram.com/saltwithlightstudio/",
+        "https://www.facebook.com/profile.php?id=100064118856200",
+        "https://www.youtube.com/@%E9%B9%BD%E8%88%87%E5%85%89%E9%9F%B3%E6%A8%82%E5%B7%A5%E4%BD%9C%E5%AE%A4"
+      ]
+    }
+  </script>
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -145,8 +174,11 @@
     }
 
     .copy {
-      width: min(560px, 100%);
-      margin-left: auto;
+      width: min(1120px, calc(100% - 24px));
+      margin: 0 auto;
+      position: relative;
+      top: clamp(170px, 22vh, 250px);
+      text-align: center;
       opacity: 0;
       transform: translateY(28px);
       animation: copyEnter 1100ms cubic-bezier(.2, .8, .18, 1) 1900ms forwards;
@@ -163,6 +195,10 @@
       text-transform: uppercase;
     }
 
+    .copy .eyebrow {
+      justify-content: center;
+    }
+
     .eyebrow::before {
       content: "";
       width: 58px;
@@ -172,8 +208,8 @@
 
     h1 {
       margin: 0;
-      max-width: 560px;
-      font-size: clamp(30px, 4.1vw, 58px);
+      max-width: none;
+      font-size: clamp(15px, 3.8vw, 48px);
       white-space: nowrap;
       line-height: 1.12;
       font-weight: 700;
@@ -183,11 +219,12 @@
     }
 
     .subcopy {
-      max-width: 500px;
-      margin: 20px 0 0;
+      max-width: none;
+      margin: 20px auto 0;
       color: rgba(246, 232, 200, 0.82);
-      font-size: clamp(16px, 2vw, 20px);
+      font-size: clamp(10px, 2.8vw, 20px);
       line-height: 1.8;
+      white-space: nowrap;
     }
 
     .main-menu {
@@ -5843,6 +5880,19 @@
       line-height: 1.95;
     }
 
+    /* Page headings stay on one line; responsive sizing keeps them inside the viewport. */
+    .intro h2,
+    .courses h2,
+    .vocal-page h2,
+    .course-detail h2,
+    .feature-page h2,
+    .room-page h2,
+    .contact-page h2 {
+      white-space: nowrap;
+      font-size: clamp(32px, 5vw, 68px);
+      letter-spacing: -0.02em;
+    }
+
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -6390,19 +6440,20 @@
       }
 
       .copy {
-        width: min(390px, 100%);
-        margin-left: auto;
-        margin-right: 18px;
+        width: min(100%, calc(100% - 20px));
+        margin: 0 auto;
+        top: 122px;
         transform: none;
       }
 
       h1 {
-        max-width: 390px;
-        font-size: 30px;
+        max-width: none;
+        font-size: clamp(15px, 3.8vw, 28px);
       }
 
       .subcopy {
-        max-width: 330px;
+        max-width: none;
+        font-size: clamp(10px, 2.8vw, 16px);
       }
 
       .main-menu {
@@ -7809,6 +7860,17 @@
         font-size: 42px;
       }
 
+      .intro h2,
+      .courses h2,
+      .vocal-page h2,
+      .course-detail h2,
+      .feature-page h2,
+      .room-page h2,
+      .contact-page h2 {
+        font-size: clamp(22px, 7vw, 40px);
+        white-space: nowrap;
+      }
+
       .contact-lead {
         margin-top: 18px;
         font-size: 16px;
@@ -7971,19 +8033,18 @@
 
     <section class="hero" aria-label="鹽與光音樂工作室首頁">
       <div class="copy">
-        <p class="eyebrow">鹽與光音樂工作室</p>
-        <h1>高雄 在地音樂工作室</h1>
-        <p class="subcopy">我們陪你學音樂、玩音樂</p>
+        <h1>高雄練團室與音樂課程｜鹽與光音樂工作室</h1>
+        <p class="subcopy">在高雄鹽埕，陪你學音樂、玩音樂，也把喜歡的作品做出來。</p>
       </div>
     </section>
   </main>
 
-    <section class="intro" id="studio" aria-label="工作室介紹">
+    <section class="intro" id="studio" aria-label="工作室介紹與服務">
       <div class="intro-wrap">
         <div class="intro-copy">
           <p class="eyebrow">About Salt & Light</p>
-          <h2>工作室介紹</h2>
-          <p class="intro-text">鹽與光音樂工作室位於高雄，提供練團室租借、歌唱課程與流行音樂教學。我們希望這裡不只是上課或練團的地方，也是能讓人安心開口、反覆嘗試、把喜歡的音樂慢慢做出來的空間。</p>
+          <h2>工作室介紹與音樂課程</h2>
+          <p class="intro-text">鹽與光音樂工作室提供練團室、鼓房與琴房租借，也有歌唱、吉他、貝斯、鋼琴鍵盤與數位音樂編曲課程，並可依需求安排線上學習。我們希望這裡不只是上課或練團的地方，也是能讓人安心開口、反覆嘗試、把喜歡的音樂慢慢做出來的空間。</p>
 
           <div class="studio-info" aria-label="工作室服務介紹">
             <button class="info-item service-card" type="button" data-service="private" aria-label="查看個人課程介紹">
@@ -8085,10 +8146,10 @@
       </div>
     </section>
 
-    <section class="courses" id="courses" aria-label="課程介紹">
+    <section class="courses" id="courses" aria-label="音樂課程介紹">
       <div class="courses-head">
         <p class="eyebrow">Lessons</p>
-        <h2>課程介紹</h2>
+        <h2>音樂課程介紹</h2>
       </div>
 
       <div class="course-grid">
@@ -8108,19 +8169,19 @@
             <p>各類曲風，藍調、爵士、Funk、R&B、金屬、搖滾，流行歌彈唱、編曲等，電木吉他，進階初學或邁向職業。</p>
           </div>
         </a>
-        <a class="course-panel" href="#bass-course" aria-label="Bass課程">
+        <a class="course-panel" href="#bass-course" aria-label="Bass貝斯課程">
           <img src="assets/course-bass-ai.png" alt="">
           <div class="course-content">
             <span class="course-index">03 / Bass</span>
-            <h3>Bass課程</h3>
+            <h3>Bass／貝斯課程</h3>
             <p>低音律動、節奏根基與樂團 Groove，建立穩定又有存在感的 Bass 線條。</p>
           </div>
         </a>
-        <a class="course-panel" href="#keys-course" aria-label="鍵盤課程">
+        <a class="course-panel" href="#keys-course" aria-label="鋼琴與鍵盤課程">
           <img src="assets/course-keys-ai.png" alt="">
           <div class="course-content">
             <span class="course-index">04 / KeyBoard&Piano</span>
-            <h3>鍵盤課程</h3>
+            <h3>鋼琴與鍵盤課程</h3>
             <p>從基礎手感到和聲配置，建立能伴奏與創作的鍵盤能力。</p>
           </div>
         </a>
@@ -8132,22 +8193,22 @@
             <p>節奏穩定、Groove 建立與樂團合奏觀念，一步一步練起來。</p>
           </div>
         </a>
-        <a class="course-panel" href="#arrange-course" aria-label="數位音樂編曲">
+        <a class="course-panel" href="#arrange-course" aria-label="數位音樂編曲課程">
           <img src="assets/course-arrange-ai.png" alt="">
           <div class="course-content">
             <span class="course-index">06 / Recording</span>
-            <h3>數位音樂編曲</h3>
+            <h3>數位音樂編曲課程</h3>
             <p>數位音樂、編曲與作品製作流程，讓想法慢慢變成完整作品。</p>
           </div>
         </a>
       </div>
     </section>
 
-    <section class="vocal-page" id="vocal-pop" aria-label="現代流行歌唱">
+    <section class="vocal-page" id="vocal-pop" aria-label="現代流行歌唱課程">
       <div class="vocal-wrap">
         <div class="vocal-copy">
           <p class="eyebrow">Modern Pop Vocal</p>
-          <h2>現代流行歌唱</h2>
+          <h2>現代流行歌唱課程</h2>
           <p class="vocal-lead">以現代流行音樂的聲音需求出發，從聲帶控制、面腔肌肉、音準節奏到歌曲情感表達，建立能唱得穩、唱得自由，也唱得像自己的聲音。</p>
           <div class="vocal-points">
             <div class="vocal-point">聲帶與面腔肌肉訓練，整理發聲穩定度與聲音位置。</div>
@@ -8259,11 +8320,11 @@
       </div>
     </section>
 
-    <section class="course-detail bass-detail" id="bass-course" aria-label="Bass課程詳細介紹" style="--detail-image: url('assets/detail-bass-ai.png');">
+    <section class="course-detail bass-detail" id="bass-course" aria-label="Bass貝斯課程詳細介紹" style="--detail-image: url('assets/detail-bass-ai.png');">
       <div class="detail-wrap">
         <div class="detail-copy">
           <p class="eyebrow">Bass Lesson</p>
-          <h2>Bass課程</h2>
+          <h2>Bass／貝斯課程</h2>
           <p class="detail-lead">Bass 是樂團裡連接節奏與和聲的核心。課程會從手感、節奏穩定、音階與 Groove 設計開始，慢慢建立能支撐整首歌的低音線條。</p>
         </div>
         <div class="bass-collage-panel" aria-label="Bass課程照片拼貼">
@@ -8354,11 +8415,11 @@
       </div>
     </section>
 
-    <section class="course-detail" id="arrange-course" aria-label="數位音樂編曲詳細介紹" style="--detail-image: url('assets/detail-arrange-ai.png');">
+    <section class="course-detail" id="arrange-course" aria-label="數位音樂編曲課程詳細介紹" style="--detail-image: url('assets/detail-arrange-ai.png');">
       <div class="detail-wrap">
         <div class="detail-copy">
           <p class="eyebrow">Digital Arrangement</p>
-          <h2>數位音樂編曲</h2>
+          <h2>數位音樂編曲課程</h2>
           <p class="detail-lead">從軟體操作、節奏編寫、和聲配置到錄音與混音概念，陪你把旋律、靈感與片段慢慢整理成完整作品。</p>
           <div class="arrange-process" aria-label="數位音樂編曲製作流程">
             <article class="arrange-process-card">
@@ -8473,11 +8534,11 @@
       </div>
     </section>
 
-    <section class="room-page" id="room" aria-label="練團室租借">
+    <section class="room-page" id="room" aria-label="高雄練團室租借">
       <div class="room-wrap">
         <div class="room-copy">
           <p class="eyebrow">Rehearsal Room</p>
-          <h2>練團室租借</h2>
+          <h2>高雄練團室租借</h2>
           <p class="room-lead">想排練、合奏或整理演出前的聲音，可以先查看練團室預定狀況；實際預約請透過鹽小光、粉專或電話聯繫我們。</p>
           <div class="room-info">
             <div class="room-info-item"><strong>費用</strong>1 小時 500 元<br>2 小時 700 元<br>之後每多 1 小時加 350 元</div>
@@ -8678,6 +8739,13 @@
       return startLabel || "未標示";
     };
 
+    const formatRoomCalendarChipTime = (event) => {
+      const startLabel = formatTime(event.start);
+      const endLabel = formatTime(event.end);
+      if (startLabel && endLabel) return `${startLabel}-${endLabel}`;
+      return startLabel || "已預約";
+    };
+
     const extractRoomBookingName = (title) => {
       const name = String(title || "")
         .replace(/\*+/g, "")
@@ -8780,9 +8848,8 @@
       roomCalendarVisibleEvents.forEach((event, eventIndex) => {
         const key = formatDateKey(new Date(event.start));
         const list = eventMap.get(key) || [];
-        const timeLabel = formatTime(event.start);
         list.push({
-          text: `${timeLabel ? `${timeLabel} ` : ""}${event.title}`,
+          text: formatRoomCalendarChipTime(event),
           eventIndex
         });
         eventMap.set(key, list);
