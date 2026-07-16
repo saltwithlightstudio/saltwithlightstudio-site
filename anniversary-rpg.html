@@ -1,0 +1,1816 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>鹽與光十週年｜RPG 練團室</title>
+  <style>
+    :root {
+      --wine: #681015;
+      --wine-dark: #2a080a;
+      --ink: #160506;
+      --gold: #d8ad5b;
+      --gold-soft: #f0d49a;
+      --ivory: #f6e8c8;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--ivory);
+      background:
+        radial-gradient(circle at 50% -20%, #6e1b1e 0, transparent 45%),
+        linear-gradient(160deg, #090202, var(--ink) 60%, #260709);
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Noto Sans TC", monospace;
+    }
+
+    button, a { font: inherit; }
+
+    .page {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: clamp(14px, 2.5vw, 34px);
+    }
+
+    .page-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 4vw, 42px);
+      letter-spacing: .08em;
+      text-shadow: 3px 3px 0 #270506;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: #decda7;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: #8bd46e;
+      box-shadow: 0 0 0 2px #173111, 0 0 12px #8bd46e;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .game-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .game-control {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 2px solid #8e622e;
+      color: var(--ivory);
+      background: #2c0b0e;
+      box-shadow: 3px 3px 0 #090204;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .game-control:hover,
+    .game-control:focus-visible {
+      color: #23120a;
+      background: var(--gold-soft);
+      border-color: var(--gold-soft);
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .music-toggle {
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 2px solid var(--gold);
+      color: var(--ivory);
+      background: #43111a;
+      box-shadow: 3px 3px 0 #090204;
+      cursor: pointer;
+    }
+
+    .music-toggle:hover,
+    .music-toggle:focus-visible,
+    .music-toggle[aria-pressed="true"] {
+      color: #23120a;
+      background: var(--gold-soft);
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .music-toggle[aria-pressed="true"] {
+      box-shadow: 3px 3px 0 #6f431d, 0 0 14px #d8ad5b66;
+    }
+
+    .game-shell {
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #9b6a2d;
+      background: #080202;
+      box-shadow:
+        0 0 0 5px #260807,
+        0 0 0 7px #4f1d14,
+        0 24px 70px #000b;
+    }
+
+    .game-shell::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      z-index: 5;
+      border: 1px solid #f0d49a55;
+      pointer-events: none;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      aspect-ratio: 1672 / 941;
+      overflow: hidden;
+      background: #190806;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .loading {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      background: #120405;
+      color: var(--gold-soft);
+      font-size: 13px;
+      letter-spacing: .12em;
+      transition: opacity .35s ease;
+    }
+
+    .loading.is-ready { opacity: 0; pointer-events: none; }
+
+    .loading::after {
+      content: "";
+      width: 12px;
+      height: 12px;
+      margin-left: 12px;
+      background: var(--gold);
+      display: inline-block;
+      animation: blink .7s steps(2) infinite;
+    }
+
+    @keyframes blink { 50% { opacity: .2; } }
+
+    .dialogue {
+      position: absolute;
+      z-index: 6;
+      left: clamp(10px, 3vw, 44px);
+      right: clamp(10px, 3vw, 44px);
+      bottom: clamp(10px, 2.2vw, 30px);
+      display: grid;
+      grid-template-columns: clamp(88px, 12vw, 150px) 1fr auto;
+      gap: clamp(10px, 2vw, 22px);
+      align-items: center;
+      min-height: clamp(138px, 18vw, 198px);
+      padding: clamp(11px, 2vw, 20px);
+      border: 4px solid var(--ivory);
+      background: linear-gradient(180deg, #21144bf2, #11092df7);
+      box-shadow:
+        inset 0 0 0 4px #6e53c5,
+        8px 8px 0 #05020cbb;
+    }
+
+    .dialogue[hidden] { display: none; }
+
+    .dialogue__portrait {
+      display: grid;
+      place-items: end center;
+      align-self: center;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border: 2px solid var(--gold);
+      background: radial-gradient(circle at 50% 30%, #754946, #241020 72%);
+    }
+
+    .dialogue__portrait img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 28%;
+      image-rendering: pixelated;
+    }
+
+    .dialogue__name {
+      margin: 0 0 6px;
+      color: var(--gold-soft);
+      font-size: clamp(12px, 1.6vw, 18px);
+      letter-spacing: .08em;
+    }
+
+    .dialogue__role {
+      color: #bca9f0;
+      font-size: .72em;
+      letter-spacing: .04em;
+    }
+
+    .dialogue__text {
+      min-height: 2.8em;
+      margin: 0;
+      color: #fff8e8;
+      font-family: "Noto Sans TC", system-ui, sans-serif;
+      font-size: clamp(13px, 1.8vw, 20px);
+      line-height: 1.65;
+    }
+
+    .dialogue__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pixel-button {
+      min-width: 62px;
+      padding: 8px 10px;
+      border: 2px solid var(--gold);
+      color: var(--ivory);
+      background: #43111a;
+      box-shadow: 3px 3px 0 #090204;
+      cursor: pointer;
+    }
+
+    .pixel-button:hover,
+    .pixel-button:focus-visible {
+      color: #23120a;
+      background: var(--gold-soft);
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .hud {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 2px 0;
+      color: #cdbc9a;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .hud strong { color: var(--gold-soft); }
+
+    .teacher-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+
+    .teacher-nav button {
+      padding: 6px 9px;
+      border: 1px solid #8e622e;
+      color: #e9ddc4;
+      background: #2c0b0e;
+      cursor: pointer;
+    }
+
+    .teacher-nav button:hover,
+    .teacher-nav button:focus-visible {
+      border-color: var(--gold-soft);
+      color: #160506;
+      background: var(--gold-soft);
+      outline: none;
+    }
+
+    .note {
+      margin: 14px 0 0;
+      color: #a99175;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 720px) {
+      .page { padding: 12px 8px 24px; }
+      .page-header { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .header-meta { width: 100%; justify-content: space-between; }
+      .game-controls { width: 100%; }
+      .game-control { flex: 1 1 auto; }
+      .eyebrow { max-width: 100%; font-size: 9px; line-height: 1.6; overflow-wrap: anywhere; }
+      .canvas-wrap { aspect-ratio: 1672 / 941; }
+      canvas { width: 100%; height: 100%; position: static; transform: none; }
+      .dialogue { grid-template-columns: 68px 1fr; border-width: 3px; }
+      .dialogue__actions { grid-column: 1 / -1; flex-direction: row; justify-content: flex-end; }
+      .dialogue__portrait { min-height: 0; }
+      .dialogue__text { font-size: 13px; }
+      .hud { align-items: flex-start; flex-direction: column; }
+      .teacher-nav { justify-content: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loading::after { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Salt &amp; Light · RPG Scene Prototype</p>
+        <h1>十週年練團室</h1>
+      </div>
+      <div class="header-meta">
+        <p class="status" id="gameStatus">老師們正在練團室準備中</p>
+        <nav class="game-controls" aria-label="遊戲頁面控制">
+          <a class="game-control" href="index.html#anniversary">← 回到十週年介面</a>
+        </nav>
+        <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false" aria-label="播放背景音樂">
+          ♫ <span id="musicToggleText">音樂：關</span>
+        </button>
+      </div>
+    </header>
+
+    <audio id="bgMusic" preload="metadata" loop>
+      <source src="assets/anniversary-rpg/warm-family-theme.ogg" type="audio/ogg">
+      <source src="assets/anniversary-rpg/warm-family-theme.mp3" type="audio/mpeg">
+    </audio>
+
+    <section class="game-shell" aria-label="鹽與光十週年 RPG 練團室互動場景">
+      <div class="canvas-wrap">
+        <canvas id="game" width="1672" height="941" aria-label="六位老師在練團室中走動；點擊角色可以互動"></canvas>
+        <div class="loading" id="loading">LOADING RPG ROOM</div>
+
+        <section class="dialogue" id="dialogue" hidden aria-live="polite" aria-label="角色對話">
+          <div class="dialogue__portrait"><img id="dialoguePortrait" alt=""></div>
+          <div>
+            <h2 class="dialogue__name"><span id="dialogueName"></span> <span class="dialogue__role" id="dialogueRole"></span></h2>
+            <p class="dialogue__text" id="dialogueText"></p>
+          </div>
+          <div class="dialogue__actions">
+            <button class="pixel-button" id="dialogueNext" type="button">下一句</button>
+            <button class="pixel-button" id="dialogueClose" type="button">離開</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div class="hud">
+      <span><strong>操作：</strong>點擊場景中的老師開始 RPG 對話；走動一段時間後，Mina 與宛庭會自主展現個人化動作，下方姓名按鈕也可直接開啟對話。</span>
+      <nav class="teacher-nav" id="teacherNav" aria-label="選擇老師互動"></nav>
+    </div>
+    <p class="note">此頁為十週年專案本機互動試作，已由首頁十週年入口連結，但尚未對外發布；活動資訊與正式對話內容仍待確認。</p>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const WIDTH = 1672;
+      const HEIGHT = 941;
+      const ASSET_ROOT = "assets/anniversary-rpg";
+      const ASSET_VERSION = "20260716-dialogue-portraits-v1";
+      const canvas = document.querySelector("#game");
+      const context = canvas.getContext("2d", { alpha: false });
+      const loading = document.querySelector("#loading");
+      const gameStatus = document.querySelector("#gameStatus");
+      const teacherNav = document.querySelector("#teacherNav");
+      const dialogue = document.querySelector("#dialogue");
+      const dialoguePortrait = document.querySelector("#dialoguePortrait");
+      const dialogueName = document.querySelector("#dialogueName");
+      const dialogueRole = document.querySelector("#dialogueRole");
+      const dialogueText = document.querySelector("#dialogueText");
+      const dialogueNext = document.querySelector("#dialogueNext");
+      const dialogueClose = document.querySelector("#dialogueClose");
+      const bgMusic = document.querySelector("#bgMusic");
+      const musicToggle = document.querySelector("#musicToggle");
+      const musicToggleText = document.querySelector("#musicToggleText");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const directions = ["down", "up", "left", "right"];
+
+      context.imageSmoothingEnabled = false;
+
+      const teacherSpecs = [
+        {
+          id: "ting", name: "Ting", role: "Bass 老師", x: 350, y: 620, height: 174,
+          lines: [
+            "嗨，我是 Ting，負責 Bass。通常站得不顯眼，但少了我，大家馬上就會發現。",
+            "Bass 是樂團的靈魂，不是邊緣人……至少我是這樣安慰自己的。",
+            "最近大家老是在練同一批歌，還把日期拆成節奏密碼藏進譜裡。很可疑吧？",
+            "我的譜上有四個小節，每小節剛好四拍。把所有拍子數完，也許就是日期裡缺的那個數字。",
+            "地點嗎？只知道可能靠近港邊，而且名字聽起來黃黃的。場地還是待確認，先別抓我去問。",
+            "總之，如果看到一群人抱著樂器往水果的方向走，就假裝沒看到我。"
+          ],
+          bubbles: ["低音走起！", "再穩一點", "♪"]
+        },
+        {
+          id: "mina", name: "Mina", role: "老闆娘・歌唱老師", x: 650, y: 460, height: 169,
+          lines: [
+            "我是 Mina，鹽與光的老闆娘，也是歌唱老師。先吸一口氣，再把今天的聲音唱出來吧。",
+            "如果你看到五隻虎斑貓、一隻黑貓和一隻猩猩玩偶，那不是幻覺，只是我的日常。",
+            "熟悉的教室、熟悉的人，一首一首唱著唱著，竟然就走到第十年了。",
+            "所以最近偷偷在準備一場十週年音樂會，想把以前的回憶和現在的聲音放在同一個舞台。",
+            "我講個開心的故事：跨年煙火結束後，一個孩子收到全新的月曆。他翻開完全空白的第一頁，寫下今年第一首歌。那一頁的月份，就是我們要找的答案。",
+            "以前曾在鹽與光上過課的同學，也可以報名爭取演出機會喔。",
+            "報名不用找神祕 NPC，直接聯絡以前在鹽與光上課的老師就可以了。",
+            "期限？我只記得行事曆圈在八月第一個禮拜天……先去問老師，動作要快喔。"
+          ],
+          bubbles: ["吸氣～", "一起唱！", "好聽耶"]
+        },
+        {
+          id: "wanting", name: "宛庭", role: "歌唱・爵士鼓老師", x: 930, y: 650, height: 167,
+          lines: [
+            "我是宛庭，教歌唱也教爵士鼓。唱歌要呼吸，打鼓也要呼吸，我們先一起數四拍。",
+            "偶爾我也會坐下來敲手碟，讓腦袋安靜一點。海龜如果出現，就表示今天很和平。",
+            "最近大家問我，十週年那天是不是要空出一整天。其實不用，應該是下午的活動。",
+            "我把日期練成一段節奏：四拍走完要重複四次。別只跟著打拍子，總拍數才是線索。",
+            "我好像看到流程紙上寫著 14:00 到 17:00……但節目順序還在排，先當作內部線索喔。",
+            "當天不只老師會演出，也正在找曾經在鹽與光上課的同學一起回到舞台。",
+            "好了，線索說完。現在閉上眼睛，聽手碟的聲音……欸，海龜真的來了！"
+          ],
+          bubbles: ["1、2、3、4！", "節奏進來", "啪、答！"]
+        },
+        {
+          id: "tc", name: "TC", role: "老闆・吉他老師", x: 560, y: 745, height: 202,
+          lines: [
+            "我是 TC，鹽與光的老闆兼吉他老師。再一遍，這次把手放鬆，讓節奏自己往前。",
+            "不上課的時候？大概就是刻線、打磨、噴漆，努力把 SD 鋼彈做得比本人還精緻。",
+            "最近手上的大工程不是模型，是把十年的老師、學生和音樂重新組成一場演出。",
+            "日期零件被我排成四乘四的方陣，全部裝完才會顯示正確數字。這個零件可不能裝錯。",
+            "場地目前暫定在高雄駁二附近，一間名字很像黃色水果的地方；注意，是暫定，還沒正式蓋章。",
+            "你剛剛沒聽到場地線索。我也沒有說。回去繼續練琴。"
+          ],
+          bubbles: ["再一遍！", "Groove！", "刷下去"]
+        },
+        {
+          id: "cindy", name: "Cindy", role: "歌唱・鋼琴老師", x: 1060, y: 455, height: 163,
+          lines: [
+            "我是 Cindy，教歌唱也教鋼琴。先聽和弦，再讓聲音慢慢走進去。",
+            "鋼琴很誠實，彈錯一顆就會立刻告訴你；小黃則是聽到零食才有反應。",
+            "最近教室裡常有人偷偷問：以前的學生還能不能回來參加十週年？",
+            "答案是可以，只要你曾經在鹽與光上過課，就符合這次演出招募的基本條件。",
+            "鋼琴譜的第十六個小節被畫了一顆星。那不是指小節本身，而是提醒你記住一個日期數字。",
+            "想參加的話，請直接找以前幫你上課的老師報名，我們才知道你最適合什麼節目。",
+            "截止時間是八月第一個禮拜天。這句很重要，我用鋼琴再彈一次給你記住嗎？"
+          ],
+          bubbles: ["聽和弦", "很好～", "再柔一點"]
+        },
+        {
+          id: "liling", name: "莉翎", role: "歌唱老師", x: 1290, y: 570, height: 169,
+          lines: [
+            "我是莉翎，歌唱老師。肩膀上這位是小麻雀，牠對音準的要求可能比我還嚴格。",
+            "你聽，聲音輕一點的時候，反而會飛得更遠。小麻雀說這句可以過。",
+            "最近我們在練一場很特別的音樂會，會把十年裡認識的人，再一次聚在同一首歌裡。",
+            "小麻雀帶回一個謎語：十二扇月份之門走完後，大家開心喊著新年快樂，再推開的第一扇門叫什麼？答案就是活動月份。",
+            "活動預計從下午兩點到五點，結束時剛好還能看看港邊的天空。",
+            "老師會準備自己的節目，也希望一些以前的學生能回來演出，讓舞台像一次音樂同學會。",
+            "至於那個『黃色水果』場地到底是不是最後答案？小麻雀只肯說：啾。場地待確認喔。"
+          ],
+          bubbles: ["啾！", "輕輕唱", "♪"]
+        }
+      ];
+
+      const minaCatSpecs = [
+        { type: "tabby", dx: -42, dy: 9, height: 58, phase: .2, entry: -1, flip: false, layer: "front" },
+        { type: "tabby", dx: -48, dy: -38, height: 45, phase: 1.5, entry: -1, flip: true, layer: "front" },
+        { type: "tabby", dx: 43, dy: -29, height: 48, phase: 2.8, entry: 1, flip: false, layer: "front" },
+        { type: "tabby", dx: 45, dy: 12, height: 54, phase: 4.1, entry: 1, flip: true, layer: "front" },
+        { type: "tabby", dx: 6, dy: -58, height: 41, phase: 5.3, entry: 1, flip: true, layer: "front" },
+        { type: "black", dx: -31, dy: -79, height: 43, phase: 3.5, entry: -1, flip: false, layer: "front" }
+      ];
+
+      const minaHeartSpecs = [
+        { dx: -62, dy: -57, size: 3, delay: .05 },
+        { dx: 57, dy: -48, size: 4, delay: .42 },
+        { dx: -13, dy: -105, size: 3, delay: .86 },
+        { dx: 30, dy: -83, size: 3, delay: 1.24 },
+        { dx: -39, dy: -119, size: 4, delay: 1.62 }
+      ];
+
+      const minaActionLines = [
+        "貓咪集合～",
+        "可愛的貓咪♡",
+        "這個呼嚕聲太犯規了！",
+        "治癒心靈的時候～",
+        "猩猩也想一起玩！",
+        "今天也慢慢充電吧♡"
+      ];
+
+      const wantingActionLines = [
+        "讓我們來享受心靈的美妙音色～",
+        "海龜好可愛～♡"
+      ];
+
+      const signatureActionSpecs = {
+        tc: {
+          assets: ["tc-seated-v1.png", "tc-model-desk-v1.png"], duration: 10800, size: 190, frameRate: 1, status: "TC 老師正專業製作 SD 鋼彈模型",
+          lines: [
+            "等等……這條刻線還能再精準一點。",
+            "底漆、噴塗、打磨，每一步都不能馬虎。",
+            "SD 鋼彈小歸小，細節可不能隨便！",
+            "模型不是玩具，是微縮工程。"
+          ]
+        },
+        ting: {
+          assets: ["ting-bass-props-v1.png"], duration: 9800, size: 190, frameRate: 1, status: "Ting 老師正在用低頻撐起整個樂團",
+          lines: [
+            "Bass 是樂團的靈魂，不是邊緣人。",
+            "你可能沒聽見我，但少了我就會很空。",
+            "站最後面沒關係，低頻會從地板找到你。",
+            "Bass 手只是不搶鏡，不是沒戲份。"
+          ]
+        },
+        liling: {
+          assets: ["liling-flying-sparrow-v1.png"], duration: 10200, size: 185, frameRate: 1, status: "莉翎老師正和小麻雀唱一首溫暖的歌",
+          lines: [
+            "小小的歌，也能飛進很遠的心裡。",
+            "今天也和小麻雀一起，唱一首溫柔的歌。",
+            "平凡的聲音，也有被聽見的力量。",
+            "啾啾～你也找到自己的旋律了嗎？"
+          ]
+        },
+        cindy: {
+          assets: ["cindy-yellow-dog-v1.png", "cindy-pirate-props-v1.png"], duration: 9800, size: 185, frameRate: 1, status: "Cindy 老師與小黃展開海上冒險",
+          lines: [
+            "今天和小黃一起尋找音樂寶藏！",
+            "小黃，出航囉！",
+            "開心唱歌，我們就是最自由的船員！",
+            "等等，那個肉乾不是寶藏啦！"
+          ]
+        }
+      };
+
+      const images = new Map();
+      const teachers = [];
+      let background = null;
+      let hoveredTeacher = null;
+      let activeTeacher = null;
+      let activeLine = 0;
+      let typingToken = 0;
+      let lastFrame = performance.now();
+      let nextAmbientAt = lastFrame + 2400;
+      let running = true;
+      let minaCatAction = null;
+      let nextMinaActionAt = lastFrame + 5200;
+      let wantingMeditationAction = null;
+      let nextWantingActionAt = lastFrame + 9000;
+      const signatureActions = new Map();
+      const nextSignatureActionAt = new Map([
+        ["tc", lastFrame + 15000],
+        ["ting", lastFrame + 23000],
+        ["liling", lastFrame + 31000],
+        ["cindy", lastFrame + 39000]
+      ]);
+      let musicWanted = false;
+      let resumeMusicWhenVisible = false;
+      let musicFadeToken = 0;
+
+      const MUSIC_VOLUME = 0.34;
+
+      bgMusic.volume = 0;
+
+      function renderMusicState(enabled) {
+        musicToggle.setAttribute("aria-pressed", String(enabled));
+        musicToggle.setAttribute("aria-label", enabled ? "暫停背景音樂" : "播放背景音樂");
+        musicToggleText.textContent = enabled ? "音樂：開" : "音樂：關";
+      }
+
+      function fadeMusic(targetVolume, duration = 320, onComplete = null) {
+        const token = ++musicFadeToken;
+        const startVolume = bgMusic.volume;
+        const startedAt = performance.now();
+
+        const step = now => {
+          if (token !== musicFadeToken) return;
+          const progress = Math.min(1, (now - startedAt) / duration);
+          const eased = progress * (2 - progress);
+          bgMusic.volume = startVolume + (targetVolume - startVolume) * eased;
+          if (progress < 1) requestAnimationFrame(step);
+          else if (onComplete) onComplete();
+        };
+
+        requestAnimationFrame(step);
+      }
+
+      async function startMusic() {
+        ++musicFadeToken;
+        bgMusic.volume = 0;
+        try {
+          await bgMusic.play();
+          musicWanted = true;
+          renderMusicState(true);
+          fadeMusic(MUSIC_VOLUME);
+        } catch (error) {
+          musicWanted = false;
+          renderMusicState(false);
+          console.warn("背景音樂無法播放", error);
+        }
+      }
+
+      function stopMusic() {
+        musicWanted = false;
+        renderMusicState(false);
+        fadeMusic(0, 240, () => bgMusic.pause());
+      }
+
+      function loadImage(source) {
+        return new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => reject(new Error(`無法載入圖片：${source}`));
+          image.src = source;
+        });
+      }
+
+      function asset(filename) {
+        return `${ASSET_ROOT}/${filename}?v=${ASSET_VERSION}`;
+      }
+
+      async function loadAssets() {
+        background = await loadImage(asset("rehearsal-room.png"));
+        const [tabbyCat, blackCat, wantingHandpan, wantingTurtle, wantingTree] = await Promise.all([
+          loadImage(asset("mina-tabby-cat.png")),
+          loadImage(asset("mina-black-cat.png")),
+          loadImage(asset("wanting-handpan-v2.png")),
+          loadImage(asset("wanting-turtle-v2.png")),
+          loadImage(asset("wanting-spirit-tree-v1.png"))
+        ]);
+        images.set("mina-cat:tabby", tabbyCat);
+        images.set("mina-cat:black", blackCat);
+        images.set("wanting:handpan", wantingHandpan);
+        images.set("wanting:turtle", wantingTurtle);
+        images.set("wanting:tree", wantingTree);
+        await Promise.all(Object.entries(signatureActionSpecs).map(async ([id, spec]) => {
+          await Promise.all(spec.assets.map(async (filename, frame) => {
+            images.set(`signature:${id}:${frame}`, await loadImage(asset(filename)));
+          }));
+        }));
+        await Promise.all(teacherSpecs.flatMap(spec => directions.map(async direction => {
+          const image = await loadImage(asset(`${spec.id}-${direction}.png`));
+          images.set(`${spec.id}:${direction}`, image);
+        })));
+        await Promise.all(teacherSpecs.flatMap(spec => directions.flatMap(direction => [0, 1, 2].map(async frame => {
+          const image = await loadImage(asset(`${spec.id}-v5-${direction}-${frame}.png`));
+          images.set(`${spec.id}-v5:${direction}:${frame}`, image);
+        }))));
+      }
+
+      function isWalkable(x, y) {
+        if (x < 185 || x > 1490 || y < 325 || y > 850) return false;
+        if (x < 565 && y < 445) return false;
+        if (x < 275 && y < 640) return false;
+        if (x > 1260 && y < 430) return false;
+        if (x > 1170 && y > 650) return false;
+        if (y > 810 && (x < 650 || x > 1025)) return false;
+        return true;
+      }
+
+      const ACTION_ZONE_X = 220;
+      const ACTION_ZONE_Y = 120;
+
+      function collisionRadius(teacher) {
+        return {
+          x: 26 + teacher.height * .07,
+          y: 12 + teacher.height * .035
+        };
+      }
+
+      function ellipseOverlap(ax, ay, bx, by, radiusX, radiusY) {
+        const dx = (ax - bx) / radiusX;
+        const dy = (ay - by) / radiusY;
+        return dx * dx + dy * dy < 1;
+      }
+
+      function isTeacherActionActive(teacher, now = performance.now()) {
+        return (teacher.id === "mina" && isMinaActionActive(now)) ||
+          (teacher.id === "wanting" && isWantingActionActive(now)) ||
+          isSignatureActionActive(teacher.id, now);
+      }
+
+      function isPointClearOfTeachers(x, y, ignoredTeacher = null, scale = 1) {
+        return teachers.every(other => {
+          if (other === ignoredTeacher) return true;
+          const otherRadius = collisionRadius(other);
+          const ignoredRadius = ignoredTeacher ? collisionRadius(ignoredTeacher) : { x: 36, y: 18 };
+          return !ellipseOverlap(
+            x, y, other.x, other.y,
+            (ignoredRadius.x + otherRadius.x) * scale,
+            (ignoredRadius.y + otherRadius.y) * scale
+          );
+        });
+      }
+
+      function isPointClearOfActionZones(x, y, ignoredTeacher = null, now = performance.now()) {
+        return teachers.every(other => {
+          if (other === ignoredTeacher || !isTeacherActionActive(other, now)) return true;
+          return !ellipseOverlap(x, y, other.x, other.y, ACTION_ZONE_X, ACTION_ZONE_Y);
+        });
+      }
+
+      function hasClearActionSpace(teacher, now = performance.now()) {
+        return teachers.every(other => {
+          if (other === teacher) return true;
+          return !ellipseOverlap(teacher.x, teacher.y, other.x, other.y, ACTION_ZONE_X, ACTION_ZONE_Y);
+        }) && isPointClearOfActionZones(teacher.x, teacher.y, teacher, now);
+      }
+
+      function randomTargetFor(teacher = null, requireActionClearance = false, now = performance.now()) {
+        for (let attempt = 0; attempt < 80; attempt += 1) {
+          const x = 215 + Math.random() * 1240;
+          const y = 360 + Math.random() * 455;
+          if (!isWalkable(x, y)) continue;
+          if (!isPointClearOfTeachers(x, y, teacher, requireActionClearance ? 2.5 : 1.15)) continue;
+          if (requireActionClearance && teachers.some(other =>
+            other !== teacher && ellipseOverlap(x, y, other.x, other.y, ACTION_ZONE_X, ACTION_ZONE_Y)
+          )) continue;
+          if (!isPointClearOfActionZones(x, y, teacher, now)) continue;
+          return { x, y };
+        }
+        return teacher ? { x: teacher.x, y: teacher.y } : { x: 820, y: 620 };
+      }
+
+      function randomTarget() {
+        return randomTargetFor();
+      }
+
+      function prepareClearActionSpace(teacher, now) {
+        teacher.target = randomTargetFor(teacher, true, now);
+        teacher.idleUntil = 0;
+        teacher.pauseUntil = Math.min(teacher.pauseUntil, now);
+        teacher.moving = true;
+      }
+
+      function createTeacher(spec, index) {
+        return {
+          ...spec,
+          direction: index % 2 ? "left" : "right",
+          target: randomTarget(),
+          speed: reducedMotion ? 0 : 34 + Math.random() * 20,
+          moving: !reducedMotion,
+          idleUntil: 0,
+          pauseUntil: 0,
+          step: Math.random() * Math.PI * 2,
+          walkDistance: Math.random() * 28,
+          avoidSide: index % 2 ? -1 : 1,
+          avoidUntil: 0,
+          bubble: "",
+          bubbleUntil: 0,
+          drawBox: null
+        };
+      }
+
+      function isMinaActionActive(now = performance.now()) {
+        return Boolean(minaCatAction && now < minaCatAction.until);
+      }
+
+      function startMinaCatAction(now = performance.now()) {
+        const mina = teachers.find(teacher => teacher.id === "mina");
+        if (!mina || !hasClearActionSpace(mina, now)) return false;
+
+        const duration = 10800;
+        minaCatAction = {
+          startedAt: now,
+          until: now + duration
+        };
+        nextMinaActionAt = now + duration + 24000;
+        mina.pauseUntil = Math.max(mina.pauseUntil, now + duration + 350);
+        mina.moving = false;
+        mina.direction = "down";
+        mina.bubble = "";
+        mina.target = { x: mina.x, y: mina.y };
+        if (!activeTeacher) gameStatus.textContent = "Mina 正和五隻虎斑貓、一隻黑貓玩耍中";
+        return true;
+      }
+
+      function updateMinaCatAction(now) {
+        if (minaCatAction && now >= minaCatAction.until) {
+          minaCatAction = null;
+          if (!activeTeacher) gameStatus.textContent = "老師們正在練團室準備中";
+        }
+        if (!minaCatAction && !activeTeacher && now >= nextMinaActionAt) {
+          const mina = teachers.find(teacher => teacher.id === "mina");
+          if (!startMinaCatAction(now) && mina) {
+            prepareClearActionSpace(mina, now);
+            nextMinaActionAt = now + 650;
+          }
+        }
+      }
+
+      function isWantingActionActive(now = performance.now()) {
+        return Boolean(wantingMeditationAction && now < wantingMeditationAction.until);
+      }
+
+      function startWantingMeditationAction(now = performance.now()) {
+        const wanting = teachers.find(teacher => teacher.id === "wanting");
+        if (!wanting || !hasClearActionSpace(wanting, now)) return false;
+
+        const duration = 9800;
+        wantingMeditationAction = { startedAt: now, until: now + duration };
+        nextWantingActionAt = now + duration + 17000 + Math.random() * 5000;
+        wanting.pauseUntil = Math.max(wanting.pauseUntil, now + duration + 350);
+        wanting.moving = false;
+        wanting.direction = "down";
+        wanting.bubble = "";
+        wanting.target = { x: wanting.x, y: wanting.y };
+        if (!activeTeacher) gameStatus.textContent = "宛庭老師正用手碟享受心靈平靜";
+        return true;
+      }
+
+      function updateWantingMeditationAction(now) {
+        if (wantingMeditationAction && now >= wantingMeditationAction.until) {
+          wantingMeditationAction = null;
+          if (!activeTeacher) gameStatus.textContent = "老師們正在練團室準備中";
+        }
+        if (!wantingMeditationAction && !activeTeacher && now >= nextWantingActionAt) {
+          const wanting = teachers.find(teacher => teacher.id === "wanting");
+          if (!startWantingMeditationAction(now) && wanting) {
+            prepareClearActionSpace(wanting, now);
+            nextWantingActionAt = now + 650;
+          }
+        }
+      }
+
+      function isSignatureActionActive(id, now = performance.now()) {
+        const action = signatureActions.get(id);
+        return Boolean(action && now < action.until);
+      }
+
+      function startSignatureAction(id, now = performance.now()) {
+        const spec = signatureActionSpecs[id];
+        const teacher = teachers.find(candidate => candidate.id === id);
+        if (!spec || !teacher || !hasClearActionSpace(teacher, now)) return false;
+
+        signatureActions.set(id, { startedAt: now, until: now + spec.duration });
+        nextSignatureActionAt.set(id, now + spec.duration + 22000 + Math.random() * 8000);
+        teacher.pauseUntil = Math.max(teacher.pauseUntil, now + spec.duration + 350);
+        teacher.moving = false;
+        teacher.direction = "down";
+        teacher.bubble = "";
+        teacher.target = { x: teacher.x, y: teacher.y };
+        if (!activeTeacher) gameStatus.textContent = spec.status;
+        return true;
+      }
+
+      function updateSignatureActions(now) {
+        Object.keys(signatureActionSpecs).forEach(id => {
+          const action = signatureActions.get(id);
+          if (action && now >= action.until) {
+            signatureActions.delete(id);
+            const teacher = teachers.find(candidate => candidate.id === id);
+            if (teacher) teacher.target = randomTargetFor(teacher, false, now);
+            if (!activeTeacher) gameStatus.textContent = "老師們正在練團室準備中";
+          }
+          if (!signatureActions.has(id) && !activeTeacher && now >= nextSignatureActionAt.get(id)) {
+            const teacher = teachers.find(candidate => candidate.id === id);
+            if (!startSignatureAction(id, now) && teacher) {
+              prepareClearActionSpace(teacher, now);
+              nextSignatureActionAt.set(id, now + 650);
+            }
+          }
+        });
+      }
+
+      function chooseDirection(dx, dy) {
+        if (Math.abs(dx) > Math.abs(dy)) return dx < 0 ? "left" : "right";
+        return dy < 0 ? "up" : "down";
+      }
+
+      function canOccupyPosition(teacher, x, y, now) {
+        if (!isWalkable(x, y) || !isPointClearOfActionZones(x, y, teacher, now)) return false;
+        const radius = collisionRadius(teacher);
+        return teachers.every(other => {
+          if (other === teacher) return true;
+          const otherRadius = collisionRadius(other);
+          return !ellipseOverlap(
+            x, y, other.x, other.y,
+            radius.x + otherRadius.x,
+            radius.y + otherRadius.y
+          );
+        });
+      }
+
+      function moveTeacherTo(teacher, x, y, distance) {
+        teacher.x = x;
+        teacher.y = y;
+        teacher.walkDistance += distance;
+      }
+
+      function updateTeacher(teacher, delta, now) {
+        if (reducedMotion || now < teacher.pauseUntil) {
+          teacher.moving = false;
+          return;
+        }
+
+        if (now < teacher.idleUntil) {
+          teacher.moving = false;
+          return;
+        }
+
+        const dx = teacher.target.x - teacher.x;
+        const dy = teacher.target.y - teacher.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 8) {
+          teacher.moving = false;
+          teacher.idleUntil = now + 700 + Math.random() * 1800;
+          teacher.target = randomTargetFor(teacher, false, now);
+          if (Math.random() < .55) teacher.direction = ["down", "left", "right"][Math.floor(Math.random() * 3)];
+          return;
+        }
+
+        if (now >= teacher.avoidUntil) teacher.direction = chooseDirection(dx, dy);
+        teacher.moving = true;
+        teacher.step += delta * .012;
+        const amount = Math.min(distance, teacher.speed * delta / 1000);
+        const forwardX = dx / distance;
+        const forwardY = dy / distance;
+        const nextX = teacher.x + forwardX * amount;
+        const nextY = teacher.y + forwardY * amount;
+
+        if (canOccupyPosition(teacher, nextX, nextY, now)) {
+          moveTeacherTo(teacher, nextX, nextY, amount);
+          return;
+        }
+
+        // 避讓位移不覆寫角色面向，並短暫鎖定同一側，避免每幀切換圖組造成抖動。
+        teacher.avoidUntil = Math.max(teacher.avoidUntil, now + 420);
+        const sideX = -forwardY * teacher.avoidSide;
+        const sideY = forwardX * teacher.avoidSide;
+        const detourVectors = [
+          { x: forwardX * .28 + sideX * .96, y: forwardY * .28 + sideY * .96 },
+          { x: sideX, y: sideY }
+        ];
+
+        for (const vector of detourVectors) {
+          const vectorLength = Math.hypot(vector.x, vector.y) || 1;
+          const detourX = teacher.x + vector.x / vectorLength * amount;
+          const detourY = teacher.y + vector.y / vectorLength * amount;
+          if (!canOccupyPosition(teacher, detourX, detourY, now)) continue;
+          moveTeacherTo(teacher, detourX, detourY, amount);
+          return;
+        }
+
+        teacher.moving = false;
+        teacher.avoidSide *= -1;
+        teacher.avoidUntil = now + 480;
+        teacher.target = randomTargetFor(teacher, false, now);
+        teacher.idleUntil = now + 180 + Math.random() * 160;
+      }
+
+      function roundedRect(x, y, width, height, radius) {
+        const r = Math.min(radius, width / 2, height / 2);
+        context.beginPath();
+        context.moveTo(x + r, y);
+        context.arcTo(x + width, y, x + width, y + height, r);
+        context.arcTo(x + width, y + height, x, y + height, r);
+        context.arcTo(x, y + height, x, y, r);
+        context.arcTo(x, y, x + width, y, r);
+        context.closePath();
+      }
+
+      function easeOutCubic(value) {
+        const clamped = Math.max(0, Math.min(1, value));
+        return 1 - (1 - clamped) ** 3;
+      }
+
+      function drawPixelHeart(x, y, size, alpha) {
+        context.save();
+        context.globalAlpha = alpha;
+        context.fillStyle = "#f4a2a0";
+        context.fillRect(Math.round(x), Math.round(y), size, size);
+        context.fillRect(Math.round(x + size * 2), Math.round(y), size, size);
+        context.fillRect(Math.round(x - size), Math.round(y + size), size * 4, size);
+        context.fillRect(Math.round(x), Math.round(y + size * 2), size * 2, size);
+        context.restore();
+      }
+
+      function drawMinaCatHearts(mina, elapsed, remaining) {
+        const period = 2.15;
+        const actionAlpha = Math.min(1, elapsed / .65, remaining / .7);
+
+        minaHeartSpecs.forEach((heart, index) => {
+          const cycle = (elapsed - heart.delay + period * 4) % period;
+          if (cycle > 1.22) return;
+          const progress = cycle / 1.22;
+          const alpha = Math.sin(progress * Math.PI) * actionAlpha;
+          const drift = Math.sin(elapsed * 3.1 + index) * 2.5;
+          drawPixelHeart(
+            mina.x + heart.dx + drift,
+            mina.y + heart.dy - progress * 17,
+            heart.size,
+            alpha * .92
+          );
+        });
+      }
+
+      function drawMinaCats(mina, now) {
+        if (!isMinaActionActive(now)) return;
+
+        const elapsed = (now - minaCatAction.startedAt) / 1000;
+        const remaining = (minaCatAction.until - now) / 1000;
+
+        minaCatSpecs.forEach((cat, index) => {
+          const entryDelay = index * .17;
+          const entered = easeOutCubic((elapsed - entryDelay) / 1.05);
+          const leaving = Math.max(0, Math.min(1, remaining / .85));
+          const visibility = Math.min(entered, leaving);
+          if (visibility <= 0) return;
+
+          const image = images.get(`mina-cat:${cat.type}`);
+          const targetX = mina.x + cat.dx;
+          const startX = mina.x + cat.entry * (250 + index * 18);
+          const x = startX + (targetX - startX) * entered;
+          const hop = Math.max(0, Math.sin(elapsed * 3.6 + cat.phase)) * (index % 2 ? 5 : 8);
+          const playSway = Math.sin(elapsed * 2.5 + cat.phase) * 3;
+          const feetY = mina.y + cat.dy - hop;
+          const height = cat.height * (.82 + visibility * .18);
+          const width = height * image.width / image.height;
+          const paddingBottom = height * 8 / image.height;
+
+          context.save();
+          context.globalAlpha = visibility * .24;
+          context.fillStyle = "#000";
+          context.beginPath();
+          context.ellipse(x + playSway, feetY - paddingBottom + 1, width * .30, 4.5, 0, 0, Math.PI * 2);
+          context.fill();
+          context.restore();
+
+          context.save();
+          context.globalAlpha = visibility;
+          context.translate(Math.round(x + playSway), Math.round(feetY - height / 2));
+          context.rotate(Math.sin(elapsed * 2.1 + cat.phase) * .025);
+          if (cat.flip) context.scale(-1, 1);
+          context.drawImage(image, -width / 2, -height / 2, width, height);
+          context.restore();
+        });
+
+        drawMinaCatHearts(mina, elapsed, remaining);
+      }
+
+      function drawMinaActionBubble(mina, now) {
+        if (!isMinaActionActive(now)) return;
+
+        const elapsed = (now - minaCatAction.startedAt) / 1000;
+        const remaining = (minaCatAction.until - now) / 1000;
+        const slotDuration = 1.72;
+        const lineIndex = Math.min(minaActionLines.length - 1, Math.floor(elapsed / slotDuration));
+        const lineTime = elapsed - lineIndex * slotDuration;
+        const alpha = Math.max(0, Math.min(1, lineTime / .18, (slotDuration - lineTime) / .22, remaining / .5));
+        if (alpha <= 0) return;
+
+        const text = minaActionLines[lineIndex];
+        context.save();
+        context.globalAlpha = alpha;
+        context.font = '700 24px "Noto Sans TC", system-ui, sans-serif';
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        const width = context.measureText(text).width + 40;
+        const height = 48;
+        const x = mina.x - width / 2 + Math.sin(elapsed * 1.8) * 5;
+        const y = mina.y - mina.height - 76;
+
+        roundedRect(x, y, width, height, 10);
+        context.fillStyle = "rgba(255, 248, 232, .97)";
+        context.fill();
+        context.lineWidth = 4;
+        context.strokeStyle = "#2b1113";
+        context.stroke();
+        context.beginPath();
+        context.moveTo(mina.x - 10, y + height);
+        context.lineTo(mina.x + 1, y + height + 16);
+        context.lineTo(mina.x + 12, y + height);
+        context.fillStyle = "#fff8e8";
+        context.fill();
+        context.strokeStyle = "#2b1113";
+        context.lineWidth = 3;
+        context.stroke();
+        context.fillStyle = "#2b1113";
+        context.fillText(text, x + width / 2, y + height / 2 + 1);
+        context.restore();
+      }
+
+      function drawWantingMeditation(wanting, now) {
+        const elapsed = (now - wantingMeditationAction.startedAt) / 1000;
+        const remaining = (wantingMeditationAction.until - now) / 1000;
+        const appear = Math.min(1, elapsed / .45, remaining / .55);
+        const sway = Math.sin(elapsed * 1.45) * 1.7;
+        const image = images.get("wanting-v5:down:1");
+        const cropHeight = Math.round(image.height * .72);
+        const bodyHeight = 128;
+        const bodyWidth = bodyHeight * image.width / image.height;
+        const bodyX = wanting.x - bodyWidth / 2;
+        const bodyY = wanting.y - 145 + sway;
+
+        // 心靈樹長在宛庭身後，葉片暖光會隨手碟節奏輕輕呼吸。
+        const treeImage = images.get("wanting:tree");
+        const treeWidth = 270;
+        const treeHeight = treeWidth * treeImage.height / treeImage.width;
+        const treePulse = 1 + Math.sin(elapsed * 1.15) * .012;
+        context.save();
+        context.globalAlpha = appear * .9;
+        context.translate(wanting.x, wanting.y - 7);
+        context.scale(treePulse, treePulse);
+        context.drawImage(treeImage, -treeWidth / 2, -treeHeight + 22, treeWidth, treeHeight);
+        context.restore();
+
+        context.save();
+        context.globalAlpha = appear * .28;
+        context.fillStyle = "#000";
+        context.beginPath();
+        context.ellipse(wanting.x, wanting.y + 3, 66, 9, 0, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+
+        context.save();
+        context.globalAlpha = appear;
+        context.drawImage(image, 0, 0, image.width, cropHeight, bodyX, bodyY, bodyWidth, bodyHeight * .72);
+
+        // 盤坐的雙腿，讓原本的站姿轉為安定的冥想姿勢。
+        context.fillStyle = "#536b86";
+        context.fillRect(Math.round(wanting.x - 51), Math.round(wanting.y - 40), 42, 16);
+        context.fillRect(Math.round(wanting.x + 9), Math.round(wanting.y - 40), 42, 16);
+        context.fillRect(Math.round(wanting.x - 37), Math.round(wanting.y - 27), 31, 13);
+        context.fillRect(Math.round(wanting.x + 6), Math.round(wanting.y - 27), 31, 13);
+        context.fillStyle = "#e9e1cf";
+        context.fillRect(Math.round(wanting.x - 48), Math.round(wanting.y - 25), 17, 8);
+        context.fillRect(Math.round(wanting.x + 31), Math.round(wanting.y - 25), 17, 8);
+
+        // 精緻手碟素材與敲擊時的柔和起伏。
+        const handpanY = wanting.y - 57 + Math.sin(elapsed * 3.2) * 1.2;
+        const handpanImage = images.get("wanting:handpan");
+        const handpanWidth = 102;
+        const handpanHeight = handpanWidth * handpanImage.height / handpanImage.width;
+        context.drawImage(
+          handpanImage,
+          Math.round(wanting.x - handpanWidth / 2),
+          Math.round(handpanY - handpanHeight * .48),
+          handpanWidth,
+          handpanHeight
+        );
+
+        const tap = Math.max(0, Math.sin(elapsed * 5.1));
+        context.fillStyle = "#efc8a8";
+        context.fillRect(Math.round(wanting.x - 34), Math.round(handpanY - 15 - tap * 6), 12, 8);
+        context.fillRect(Math.round(wanting.x + 22), Math.round(handpanY - 15 - (1 - tap) * 6), 12, 8);
+        context.restore();
+
+        // 精緻小海龜會在旁邊緩緩探頭、隨音樂擺動。
+        const turtleX = wanting.x + 76 + Math.sin(elapsed * 1.25) * 5;
+        const turtleY = wanting.y - 12 - Math.max(0, Math.sin(elapsed * 2.1)) * 3;
+        const turtleImage = images.get("wanting:turtle");
+        const turtleWidth = 94;
+        const turtleHeight = turtleWidth * turtleImage.height / turtleImage.width;
+        context.save();
+        context.globalAlpha = appear;
+        context.translate(Math.round(turtleX), Math.round(turtleY));
+        context.rotate(Math.sin(elapsed * 2.25) * .055);
+        context.scale(1 + Math.sin(elapsed * 4.2) * .018, 1 - Math.sin(elapsed * 4.2) * .018);
+        context.drawImage(turtleImage, -turtleWidth / 2, -turtleHeight / 2, turtleWidth, turtleHeight);
+        context.restore();
+
+        const heartCycle = (elapsed + .25) % 1.85;
+        if (heartCycle < 1.15) {
+          const progress = heartCycle / 1.15;
+          drawPixelHeart(
+            turtleX + 22,
+            turtleY - 26 - progress * 15,
+            3,
+            Math.sin(progress * Math.PI) * appear
+          );
+        }
+
+        wanting.drawBox = { x: wanting.x - 68, y: wanting.y - 150, width: 170, height: 170 };
+      }
+
+      function drawWantingActionBubble(wanting, now) {
+        if (!isWantingActionActive(now)) return;
+
+        const elapsed = (now - wantingMeditationAction.startedAt) / 1000;
+        const remaining = (wantingMeditationAction.until - now) / 1000;
+        const slotDuration = 4.7;
+        const lineIndex = Math.min(wantingActionLines.length - 1, Math.floor(elapsed / slotDuration));
+        const lineTime = elapsed - lineIndex * slotDuration;
+        const alpha = Math.max(0, Math.min(1, lineTime / .22, (slotDuration - lineTime) / .3, remaining / .5));
+        if (alpha <= 0) return;
+
+        const text = wantingActionLines[lineIndex];
+        context.save();
+        context.globalAlpha = alpha;
+        context.font = '700 23px "Noto Sans TC", system-ui, sans-serif';
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        const width = context.measureText(text).width + 42;
+        const height = 48;
+        const x = wanting.x - width / 2 + Math.sin(elapsed * 1.3) * 4;
+        const y = wanting.y - 224;
+        roundedRect(x, y, width, height, 10);
+        context.fillStyle = "rgba(239, 251, 239, .97)";
+        context.fill();
+        context.lineWidth = 4;
+        context.strokeStyle = "#244535";
+        context.stroke();
+        context.beginPath();
+        context.moveTo(wanting.x - 10, y + height);
+        context.lineTo(wanting.x + 1, y + height + 16);
+        context.lineTo(wanting.x + 12, y + height);
+        context.fillStyle = "#effbef";
+        context.fill();
+        context.strokeStyle = "#244535";
+        context.lineWidth = 3;
+        context.stroke();
+        context.fillStyle = "#183a2a";
+        context.fillText(text, x + width / 2, y + height / 2 + 1);
+        context.restore();
+      }
+
+      function drawTCModelAction(teacher, now) {
+        const action = signatureActions.get("tc");
+        const seatedImage = images.get("signature:tc:0");
+        const deskImage = images.get("signature:tc:1");
+        if (!action || !seatedImage || !deskImage) return;
+
+        const elapsed = (now - action.startedAt) / 1000;
+        const remaining = (action.until - now) / 1000;
+        const appear = Math.min(1, elapsed / .4, remaining / .5);
+        const craftPhase = Math.floor(elapsed / 3.2) % 3;
+
+        const seatedWidth = 185;
+        const seatedHeight = seatedWidth * seatedImage.height / seatedImage.width;
+        const seatedX = teacher.x - seatedWidth / 2;
+        const seatedY = teacher.y + 2 - seatedHeight * .83;
+
+        const deskWidth = 190;
+        const deskHeight = deskWidth * deskImage.height / deskImage.width;
+        const deskX = teacher.x - deskWidth / 2;
+        const deskY = teacher.y + 8 - deskHeight * .723;
+
+        context.save();
+        context.globalAlpha = appear * .24;
+        context.fillStyle = "#000";
+        context.beginPath();
+        context.ellipse(teacher.x, teacher.y + 4, 76, 8, 0, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+
+        context.save();
+        context.globalAlpha = appear;
+        context.drawImage(seatedImage, seatedX, seatedY, seatedWidth, seatedHeight);
+        context.drawImage(deskImage, deskX, deskY, deskWidth, deskHeight);
+
+        // 只在桌面附近補上局部手部動作，不替換人物本體。
+        const handBeat = Math.max(0, Math.sin(elapsed * 5.2));
+        context.fillStyle = "#efb785";
+        context.fillRect(Math.round(teacher.x - 28), Math.round(teacher.y - 69 - handBeat * 3), 10, 7);
+        context.fillRect(Math.round(teacher.x + 18), Math.round(teacher.y - 67 - (1 - handBeat) * 3), 10, 7);
+
+        const particleColor = craftPhase === 0 ? "#f7d56b" : craftPhase === 1 ? "#8feaff" : "#d9c8aa";
+        context.fillStyle = particleColor;
+        for (let index = 0; index < 5; index += 1) {
+          const drift = (elapsed * 1.7 + index * .19) % 1;
+          const spread = craftPhase === 1 ? index * 8 : index * 5;
+          context.fillRect(
+            Math.round(teacher.x + 4 + spread),
+            Math.round(teacher.y - 71 - drift * (craftPhase === 2 ? 12 : 24)),
+            3,
+            3
+          );
+        }
+
+        // 眼鏡旁的小亮點呈現專注又得意的表情，但臉仍是原角色。
+        const sparkleAlpha = Math.max(0, Math.sin(elapsed * 2.4));
+        context.globalAlpha = sparkleAlpha * appear;
+        context.fillStyle = "#fff1a0";
+        context.fillRect(Math.round(teacher.x + 29), Math.round(teacher.y - 111), 4, 14);
+        context.fillRect(Math.round(teacher.x + 24), Math.round(teacher.y - 106), 14, 4);
+        context.restore();
+
+        teacher.drawBox = {
+          x: Math.min(seatedX, deskX),
+          y: Math.min(seatedY, deskY),
+          width: Math.max(seatedX + seatedWidth, deskX + deskWidth) - Math.min(seatedX, deskX),
+          height: Math.max(seatedY + seatedHeight, deskY + deskHeight) - Math.min(seatedY, deskY)
+        };
+      }
+
+      function drawLayeredSignatureAction(teacher, now) {
+        const action = signatureActions.get(teacher.id);
+        if (!action) return;
+
+        const elapsed = (now - action.startedAt) / 1000;
+        const remaining = (action.until - now) / 1000;
+        const appear = Math.min(1, elapsed / .4, remaining / .5);
+
+        // 三位老師都保留原本角色，樂器、動物與服裝配件各自進場。
+        drawTeacher(teacher, now);
+        const baseBox = { ...teacher.drawBox };
+        let extraBox = { ...baseBox };
+
+        if (teacher.id === "ting") {
+          const propImage = images.get("signature:ting:0");
+          const width = 150;
+          const height = width * propImage.height / propImage.width;
+          const x = teacher.x - 80;
+          const y = teacher.y + 4 - height * .885;
+          context.save();
+          context.globalAlpha = appear;
+          context.drawImage(propImage, x, y, width, height);
+
+          const pluck = Math.max(0, Math.sin(elapsed * 7));
+          context.fillStyle = "#efb785";
+          context.fillRect(Math.round(teacher.x - 18), Math.round(teacher.y - 66 - pluck * 3), 8, 6);
+          context.fillRect(Math.round(teacher.x + 22), Math.round(teacher.y - 91 + pluck * 2), 8, 6);
+          context.fillStyle = "#f6d768";
+          context.font = '700 25px system-ui, sans-serif';
+          context.fillText("♪", teacher.x + 58, teacher.y - 118 - ((elapsed * 1.6) % 1) * 18);
+          context.restore();
+          extraBox = { x, y, width, height };
+        } else if (teacher.id === "liling") {
+          const sparrowImage = images.get("signature:liling:0");
+          const width = 76;
+          const height = width * sparrowImage.height / sparrowImage.width;
+          const birdX = teacher.x + 62 + Math.sin(elapsed * 1.7) * 15;
+          const birdY = teacher.y - 119 + Math.sin(elapsed * 3.1) * 6;
+          context.save();
+          context.globalAlpha = appear;
+          context.translate(birdX, birdY);
+          context.rotate(Math.sin(elapsed * 2.2) * .08);
+          context.drawImage(sparrowImage, -width / 2, -height / 2, width, height);
+          context.restore();
+
+          // 麥克風是獨立道具，跟著手腕輕輕擺動。
+          context.save();
+          context.globalAlpha = appear;
+          context.translate(teacher.x + 21, teacher.y - 91);
+          context.rotate(-.26 + Math.sin(elapsed * 2.8) * .06);
+          context.fillStyle = "#252936";
+          context.fillRect(-4, -2, 8, 31);
+          context.fillStyle = "#8894a8";
+          context.beginPath();
+          context.arc(0, -5, 8, 0, Math.PI * 2);
+          context.fill();
+          context.restore();
+          drawPixelHeart(birdX + 18, birdY - 22, 3, Math.max(0, Math.sin(elapsed * 2.4)) * appear);
+          extraBox = { x: birdX - width / 2, y: birdY - height / 2, width, height };
+        } else if (teacher.id === "cindy") {
+          const dogImage = images.get("signature:cindy:0");
+          const costumeImage = images.get("signature:cindy:1");
+          const costumeWidth = 105;
+          const costumeHeight = costumeWidth * costumeImage.height / costumeImage.width;
+          const costumeX = teacher.x - costumeWidth / 2;
+          const costumeY = teacher.y - teacher.height - 15;
+          context.save();
+          context.globalAlpha = appear;
+          context.drawImage(costumeImage, costumeX, costumeY, costumeWidth, costumeHeight);
+
+          const dogWidth = 84;
+          const dogHeight = dogWidth * dogImage.height / dogImage.width;
+          const hop = Math.max(0, Math.sin(elapsed * 3.8)) * 9;
+          const dogX = teacher.x + 42 + Math.sin(elapsed * 1.35) * 18;
+          const dogY = teacher.y + 5 - dogHeight * .84 - hop;
+          context.drawImage(dogImage, dogX, dogY, dogWidth, dogHeight);
+          context.restore();
+          drawPixelHeart(dogX + 50, dogY + 8 - ((elapsed * 1.4) % 1) * 14, 3, Math.max(0, Math.sin(elapsed * 2.1)) * appear);
+          extraBox = { x: dogX, y: dogY, width: dogWidth, height: dogHeight };
+        }
+
+        teacher.drawBox = {
+          x: Math.min(baseBox.x, extraBox.x),
+          y: Math.min(baseBox.y, extraBox.y),
+          width: Math.max(baseBox.x + baseBox.width, extraBox.x + extraBox.width) - Math.min(baseBox.x, extraBox.x),
+          height: Math.max(baseBox.y + baseBox.height, extraBox.y + extraBox.height) - Math.min(baseBox.y, extraBox.y)
+        };
+      }
+
+      function drawSignatureAction(teacher, now) {
+        const spec = signatureActionSpecs[teacher.id];
+        const action = signatureActions.get(teacher.id);
+        const elapsed = (now - action.startedAt) / 1000;
+        const frame = Math.floor(elapsed * spec.frameRate) % spec.assets.length;
+        const image = images.get(`signature:${teacher.id}:${frame}`);
+        if (!spec || !action || !image) return;
+
+        const remaining = (action.until - now) / 1000;
+        const appear = Math.min(1, elapsed / .45, remaining / .55);
+        const pulse = Math.sin(elapsed * 3.2);
+        const width = spec.size * (1 + pulse * .008);
+        const height = width * image.height / image.width;
+        const y = teacher.y - height + 12 + Math.sin(elapsed * 2.1) * 2;
+
+        context.save();
+        context.globalAlpha = appear * .3;
+        context.fillStyle = "#000";
+        context.beginPath();
+        context.ellipse(teacher.x, teacher.y + 4, width * .31, 8 + width * .018, 0, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+
+        context.save();
+        context.globalAlpha = appear;
+        context.drawImage(image, teacher.x - width / 2, y, width, height);
+        context.restore();
+
+        // 每位老師的動作節奏有不同的像素粒子回饋。
+        context.save();
+        context.globalAlpha = appear;
+        const beat = (elapsed * 2.2) % 1;
+        if (teacher.id === "tc") {
+          const craftPhase = Math.floor(elapsed / 3.2) % 3;
+          context.fillStyle = craftPhase === 0 ? "#f7d56b" : craftPhase === 1 ? "#8feaff" : "#d9c8aa";
+          for (let index = 0; index < 4; index += 1) {
+            const drift = (beat + index * .23) % 1;
+            const spread = craftPhase === 1 ? index * 9 : index * 5;
+            context.fillRect(teacher.x + 18 + spread, teacher.y - 93 - drift * (craftPhase === 2 ? 14 : 25), 3, 3);
+          }
+        } else if (teacher.id === "ting") {
+          context.fillStyle = "#f6d768";
+          context.font = '700 28px system-ui, sans-serif';
+          context.fillText("♪", teacher.x + 74, teacher.y - 142 - beat * 20);
+          context.fillText("♫", teacher.x - 92, teacher.y - 105 - ((beat + .45) % 1) * 18);
+        } else if (teacher.id === "liling") {
+          drawPixelHeart(teacher.x + 57, teacher.y - 145 - beat * 18, 3, Math.sin(beat * Math.PI));
+          context.fillStyle = "#f4c95d";
+          context.font = '700 25px system-ui, sans-serif';
+          context.fillText("♪", teacher.x - 75, teacher.y - 112 - beat * 16);
+        } else if (teacher.id === "cindy") {
+          drawPixelHeart(teacher.x - 69, teacher.y - 95 - beat * 16, 3, Math.sin(beat * Math.PI));
+          context.fillStyle = "#fff1a8";
+          context.fillRect(teacher.x + 62, teacher.y - 154, 5, 18);
+          context.fillRect(teacher.x + 55, teacher.y - 147, 19, 5);
+        }
+        context.restore();
+
+        teacher.drawBox = { x: teacher.x - width / 2, y, width, height };
+      }
+
+      function drawSignatureActionBubble(teacher, now) {
+        const spec = signatureActionSpecs[teacher.id];
+        const action = signatureActions.get(teacher.id);
+        if (!spec || !action || !isSignatureActionActive(teacher.id, now)) return;
+
+        const elapsed = (now - action.startedAt) / 1000;
+        const remaining = (action.until - now) / 1000;
+        const slotDuration = spec.duration / 1000 / spec.lines.length;
+        const lineIndex = Math.min(spec.lines.length - 1, Math.floor(elapsed / slotDuration));
+        const lineTime = elapsed - lineIndex * slotDuration;
+        const alpha = Math.max(0, Math.min(1, lineTime / .22, (slotDuration - lineTime) / .3, remaining / .5));
+        if (alpha <= 0) return;
+
+        const text = spec.lines[lineIndex];
+        context.save();
+        context.globalAlpha = alpha;
+        context.font = '700 21px "Noto Sans TC", system-ui, sans-serif';
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        const width = Math.min(560, context.measureText(text).width + 38);
+        const height = 46;
+        const x = Math.max(12, Math.min(WIDTH - width - 12, teacher.x - width / 2));
+        const y = Math.max(18, teacher.y - spec.size - 46);
+        roundedRect(x, y, width, height, 10);
+        context.fillStyle = "rgba(255, 248, 232, .97)";
+        context.fill();
+        context.lineWidth = 4;
+        context.strokeStyle = "#2b1113";
+        context.stroke();
+        context.beginPath();
+        context.moveTo(teacher.x - 10, y + height);
+        context.lineTo(teacher.x + 1, y + height + 15);
+        context.lineTo(teacher.x + 12, y + height);
+        context.fillStyle = "#fff8e8";
+        context.fill();
+        context.strokeStyle = "#2b1113";
+        context.lineWidth = 3;
+        context.stroke();
+        context.fillStyle = "#2b1113";
+        context.fillText(text, x + width / 2, y + height / 2 + 1, width - 24);
+        context.restore();
+      }
+
+      function drawBubble(teacher, now) {
+        if (!teacher.bubble || now > teacher.bubbleUntil) return;
+        context.save();
+        context.font = '600 20px "Noto Sans TC", system-ui, sans-serif';
+        context.textBaseline = "middle";
+        const paddingX = 14;
+        const width = context.measureText(teacher.bubble).width + paddingX * 2;
+        const x = teacher.x - width / 2;
+        const y = teacher.y - teacher.height - 49;
+        roundedRect(x, y, width, 34, 9);
+        context.fillStyle = "rgba(255, 248, 232, .95)";
+        context.fill();
+        context.lineWidth = 3;
+        context.strokeStyle = "#2b1113";
+        context.stroke();
+        context.beginPath();
+        context.moveTo(teacher.x - 7, y + 34);
+        context.lineTo(teacher.x + 2, y + 46);
+        context.lineTo(teacher.x + 9, y + 34);
+        context.fillStyle = "#fff8e8";
+        context.fill();
+        context.fillStyle = "#2b1113";
+        context.fillText(teacher.bubble, x + paddingX, y + 18);
+        context.restore();
+      }
+
+      function drawTeacher(teacher, now) {
+        const walkSequence = [0, 1, 2, 1];
+        const walkFrame = teacher.moving
+          ? walkSequence[Math.floor(teacher.walkDistance / 9) % walkSequence.length]
+          : 1;
+        const image = images.get(`${teacher.id}-v5:${teacher.direction}:${walkFrame}`);
+        const bob = teacher.id === "mina" && isMinaActionActive(now)
+          ? Math.sin((now - minaCatAction.startedAt) * .006) * 2.2
+          : 0;
+        const height = teacher.height;
+        const width = height * image.width / image.height;
+        const x = teacher.x - width / 2;
+        const y = teacher.y - height + bob;
+        const feetY = teacher.y + bob - height * 12 / image.height;
+
+        if (teacher === hoveredTeacher || teacher === activeTeacher) {
+          context.save();
+          context.globalAlpha = .72;
+          context.fillStyle = teacher === activeTeacher ? "#f0d49a" : "#d8ad5b";
+          context.beginPath();
+          context.ellipse(teacher.x, feetY + 2, width * .28, 8, 0, 0, Math.PI * 2);
+          context.fill();
+          context.restore();
+        }
+
+        context.save();
+        context.globalAlpha = .27;
+        context.fillStyle = "#000";
+        context.beginPath();
+        context.ellipse(teacher.x + 2, feetY + 2, width * .3, 7, 0, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+
+        context.drawImage(image, Math.round(x), Math.round(y), Math.round(width), Math.round(height));
+        teacher.drawBox = { x, y, width, height };
+
+        if (teacher === hoveredTeacher && teacher !== activeTeacher &&
+            !(teacher.id === "mina" && isMinaActionActive(now)) &&
+            !(teacher.id === "wanting" && isWantingActionActive(now)) &&
+            !isSignatureActionActive(teacher.id, now)) {
+          context.save();
+          context.font = '700 30px "Noto Sans TC", system-ui, sans-serif';
+          const label = teacher.name;
+          const labelWidth = context.measureText(label).width + 48;
+          const labelHeight = 52;
+          const labelY = y - 67;
+          roundedRect(teacher.x - labelWidth / 2, labelY, labelWidth, labelHeight, 10);
+          context.fillStyle = "rgba(22, 5, 6, .9)";
+          context.fill();
+          context.strokeStyle = "#d8ad5b";
+          context.lineWidth = 3;
+          context.stroke();
+          context.fillStyle = "#f6e8c8";
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillText(label, teacher.x, labelY + labelHeight / 2 + 1);
+          context.restore();
+        }
+      }
+
+      function draw(now) {
+        context.imageSmoothingEnabled = false;
+        context.drawImage(background, 0, 0, WIDTH, HEIGHT);
+
+        const ordered = [...teachers].sort((a, b) => a.y - b.y);
+        ordered.forEach(teacher => {
+          if (teacher.id === "wanting" && isWantingActionActive(now)) drawWantingMeditation(teacher, now);
+          else if (teacher.id === "tc" && isSignatureActionActive("tc", now)) drawTCModelAction(teacher, now);
+          else if (isSignatureActionActive(teacher.id, now)) drawLayeredSignatureAction(teacher, now);
+          else drawTeacher(teacher, now);
+          if (teacher.id === "mina") drawMinaCats(teacher, now);
+        });
+        ordered.forEach(teacher => drawBubble(teacher, now));
+        const mina = teachers.find(teacher => teacher.id === "mina");
+        if (mina) drawMinaActionBubble(mina, now);
+        const wanting = teachers.find(teacher => teacher.id === "wanting");
+        if (wanting) drawWantingActionBubble(wanting, now);
+        ordered.forEach(teacher => drawSignatureActionBubble(teacher, now));
+
+        context.save();
+        const vignette = context.createRadialGradient(WIDTH / 2, HEIGHT / 2, 270, WIDTH / 2, HEIGHT / 2, 920);
+        vignette.addColorStop(0, "rgba(0,0,0,0)");
+        vignette.addColorStop(1, "rgba(0,0,0,.22)");
+        context.fillStyle = vignette;
+        context.fillRect(0, 0, WIDTH, HEIGHT);
+        context.restore();
+      }
+
+      function animate(now) {
+        if (!running) return;
+        const delta = Math.min(42, now - lastFrame);
+        lastFrame = now;
+        updateMinaCatAction(now);
+        updateWantingMeditationAction(now);
+        updateSignatureActions(now);
+        teachers.forEach(teacher => updateTeacher(teacher, delta, now));
+
+        if (!reducedMotion && now >= nextAmbientAt) {
+          const candidates = teachers.filter(teacher =>
+            teacher !== activeTeacher &&
+            !(teacher.id === "mina" && isMinaActionActive(now)) &&
+            !(teacher.id === "wanting" && isWantingActionActive(now)) &&
+            !isSignatureActionActive(teacher.id, now)
+          );
+          const teacher = candidates[Math.floor(Math.random() * candidates.length)];
+          if (teacher) {
+            teacher.bubble = teacher.bubbles[Math.floor(Math.random() * teacher.bubbles.length)];
+            teacher.bubbleUntil = now + 1900 + Math.random() * 900;
+            teacher.pauseUntil = now + 650;
+          }
+          nextAmbientAt = now + 3200 + Math.random() * 4300;
+        }
+
+        draw(now);
+        requestAnimationFrame(animate);
+      }
+
+      function canvasPoint(event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: (event.clientX - rect.left) * WIDTH / rect.width,
+          y: (event.clientY - rect.top) * HEIGHT / rect.height
+        };
+      }
+
+      function teacherAt(point) {
+        return [...teachers]
+          .sort((a, b) => b.y - a.y)
+          .find(teacher => {
+            const box = teacher.drawBox;
+            return box && point.x >= box.x && point.x <= box.x + box.width && point.y >= box.y && point.y <= box.y + box.height;
+          }) || null;
+      }
+
+      function typeDialogue(text) {
+        const token = ++typingToken;
+        dialogueText.textContent = "";
+        let index = 0;
+        const step = () => {
+          if (token !== typingToken) return;
+          dialogueText.textContent = text.slice(0, index);
+          index += 1;
+          if (index <= text.length) window.setTimeout(step, reducedMotion ? 0 : 25);
+        };
+        step();
+      }
+
+      function openDialogue(teacher, lineIndex = null) {
+        if (!teacher) return;
+        if (teacher.id === "mina") minaCatAction = null;
+        if (teacher.id === "wanting") wantingMeditationAction = null;
+        if (signatureActions.has(teacher.id)) signatureActions.delete(teacher.id);
+        activeTeacher = teacher;
+        activeLine = lineIndex === null ? (activeLine + 1) % teacher.lines.length : lineIndex;
+        teacher.pauseUntil = performance.now() + 14000;
+        teacher.moving = false;
+        teacher.direction = "down";
+        teacher.bubble = "！";
+        teacher.bubbleUntil = performance.now() + 900;
+        dialoguePortrait.src = asset(`${teacher.id}-dialogue-portrait-v1.png`);
+        dialoguePortrait.alt = `${teacher.name}老師對話肖像`;
+        dialogueName.textContent = teacher.name;
+        dialogueRole.textContent = teacher.role;
+        dialogue.hidden = false;
+        typeDialogue(teacher.lines[activeLine]);
+        gameStatus.textContent = `正在和 ${teacher.name} 老師對話`;
+      }
+
+      function closeDialogue() {
+        typingToken += 1;
+        if (activeTeacher) {
+          activeTeacher.pauseUntil = performance.now() + 800;
+          activeTeacher.target = randomTargetFor(activeTeacher, false, performance.now());
+        }
+        activeTeacher = null;
+        dialogue.hidden = true;
+        gameStatus.textContent = "老師們正在練團室準備中";
+      }
+
+      function buildTeacherNav() {
+        teachers.forEach(teacher => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = teacher.name;
+          button.setAttribute("aria-label", `和${teacher.name}老師對話`);
+          button.addEventListener("click", () => openDialogue(teacher, 0));
+          teacherNav.append(button);
+        });
+      }
+
+      canvas.addEventListener("pointermove", event => {
+        hoveredTeacher = teacherAt(canvasPoint(event));
+        canvas.style.cursor = hoveredTeacher ? "pointer" : "default";
+      });
+
+      canvas.addEventListener("pointerleave", () => { hoveredTeacher = null; });
+
+      canvas.addEventListener("click", event => {
+        const teacher = teacherAt(canvasPoint(event));
+        if (teacher) openDialogue(teacher, 0);
+        else if (!dialogue.hidden) closeDialogue();
+      });
+
+      dialogueNext.addEventListener("click", () => {
+        if (!activeTeacher) return;
+        activeLine = (activeLine + 1) % activeTeacher.lines.length;
+        typeDialogue(activeTeacher.lines[activeLine]);
+      });
+
+      dialogueClose.addEventListener("click", closeDialogue);
+
+      musicToggle.addEventListener("click", () => {
+        if (musicWanted) stopMusic();
+        else startMusic();
+      });
+
+      window.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeDialogue();
+        if ((event.key === "Enter" || event.key === " ") && activeTeacher) {
+          event.preventDefault();
+          dialogueNext.click();
+        }
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          running = false;
+          resumeMusicWhenVisible = musicWanted && !bgMusic.paused;
+          ++musicFadeToken;
+          bgMusic.pause();
+        } else if (!running) {
+          running = true;
+          lastFrame = performance.now();
+          requestAnimationFrame(animate);
+          if (resumeMusicWhenVisible && musicWanted) {
+            bgMusic.volume = 0;
+            bgMusic.play()
+              .then(() => fadeMusic(MUSIC_VOLUME))
+              .catch(() => {
+                musicWanted = false;
+                renderMusicState(false);
+              });
+          }
+          resumeMusicWhenVisible = false;
+        }
+      });
+
+      loadAssets()
+        .then(() => {
+          teacherSpecs.forEach((spec, index) => teachers.push(createTeacher(spec, index)));
+          buildTeacherNav();
+          loading.classList.add("is-ready");
+          window.setTimeout(() => loading.remove(), 450);
+          requestAnimationFrame(animate);
+        })
+        .catch(error => {
+          loading.textContent = `載入失敗：${error.message}`;
+          loading.style.color = "#ffb5b5";
+          gameStatus.textContent = "場景素材載入失敗";
+        });
+    })();
+  </script>
+</body>
+</html>
