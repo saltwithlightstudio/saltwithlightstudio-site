@@ -115,6 +115,13 @@
       outline-offset: 2px;
     }
 
+    .game-control[aria-pressed="true"] {
+      color: #23120a;
+      background: var(--gold-soft);
+      border-color: #fff1c3;
+      box-shadow: 3px 3px 0 #6f431d, 0 0 16px #d8ad5b66;
+    }
+
     .music-toggle {
       min-height: 44px;
       padding: 8px 12px;
@@ -358,15 +365,20 @@
     <header class="page-header">
       <div>
         <p class="eyebrow">Salt &amp; Light · RPG Scene Prototype</p>
-        <h1>十週年練團室</h1>
+        <h1 id="roomTitle">十週年練團室</h1>
       </div>
       <div class="header-meta">
         <p class="status" id="gameStatus">老師們正在練團室準備中</p>
         <nav class="game-controls" aria-label="遊戲頁面控制">
+          <button class="game-control" id="teacherRoomButton" type="button" aria-pressed="true">老師練團室</button>
+          <button class="game-control" id="participantRoomButton" type="button" aria-pressed="false">參加者休息室</button>
           <a class="game-control" href="index.html#anniversary">← 回到十週年介面</a>
         </nav>
         <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false" aria-label="播放背景音樂">
           ♫ <span id="musicToggleText">音樂：關</span>
+        </button>
+        <button class="music-toggle" id="sfxToggle" type="button" aria-pressed="false" aria-label="開啟角色音效">
+          🔊 <span id="sfxToggleText">音效：關</span>
         </button>
       </div>
     </header>
@@ -376,7 +388,7 @@
       <source src="assets/anniversary-rpg/warm-family-theme.mp3" type="audio/mpeg">
     </audio>
 
-    <section class="game-shell" aria-label="鹽與光十週年 RPG 練團室互動場景">
+    <section class="game-shell" id="gameShell" aria-label="鹽與光十週年 RPG 練團室互動場景">
       <div class="canvas-wrap">
         <canvas id="game" width="1672" height="941" aria-label="六位老師在練團室中走動；點擊角色可以互動"></canvas>
         <div class="loading" id="loading">LOADING RPG ROOM</div>
@@ -396,7 +408,7 @@
     </section>
 
     <div class="hud">
-      <span><strong>操作：</strong>點擊場景中的老師開始 RPG 對話；走動一段時間後，Mina 與宛庭會自主展現個人化動作，下方姓名按鈕也可直接開啟對話。</span>
+      <span id="roomInstructions"><strong>操作：</strong>點擊老師開始對話；特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。</span>
       <nav class="teacher-nav" id="teacherNav" aria-label="選擇老師互動"></nav>
     </div>
     <p class="note">十週年音樂會資訊將持續更新；場地與節目安排仍待確認，請以鹽與光後續正式公告為準。</p>
@@ -409,12 +421,17 @@
       const WIDTH = 1672;
       const HEIGHT = 941;
       const ASSET_ROOT = "assets/anniversary-rpg";
-      const ASSET_VERSION = "20260716-dialogue-portraits-v1";
+      const ASSET_VERSION = "20260719-participant-lounge-v2";
       const canvas = document.querySelector("#game");
       const context = canvas.getContext("2d", { alpha: false });
       const loading = document.querySelector("#loading");
+      const roomTitle = document.querySelector("#roomTitle");
+      const gameShell = document.querySelector("#gameShell");
       const gameStatus = document.querySelector("#gameStatus");
+      const roomInstructions = document.querySelector("#roomInstructions");
       const teacherNav = document.querySelector("#teacherNav");
+      const teacherRoomButton = document.querySelector("#teacherRoomButton");
+      const participantRoomButton = document.querySelector("#participantRoomButton");
       const dialogue = document.querySelector("#dialogue");
       const dialoguePortrait = document.querySelector("#dialoguePortrait");
       const dialogueName = document.querySelector("#dialogueName");
@@ -425,8 +442,12 @@
       const bgMusic = document.querySelector("#bgMusic");
       const musicToggle = document.querySelector("#musicToggle");
       const musicToggleText = document.querySelector("#musicToggleText");
+      const sfxToggle = document.querySelector("#sfxToggle");
+      const sfxToggleText = document.querySelector("#sfxToggleText");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const directions = ["down", "up", "left", "right"];
+      const ROOM_TEACHERS = "teachers";
+      const ROOM_PARTICIPANTS = "participants";
 
       context.imageSmoothingEnabled = false;
 
@@ -510,6 +531,69 @@
         }
       ];
 
+      const participantSpecs = [
+        {
+          id: "participant-alumni",
+          kind: "participant",
+          name: "歷屆學員",
+          role: "返場參加者",
+          x: 520,
+          y: 610,
+          colors: { hair: "#372118", shirt: "#5f9fc6", accent: "#f0d49a" },
+          lines: [
+            "這裡是參加者休息室，不是老師辦公室喔！我們正在等十週年舞台的集合通知。",
+            "我以前曾在鹽與光上課，這次想帶著一路練習的成果回到舞台。",
+            "正式參加者名單確認後，我的名字、造型和故事就會更新在這裡。"
+          ],
+          bubbles: ["好久不見！", "一起上台", "準備中"]
+        },
+        {
+          id: "participant-band",
+          kind: "participant",
+          name: "演出夥伴",
+          role: "合作樂手",
+          x: 760,
+          y: 500,
+          colors: { hair: "#18171b", shirt: "#8b4f8f", accent: "#9bd7a8" },
+          lines: [
+            "我是受邀一起完成演出的合作夥伴，正在確認樂器、曲目和走位。",
+            "這個房間會留給非鹽與光老師的演出人員，大家可以在這裡留下自己的故事。",
+            "等名單定案後，再把我換成真正的參加者角色吧！"
+          ],
+          bubbles: ["一起合奏！", "確認曲目", "♪"]
+        },
+        {
+          id: "participant-crew",
+          kind: "participant",
+          name: "幕後夥伴",
+          role: "活動工作人員",
+          x: 990,
+          y: 670,
+          colors: { hair: "#5b3421", shirt: "#4d805d", accent: "#f2aa66" },
+          lines: [
+            "舞台上的每一道光、每一條線材，都有人在背後默默守著。",
+            "我不是鹽與光老師，是這次活動的幕後參加人員。",
+            "之後可以把工作分工、任務提示或彩蛋放進我的對話裡。"
+          ],
+          bubbles: ["線路 OK", "道具確認", "收到！"]
+        },
+        {
+          id: "participant-guest",
+          kind: "participant",
+          name: "神祕來賓",
+          role: "待公開參加者",
+          x: 1210,
+          y: 570,
+          colors: { hair: "#24202d", shirt: "#a36748", accent: "#e6d3ef" },
+          lines: [
+            "噓——我的身分還不能公開，但可以確定我不是鹽與光老師。",
+            "等正式參加者資料準備好，這個位置就會揭曉真正的名字與造型。",
+            "在那之前，先把我當成休息室裡的一個小彩蛋吧。"
+          ],
+          bubbles: ["保密中", "猜猜我是誰", "？"]
+        }
+      ];
+
       const minaCatSpecs = [
         { type: "tabby", dx: -42, dy: 9, height: 58, phase: .2, entry: -1, flip: false, layer: "front" },
         { type: "tabby", dx: -48, dy: -38, height: 45, phase: 1.5, entry: -1, flip: true, layer: "front" },
@@ -530,9 +614,9 @@
       const minaActionLines = [
         "貓咪集合～",
         "可愛的貓咪♡",
-        "這個呼嚕聲太犯規了！",
+        "這個喵喵聲太犯規了！",
         "治癒心靈的時候～",
-        "猩猩也想一起玩！",
+        "紅毛 Monkey 也想一起玩！",
         "今天也慢慢充電吧♡"
       ];
 
@@ -580,30 +664,80 @@
         }
       };
 
+      const teacherReactionLines = {
+        ting: [
+          "低頻幫 {name} 撐住！",
+          "這段 Groove 很可以。",
+          "主角交給你，底下有我。"
+        ],
+        mina: [
+          "好可愛～{name} 加油！",
+          "大家看這邊，主角登場！",
+          "開心最重要～"
+        ],
+        wanting: [
+          "先呼吸，享受 {name} 的節奏。",
+          "這一刻很平靜，也很美。",
+          "讓聲音慢慢發生。"
+        ],
+        tc: [
+          "細節到位，{name} 繼續。",
+          "這段可以，再精準一點。",
+          "主角零件安裝完成。"
+        ],
+        cindy: [
+          "我幫 {name} 鋪個和弦。",
+          "這段很誠實，也很好聽。",
+          "卡洛說：可以出航！"
+        ],
+        liling: [
+          "小麻雀說 {name} 很可以！",
+          "啾～這段飛得很遠。",
+          "輕輕唱，也會被聽見。"
+        ]
+      };
+
+      const teacherReactionOverrides = {
+        mina: {
+          tc: "噢不！我教室的吸音棉",
+          wanting: "啊～是可愛的貓貓"
+        },
+        tc: {
+          mina: "這老頭又在玩模型！"
+        }
+      };
+
       const images = new Map();
       const teachers = [];
+      // 參加者角色先留空，等正式名單與造型確認後再加入。
+      const participants = [];
       let background = null;
+      let participantBackground = null;
       let hoveredTeacher = null;
       let activeTeacher = null;
+      let currentRoom = ROOM_TEACHERS;
       let activeLine = 0;
       let typingToken = 0;
       let lastFrame = performance.now();
       let nextAmbientAt = lastFrame + 2400;
+      let ambientDialogueLockedUntil = 0;
       let running = true;
       let minaCatAction = null;
-      let nextMinaActionAt = lastFrame + 5200;
       let wantingMeditationAction = null;
-      let nextWantingActionAt = lastFrame + 9000;
       const signatureActions = new Map();
-      const nextSignatureActionAt = new Map([
-        ["tc", lastFrame + 15000],
-        ["ting", lastFrame + 23000],
-        ["liling", lastFrame + 31000],
-        ["cindy", lastFrame + 39000]
-      ]);
+      const SPECIAL_ACTION_IDS = ["ting", "mina", "wanting", "tc", "cindy", "liling"];
+      let specialActionOrder = [];
+      let activeSpecialActionId = null;
+      let lastSpecialActionId = null;
+      let nextSpecialActionAt = lastFrame + 5000;
+      let specialReactionQueue = [];
       let musicWanted = false;
       let resumeMusicWhenVisible = false;
       let musicFadeToken = 0;
+      let sfxEnabled = false;
+      let audioContext = null;
+      let lastCatSoundAt = 0;
+      let activeSpecialSound = null;
 
       const MUSIC_VOLUME = 0.34;
 
@@ -653,6 +787,566 @@
         fadeMusic(0, 240, () => bgMusic.pause());
       }
 
+      function renderSfxState(enabled) {
+        sfxToggle.setAttribute("aria-pressed", String(enabled));
+        sfxToggle.setAttribute("aria-label", enabled ? "關閉角色音效" : "開啟角色音效");
+        sfxToggleText.textContent = enabled ? "音效：開" : "音效：關";
+      }
+
+      function getAudioContext() {
+        if (audioContext) return audioContext;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return null;
+        audioContext = new AudioContextClass();
+        return audioContext;
+      }
+
+      function trackSpecialSource(session, source) {
+        if (session) session.sources.push(source);
+        return source;
+      }
+
+      function createNoiseBuffer(audio, duration, smoothing = 0) {
+        const frameCount = Math.max(1, Math.floor(audio.sampleRate * duration));
+        const buffer = audio.createBuffer(1, frameCount, audio.sampleRate);
+        const data = buffer.getChannelData(0);
+        let last = 0;
+        for (let index = 0; index < frameCount; index += 1) {
+          const white = Math.random() * 2 - 1;
+          last = last * smoothing + white * (1 - smoothing);
+          const scale = smoothing > .8 ? 4 : 1;
+          data[index] = Math.max(-1, Math.min(1, last * scale));
+        }
+        return buffer;
+      }
+
+      function stopSpecialActionSound(id = null, immediate = false) {
+        const session = activeSpecialSound;
+        if (!session || (id && session.id !== id)) return;
+        activeSpecialSound = null;
+        delete gameShell.dataset.specialSound;
+        delete gameShell.dataset.specialSoundContainsBass;
+        session.timers.forEach(timer => window.clearTimeout(timer));
+
+        const now = session.audio.currentTime;
+        if (!immediate) {
+          try {
+            session.master.gain.cancelScheduledValues(now);
+            session.master.gain.setValueAtTime(Math.max(.0001, session.master.gain.value), now);
+            session.master.gain.exponentialRampToValueAtTime(.0001, now + .08);
+          } catch {}
+        }
+        session.sources.forEach(source => {
+          try { source.stop(immediate ? now : now + .09); } catch {}
+        });
+        const disconnect = () => {
+          try { session.master.disconnect(); } catch {}
+          try { session.limiter.disconnect(); } catch {}
+        };
+        if (immediate) disconnect();
+        else window.setTimeout(disconnect, 140);
+      }
+
+      function beginSpecialActionSound(id, volume = .78) {
+        stopSpecialActionSound();
+        if (!sfxEnabled || currentRoom !== ROOM_TEACHERS || activeSpecialActionId !== id) return null;
+        const audio = getAudioContext();
+        if (!audio || audio.state !== "running") return null;
+        const master = audio.createGain();
+        const limiter = audio.createDynamicsCompressor();
+        master.gain.setValueAtTime(volume, audio.currentTime);
+        limiter.threshold.setValueAtTime(-8, audio.currentTime);
+        limiter.knee.setValueAtTime(6, audio.currentTime);
+        limiter.ratio.setValueAtTime(12, audio.currentTime);
+        limiter.attack.setValueAtTime(.003, audio.currentTime);
+        limiter.release.setValueAtTime(.14, audio.currentTime);
+        master.connect(limiter);
+        limiter.connect(audio.destination);
+        const session = { id, audio, master, limiter, sources: [], timers: [], containsBass: id === "ting" };
+        activeSpecialSound = session;
+        gameShell.dataset.specialSound = id;
+        gameShell.dataset.specialSoundContainsBass = String(session.containsBass);
+        console.assert(!session.containsBass || id === "ting", "Bass 音效只能由 Ting 觸發");
+        return session;
+      }
+
+      function scheduleTone(session, {
+        at = 0,
+        frequency,
+        endFrequency = frequency,
+        duration = .3,
+        type = "sine",
+        volume = .06,
+        attack = .01,
+        release = .12,
+        destination = session.master
+      }) {
+        const audio = session.audio;
+        const startsAt = audio.currentTime + at;
+        const endsAt = startsAt + duration;
+        const releaseAt = Math.max(startsAt + attack + .001, endsAt - release);
+        const oscillator = trackSpecialSource(session, audio.createOscillator());
+        const gain = audio.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(Math.max(1, frequency), startsAt);
+        if (endFrequency !== frequency) {
+          oscillator.frequency.exponentialRampToValueAtTime(Math.max(1, endFrequency), endsAt);
+        }
+        gain.gain.setValueAtTime(.0001, startsAt);
+        gain.gain.exponentialRampToValueAtTime(Math.max(.0002, volume), startsAt + attack);
+        gain.gain.setValueAtTime(Math.max(.0002, volume * .72), releaseAt);
+        gain.gain.exponentialRampToValueAtTime(.0001, endsAt);
+        oscillator.connect(gain);
+        gain.connect(destination);
+        oscillator.start(startsAt);
+        oscillator.stop(endsAt + .03);
+        return oscillator;
+      }
+
+      function scheduleNoise(session, {
+        at = 0,
+        duration = .3,
+        volume = .04,
+        smoothing = 0,
+        filterType = "bandpass",
+        filterFrequency = 1200,
+        q = .8,
+        attack = .015,
+        release = .08,
+        destination = session.master
+      }) {
+        const audio = session.audio;
+        const startsAt = audio.currentTime + at;
+        const endsAt = startsAt + duration;
+        const releaseAt = Math.max(startsAt + attack + .001, endsAt - release);
+        const source = trackSpecialSource(session, audio.createBufferSource());
+        const filter = audio.createBiquadFilter();
+        const gain = audio.createGain();
+        source.buffer = createNoiseBuffer(audio, duration + .05, smoothing);
+        filter.type = filterType;
+        filter.frequency.setValueAtTime(filterFrequency, startsAt);
+        filter.Q.setValueAtTime(q, startsAt);
+        gain.gain.setValueAtTime(.0001, startsAt);
+        gain.gain.exponentialRampToValueAtTime(Math.max(.0002, volume), startsAt + attack);
+        gain.gain.setValueAtTime(Math.max(.0002, volume * .7), releaseAt);
+        gain.gain.exponentialRampToValueAtTime(.0001, endsAt);
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(destination);
+        source.start(startsAt);
+        source.stop(endsAt + .03);
+        return source;
+      }
+
+      function playWantingForestSounds(session) {
+        const audio = session.audio;
+        const startsAt = audio.currentTime;
+        const wind = trackSpecialSource(session, audio.createBufferSource());
+        const highpass = audio.createBiquadFilter();
+        const lowpass = audio.createBiquadFilter();
+        const windGain = audio.createGain();
+        wind.buffer = createNoiseBuffer(audio, 2.4, .975);
+        wind.loop = true;
+        highpass.type = "highpass";
+        highpass.frequency.setValueAtTime(260, startsAt);
+        lowpass.type = "lowpass";
+        lowpass.frequency.setValueAtTime(2600, startsAt);
+        windGain.gain.setValueAtTime(.0001, startsAt);
+        windGain.gain.exponentialRampToValueAtTime(.038, startsAt + .9);
+        windGain.gain.setValueAtTime(.038, startsAt + 7.7);
+        windGain.gain.exponentialRampToValueAtTime(.0001, startsAt + 9.15);
+        wind.connect(highpass);
+        highpass.connect(lowpass);
+        lowpass.connect(windGain);
+        windGain.connect(session.master);
+        wind.start(startsAt);
+        wind.stop(startsAt + 9.2);
+
+        const bells = [
+          { at: .35, note: 659.25 },
+          { at: 2.25, note: 783.99 },
+          { at: 4.25, note: 880 },
+          { at: 6.35, note: 698.46 }
+        ];
+        bells.forEach(({ at, note }) => {
+          [
+            { ratio: 1, volume: .07, duration: 2.1 },
+            { ratio: 2.01, volume: .028, duration: 1.6 },
+            { ratio: 2.72, volume: .015, duration: 1.15 }
+          ].forEach(partial => scheduleTone(session, {
+            at,
+            frequency: note * partial.ratio,
+            duration: partial.duration,
+            volume: partial.volume,
+            attack: .008,
+            release: partial.duration * .82
+          }));
+        });
+
+      }
+
+      function playTingBassSolo(session) {
+        if (session.id !== "ting" || activeSpecialActionId !== "ting") return;
+        const audio = session.audio;
+        const toneFilter = audio.createBiquadFilter();
+        toneFilter.type = "lowpass";
+        toneFilter.frequency.setValueAtTime(980, audio.currentTime);
+        toneFilter.Q.setValueAtTime(.9, audio.currentTime);
+        toneFilter.connect(session.master);
+        const notes = [
+          { frequency: 82.41, duration: .78 },
+          { frequency: 98, duration: .78 },
+          { frequency: 110, duration: 1.05 },
+          { frequency: 123.47, duration: .68 },
+          { frequency: 146.83, duration: 1.16 },
+          { frequency: 123.47, duration: .75 },
+          { frequency: 110, duration: .82 },
+          { frequency: 98, duration: 1.3 }
+        ];
+        let at = .25;
+        notes.forEach((note, index) => {
+          scheduleTone(session, {
+            at,
+            frequency: note.frequency * 1.012,
+            endFrequency: note.frequency,
+            duration: note.duration,
+            type: "triangle",
+            volume: index === 4 ? .13 : .105,
+            attack: .018,
+            release: Math.min(.28, note.duration * .38),
+            destination: toneFilter
+          });
+          scheduleTone(session, {
+            at,
+            frequency: note.frequency * 2,
+            endFrequency: note.frequency * 2.005,
+            duration: note.duration * .72,
+            type: "sine",
+            volume: .025,
+            attack: .012,
+            release: .2,
+            destination: toneFilter
+          });
+          scheduleNoise(session, {
+            at,
+            duration: .055,
+            volume: .012,
+            filterFrequency: 720,
+            q: 1.3,
+            release: .04,
+            destination: toneFilter
+          });
+          at += note.duration + .09;
+        });
+      }
+
+      function playCindyDogBarks(session) {
+        const audio = session.audio;
+        const startsAt = audio.currentTime;
+        const barkHighpass = audio.createBiquadFilter();
+        const barkLowpass = audio.createBiquadFilter();
+
+        barkHighpass.type = "highpass";
+        barkHighpass.frequency.setValueAtTime(280, startsAt);
+        barkHighpass.Q.setValueAtTime(.55, startsAt);
+        barkLowpass.type = "lowpass";
+        barkLowpass.frequency.setValueAtTime(3500, startsAt);
+        barkLowpass.Q.setValueAtTime(.55, startsAt);
+        barkHighpass.connect(barkLowpass);
+        barkLowpass.connect(session.master);
+
+        function scheduleNaturalBark({ at, duration, base, level, f1, f2 }) {
+          const beginsAt = audio.currentTime + at;
+          const endsAt = beginsAt + duration;
+          const noise = trackSpecialSource(session, audio.createBufferSource());
+          const firstFormant = audio.createBiquadFilter();
+          const secondFormant = audio.createBiquadFilter();
+          const firstFormantGain = audio.createGain();
+          const secondFormantGain = audio.createGain();
+          const barkEnvelope = audio.createGain();
+          const voice = trackSpecialSource(session, audio.createOscillator());
+          const voiceLowpass = audio.createBiquadFilter();
+          const voiceEnvelope = audio.createGain();
+          const voiceEndsAt = Math.min(endsAt, beginsAt + .095);
+
+          noise.buffer = createNoiseBuffer(audio, duration + .03, .22);
+          firstFormant.type = "bandpass";
+          firstFormant.frequency.setValueAtTime(f1, beginsAt);
+          firstFormant.frequency.exponentialRampToValueAtTime(f1 * .8, endsAt);
+          firstFormant.Q.setValueAtTime(1.3, beginsAt);
+          firstFormantGain.gain.setValueAtTime(.085 * level, beginsAt);
+          secondFormant.type = "bandpass";
+          secondFormant.frequency.setValueAtTime(f2, beginsAt);
+          secondFormant.frequency.exponentialRampToValueAtTime(f2 * .88, endsAt);
+          secondFormant.Q.setValueAtTime(1.7, beginsAt);
+          secondFormantGain.gain.setValueAtTime(.035 * level, beginsAt);
+
+          barkEnvelope.gain.setValueAtTime(.0001, beginsAt);
+          barkEnvelope.gain.linearRampToValueAtTime(1, beginsAt + .003);
+          barkEnvelope.gain.exponentialRampToValueAtTime(.55, beginsAt + .018);
+          barkEnvelope.gain.linearRampToValueAtTime(.8, beginsAt + .032);
+          barkEnvelope.gain.exponentialRampToValueAtTime(.14, beginsAt + duration * .62);
+          barkEnvelope.gain.exponentialRampToValueAtTime(.0001, endsAt);
+
+          noise.connect(firstFormant);
+          noise.connect(secondFormant);
+          firstFormant.connect(firstFormantGain);
+          secondFormant.connect(secondFormantGain);
+          firstFormantGain.connect(barkEnvelope);
+          secondFormantGain.connect(barkEnvelope);
+          barkEnvelope.connect(barkHighpass);
+
+          voice.type = "triangle";
+          voice.frequency.setValueAtTime(base, beginsAt);
+          voice.frequency.exponentialRampToValueAtTime(base * 1.1, beginsAt + .01);
+          voice.frequency.exponentialRampToValueAtTime(base * .74, voiceEndsAt);
+          voiceLowpass.type = "lowpass";
+          voiceLowpass.frequency.setValueAtTime(1300, beginsAt);
+          voiceLowpass.Q.setValueAtTime(.65, beginsAt);
+          voiceEnvelope.gain.setValueAtTime(.0001, beginsAt);
+          voiceEnvelope.gain.exponentialRampToValueAtTime(.021 * level, beginsAt + .006);
+          voiceEnvelope.gain.exponentialRampToValueAtTime(.006 * level, beginsAt + .045);
+          voiceEnvelope.gain.exponentialRampToValueAtTime(.0001, voiceEndsAt);
+          voice.connect(voiceLowpass);
+          voiceLowpass.connect(voiceEnvelope);
+          voiceEnvelope.connect(barkHighpass);
+
+          noise.start(beginsAt);
+          voice.start(beginsAt);
+          noise.stop(endsAt + .02);
+          voice.stop(voiceEndsAt + .02);
+        }
+
+        [
+          { at: .42, duration: .15, base: 470, level: .92, f1: 920, f2: 2050 },
+          { at: .7, duration: .105, base: 545, level: .66, f1: 1030, f2: 2320 },
+          { at: 3.62, duration: .155, base: 445, level: 1, f1: 870, f2: 1920 },
+          { at: 3.91, duration: .125, base: 510, level: .76, f1: 970, f2: 2180 },
+          { at: 4.29, duration: .095, base: 575, level: .54, f1: 1080, f2: 2450 }
+        ].forEach(scheduleNaturalBark);
+      }
+
+      function playLilingSparrowChirps(session) {
+        const birdHighpass = session.audio.createBiquadFilter();
+        birdHighpass.type = "highpass";
+        birdHighpass.frequency.setValueAtTime(1600, session.audio.currentTime);
+        birdHighpass.Q.setValueAtTime(.7, session.audio.currentTime);
+        birdHighpass.connect(session.master);
+        const clusters = [
+          { at: .35, pitches: [2900, 3900, 3300] },
+          { at: 2.15, pitches: [3450, 4450, 3700, 4700] },
+          { at: 4.45, pitches: [2750, 3650, 4300] },
+          { at: 6.75, pitches: [3300, 4550, 3850, 4850] }
+        ];
+        clusters.forEach(cluster => {
+          cluster.pitches.forEach((pitch, index) => {
+            const duration = index % 2 ? .085 : .11;
+            scheduleTone(session, {
+              at: cluster.at + index * .13,
+              frequency: pitch,
+              endFrequency: pitch * (index % 2 ? .82 : 1.26),
+              duration,
+              type: "sine",
+              volume: .05,
+              attack: .012,
+              release: duration * .52,
+              destination: birdHighpass
+            });
+            scheduleNoise(session, {
+              at: cluster.at + index * .13,
+              duration: .045,
+              volume: .008,
+              filterType: "highpass",
+              filterFrequency: 3200,
+              q: .6,
+              release: .025,
+              destination: birdHighpass
+            });
+          });
+        });
+      }
+
+      function playTcCraftingSounds(session) {
+        const workshopHighpass = session.audio.createBiquadFilter();
+        workshopHighpass.type = "highpass";
+        workshopHighpass.frequency.setValueAtTime(520, session.audio.currentTime);
+        workshopHighpass.Q.setValueAtTime(.7, session.audio.currentTime);
+        workshopHighpass.connect(session.master);
+        [.28, .56, 2.15, 2.36, 5.15, 5.42, 7.85].forEach((at, index) => {
+          scheduleTone(session, {
+            at,
+            frequency: 1150 + index * 45,
+            endFrequency: 430,
+            duration: .055,
+            type: "square",
+            volume: .035,
+            attack: .005,
+            release: .04,
+            destination: workshopHighpass
+          });
+          scheduleNoise(session, {
+            at,
+            duration: .07,
+            volume: .025,
+            filterType: "highpass",
+            filterFrequency: 1700,
+            q: .75,
+            release: .05,
+            destination: workshopHighpass
+          });
+        });
+
+        [
+          { at: 1.05, duration: .72, frequency: 2300 },
+          { at: 3.05, duration: 1.05, frequency: 1950 }
+        ].forEach(sanding => scheduleNoise(session, {
+          at: sanding.at,
+          duration: sanding.duration,
+          volume: .045,
+          smoothing: .08,
+          filterType: "bandpass",
+          filterFrequency: sanding.frequency,
+          q: .7,
+          attack: .08,
+          release: .18,
+          destination: workshopHighpass
+        }));
+
+        scheduleNoise(session, {
+          at: 6.05,
+          duration: 1.25,
+          volume: .04,
+          smoothing: .04,
+          filterType: "highpass",
+          filterFrequency: 2200,
+          q: .65,
+          attack: .16,
+          release: .24,
+          destination: workshopHighpass
+        });
+      }
+
+      function playSpecialActionSound(id) {
+        const volumeById = {
+          mina: .76,
+          wanting: .76,
+          ting: .8,
+          cindy: .72,
+          liling: .68,
+          tc: .68
+        };
+        const session = beginSpecialActionSound(id, volumeById[id] || .72);
+        if (!session) return;
+        if (id === "mina") playMinaCatSounds(session);
+        else if (id === "wanting") playWantingForestSounds(session);
+        else if (id === "ting") playTingBassSolo(session);
+        else if (id === "cindy") playCindyDogBarks(session);
+        else if (id === "liling") playLilingSparrowChirps(session);
+        else if (id === "tc") playTcCraftingSounds(session);
+      }
+
+      function playCatMeow(pitchShift = 0, volume = .16, session = null) {
+        if (!sfxEnabled) return;
+        const audio = getAudioContext();
+        if (!audio || audio.state !== "running") return;
+        const now = audio.currentTime;
+        const duration = .62 + Math.random() * .2;
+        const base = 610 + pitchShift + Math.random() * 90;
+        const output = audio.createGain();
+        const formant = audio.createBiquadFilter();
+        const voice = audio.createOscillator();
+        const overtone = audio.createOscillator();
+        const overtoneGain = audio.createGain();
+
+        output.gain.setValueAtTime(.0001, now);
+        output.gain.exponentialRampToValueAtTime(volume, now + .055);
+        output.gain.setValueAtTime(volume, now + duration * .48);
+        output.gain.exponentialRampToValueAtTime(.0001, now + duration);
+
+        formant.type = "bandpass";
+        formant.Q.setValueAtTime(2.4, now);
+        formant.frequency.setValueAtTime(1180 + pitchShift, now);
+        formant.frequency.exponentialRampToValueAtTime(820 + Math.max(0, pitchShift), now + duration);
+
+        voice.type = "triangle";
+        voice.frequency.setValueAtTime(base, now);
+        voice.frequency.exponentialRampToValueAtTime(base * 1.42, now + duration * .2);
+        voice.frequency.exponentialRampToValueAtTime(base * .72, now + duration);
+
+        overtone.type = "sine";
+        overtone.frequency.setValueAtTime(base * 2.02, now);
+        overtone.frequency.exponentialRampToValueAtTime(base * 2.78, now + duration * .2);
+        overtone.frequency.exponentialRampToValueAtTime(base * 1.38, now + duration);
+        overtoneGain.gain.setValueAtTime(.14, now);
+
+        voice.connect(formant);
+        overtone.connect(overtoneGain);
+        overtoneGain.connect(formant);
+        formant.connect(output);
+        output.connect(session?.master || audio.destination);
+        trackSpecialSource(session, voice);
+        trackSpecialSource(session, overtone);
+        voice.start(now);
+        overtone.start(now);
+        voice.stop(now + duration + .04);
+        overtone.stop(now + duration + .04);
+        lastCatSoundAt = performance.now();
+      }
+
+      function playMinaCatSounds(session) {
+        if (!sfxEnabled || currentRoom !== ROOM_TEACHERS) return;
+        if (!session && performance.now() - lastCatSoundAt < 700) return;
+        playCatMeow(Math.random() * 90 - 30, .16, session);
+        const timer = window.setTimeout(() => {
+          if (
+            sfxEnabled &&
+            currentRoom === ROOM_TEACHERS &&
+            activeSpecialActionId === "mina" &&
+            activeSpecialSound === session
+          ) {
+            playCatMeow(115, .12, session);
+          }
+        }, 820);
+        if (session) session.timers.push(timer);
+      }
+
+      async function enableSfx() {
+        const audio = getAudioContext();
+        if (!audio) {
+          gameStatus.textContent = "此瀏覽器不支援角色音效";
+          return;
+        }
+        try {
+          await audio.resume();
+          sfxEnabled = true;
+          renderSfxState(true);
+          const announceSfx = !activeSpecialActionId;
+          if (activeSpecialActionId) {
+            playSpecialActionSound(activeSpecialActionId);
+          } else {
+            gameStatus.textContent = "角色特殊音效已開啟";
+          }
+          if (announceSfx) {
+            window.setTimeout(() => {
+              if (!activeTeacher && !activeSpecialActionId) gameStatus.textContent = currentRoom === ROOM_TEACHERS
+                ? "老師們正在練團室準備中"
+                : "參加者休息室目前尚未安排角色";
+            }, 1500);
+          }
+        } catch (error) {
+          sfxEnabled = false;
+          renderSfxState(false);
+          console.warn("角色音效無法啟用", error);
+        }
+      }
+
+      function disableSfx() {
+        stopSpecialActionSound(null, true);
+        sfxEnabled = false;
+        renderSfxState(false);
+        if (audioContext && audioContext.state === "running") audioContext.suspend().catch(() => {});
+      }
+
       function loadImage(source) {
         return new Promise((resolve, reject) => {
           const image = new Image();
@@ -667,7 +1361,10 @@
       }
 
       async function loadAssets() {
-        background = await loadImage(asset("rehearsal-room.png"));
+        [background, participantBackground] = await Promise.all([
+          loadImage(asset("rehearsal-room.png")),
+          loadImage(asset("participant-lounge-room-v2.png"))
+        ]);
         const [tabbyCat, blackCat, wantingHandpan, wantingTurtle, wantingTree] = await Promise.all([
           loadImage(asset("mina-tabby-cat.png")),
           loadImage(asset("mina-black-cat.png")),
@@ -747,22 +1444,12 @@
         });
       }
 
-      function hasClearActionSpace(teacher, now = performance.now()) {
-        return teachers.every(other => {
-          if (other === teacher) return true;
-          return !ellipseOverlap(teacher.x, teacher.y, other.x, other.y, ACTION_ZONE_X, ACTION_ZONE_Y);
-        }) && isPointClearOfActionZones(teacher.x, teacher.y, teacher, now);
-      }
-
-      function randomTargetFor(teacher = null, requireActionClearance = false, now = performance.now()) {
+      function randomTargetFor(teacher = null, now = performance.now()) {
         for (let attempt = 0; attempt < 80; attempt += 1) {
           const x = 215 + Math.random() * 1240;
           const y = 360 + Math.random() * 455;
           if (!isWalkable(x, y)) continue;
-          if (!isPointClearOfTeachers(x, y, teacher, requireActionClearance ? 2.5 : 1.15)) continue;
-          if (requireActionClearance && teachers.some(other =>
-            other !== teacher && ellipseOverlap(x, y, other.x, other.y, ACTION_ZONE_X, ACTION_ZONE_Y)
-          )) continue;
+          if (!isPointClearOfTeachers(x, y, teacher, 1.15)) continue;
           if (!isPointClearOfActionZones(x, y, teacher, now)) continue;
           return { x, y };
         }
@@ -771,13 +1458,6 @@
 
       function randomTarget() {
         return randomTargetFor();
-      }
-
-      function prepareClearActionSpace(teacher, now) {
-        teacher.target = randomTargetFor(teacher, true, now);
-        teacher.idleUntil = 0;
-        teacher.pauseUntil = Math.min(teacher.pauseUntil, now);
-        teacher.moving = true;
       }
 
       function createTeacher(spec, index) {
@@ -794,6 +1474,7 @@
           avoidSide: index % 2 ? -1 : 1,
           avoidUntil: 0,
           bubble: "",
+          bubbleSource: null,
           bubbleUntil: 0,
           drawBox: null
         };
@@ -805,35 +1486,22 @@
 
       function startMinaCatAction(now = performance.now()) {
         const mina = teachers.find(teacher => teacher.id === "mina");
-        if (!mina || !hasClearActionSpace(mina, now)) return false;
+        if (!mina) return false;
 
         const duration = 10800;
         minaCatAction = {
           startedAt: now,
-          until: now + duration
+          until: now + duration,
+          lines: shuffled(minaActionLines)
         };
-        nextMinaActionAt = now + duration + 24000;
         mina.pauseUntil = Math.max(mina.pauseUntil, now + duration + 350);
         mina.moving = false;
         mina.direction = "down";
         mina.bubble = "";
+        mina.bubbleSource = null;
         mina.target = { x: mina.x, y: mina.y };
         if (!activeTeacher) gameStatus.textContent = "Mina 正和五隻虎斑貓、一隻黑貓玩耍中";
         return true;
-      }
-
-      function updateMinaCatAction(now) {
-        if (minaCatAction && now >= minaCatAction.until) {
-          minaCatAction = null;
-          if (!activeTeacher) gameStatus.textContent = "老師們正在練團室準備中";
-        }
-        if (!minaCatAction && !activeTeacher && now >= nextMinaActionAt) {
-          const mina = teachers.find(teacher => teacher.id === "mina");
-          if (!startMinaCatAction(now) && mina) {
-            prepareClearActionSpace(mina, now);
-            nextMinaActionAt = now + 650;
-          }
-        }
       }
 
       function isWantingActionActive(now = performance.now()) {
@@ -842,32 +1510,22 @@
 
       function startWantingMeditationAction(now = performance.now()) {
         const wanting = teachers.find(teacher => teacher.id === "wanting");
-        if (!wanting || !hasClearActionSpace(wanting, now)) return false;
+        if (!wanting) return false;
 
         const duration = 9800;
-        wantingMeditationAction = { startedAt: now, until: now + duration };
-        nextWantingActionAt = now + duration + 17000 + Math.random() * 5000;
+        wantingMeditationAction = {
+          startedAt: now,
+          until: now + duration,
+          lines: shuffled(wantingActionLines)
+        };
         wanting.pauseUntil = Math.max(wanting.pauseUntil, now + duration + 350);
         wanting.moving = false;
         wanting.direction = "down";
         wanting.bubble = "";
+        wanting.bubbleSource = null;
         wanting.target = { x: wanting.x, y: wanting.y };
         if (!activeTeacher) gameStatus.textContent = "宛庭老師正用手碟享受心靈平靜";
         return true;
-      }
-
-      function updateWantingMeditationAction(now) {
-        if (wantingMeditationAction && now >= wantingMeditationAction.until) {
-          wantingMeditationAction = null;
-          if (!activeTeacher) gameStatus.textContent = "老師們正在練團室準備中";
-        }
-        if (!wantingMeditationAction && !activeTeacher && now >= nextWantingActionAt) {
-          const wanting = teachers.find(teacher => teacher.id === "wanting");
-          if (!startWantingMeditationAction(now) && wanting) {
-            prepareClearActionSpace(wanting, now);
-            nextWantingActionAt = now + 650;
-          }
-        }
       }
 
       function isSignatureActionActive(id, now = performance.now()) {
@@ -878,36 +1536,171 @@
       function startSignatureAction(id, now = performance.now()) {
         const spec = signatureActionSpecs[id];
         const teacher = teachers.find(candidate => candidate.id === id);
-        if (!spec || !teacher || !hasClearActionSpace(teacher, now)) return false;
+        if (!spec || !teacher) return false;
 
-        signatureActions.set(id, { startedAt: now, until: now + spec.duration });
-        nextSignatureActionAt.set(id, now + spec.duration + 22000 + Math.random() * 8000);
+        signatureActions.set(id, {
+          startedAt: now,
+          until: now + spec.duration,
+          lines: shuffled(spec.lines)
+        });
         teacher.pauseUntil = Math.max(teacher.pauseUntil, now + spec.duration + 350);
         teacher.moving = false;
         teacher.direction = "down";
         teacher.bubble = "";
+        teacher.bubbleSource = null;
         teacher.target = { x: teacher.x, y: teacher.y };
         if (!activeTeacher) gameStatus.textContent = spec.status;
         return true;
       }
 
-      function updateSignatureActions(now) {
-        Object.keys(signatureActionSpecs).forEach(id => {
-          const action = signatureActions.get(id);
-          if (action && now >= action.until) {
-            signatureActions.delete(id);
-            const teacher = teachers.find(candidate => candidate.id === id);
-            if (teacher) teacher.target = randomTargetFor(teacher, false, now);
-            if (!activeTeacher) gameStatus.textContent = "老師們正在練團室準備中";
+      function shuffled(items) {
+        const result = [...items];
+        for (let index = result.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [result[index], result[swapIndex]] = [result[swapIndex], result[index]];
+        }
+        return result;
+      }
+
+      function nextRandomSpecialActionId() {
+        if (!specialActionOrder.length) {
+          specialActionOrder = shuffled(SPECIAL_ACTION_IDS);
+          if (specialActionOrder[0] === lastSpecialActionId && specialActionOrder.length > 1) {
+            [specialActionOrder[0], specialActionOrder[1]] = [specialActionOrder[1], specialActionOrder[0]];
           }
-          if (!signatureActions.has(id) && !activeTeacher && now >= nextSignatureActionAt.get(id)) {
-            const teacher = teachers.find(candidate => candidate.id === id);
-            if (!startSignatureAction(id, now) && teacher) {
-              prepareClearActionSpace(teacher, now);
-              nextSignatureActionAt.set(id, now + 650);
-            }
-          }
+        }
+        return specialActionOrder.shift();
+      }
+
+      function specialActionUntil(id) {
+        if (id === "mina") return minaCatAction?.until || 0;
+        if (id === "wanting") return wantingMeditationAction?.until || 0;
+        return signatureActions.get(id)?.until || 0;
+      }
+
+      function reactionLineFor(reactor, trigger) {
+        const override = teacherReactionOverrides[trigger.id]?.[reactor.id];
+        if (override) return override;
+        const lines = teacherReactionLines[reactor.id] || ["{name} 加油！"];
+        const line = lines[Math.floor(Math.random() * lines.length)];
+        return line.replace("{name}", trigger.name);
+      }
+
+      function actionDialogueAt(action, fallbackLines, duration, now) {
+        const lines = action?.lines?.length ? action.lines : fallbackLines;
+        const elapsed = Math.max(0, now - action.startedAt);
+        const slotDuration = Math.max(1, duration / lines.length);
+        const index = Math.min(lines.length - 1, Math.floor(elapsed / slotDuration));
+        return { text: lines[index], lines, index };
+      }
+
+      function scheduleSpecialReactions(triggerId, now) {
+        const trigger = teachers.find(teacher => teacher.id === triggerId);
+        if (!trigger) {
+          specialReactionQueue = [];
+          return;
+        }
+        teachers.forEach(teacher => {
+          teacher.bubble = "";
+          teacher.bubbleSource = null;
+          teacher.bubbleUntil = now;
         });
+        const reactors = shuffled(teachers.filter(teacher => teacher.id !== triggerId));
+        const reactionStart = now + 850;
+        const reactionEnd = Math.max(reactionStart + 1800, specialActionUntil(triggerId) - 450);
+        const reactionSlot = (reactionEnd - reactionStart) / Math.max(1, reactors.length);
+        specialReactionQueue = reactors.map((reactor, index) => ({
+          reactorId: reactor.id,
+          text: reactionLineFor(reactor, trigger),
+          at: reactionStart + index * reactionSlot,
+          until: Math.min(
+            reactionEnd,
+            reactionStart + (index + 1) * reactionSlot - 140
+          )
+        }));
+      }
+
+      function updateSpecialReactions(now) {
+        if (!activeSpecialActionId || !specialReactionQueue.length) return;
+        while (specialReactionQueue.length && now >= specialReactionQueue[0].at) {
+          const reaction = specialReactionQueue.shift();
+          teachers.forEach(teacher => {
+            if (teacher.id !== activeSpecialActionId) {
+              teacher.bubbleUntil = now;
+              if (teacher.bubbleSource === "special") teacher.bubbleSource = null;
+            }
+          });
+          const reactor = teachers.find(teacher => teacher.id === reaction.reactorId);
+          if (!reactor) continue;
+          reactor.bubble = reaction.text;
+          reactor.bubbleSource = "special";
+          reactor.bubbleUntil = reaction.until;
+          reactor.pauseUntil = Math.max(reactor.pauseUntil, reaction.until);
+          gameShell.dataset.reactionSpeaker = reactor.id;
+          gameShell.dataset.reactionText = reaction.text;
+        }
+      }
+
+      function clearSpecialAction(id, now = performance.now(), scheduleNext = true) {
+        if (!id) return;
+        stopSpecialActionSound(id);
+        if (id === "mina") minaCatAction = null;
+        else if (id === "wanting") wantingMeditationAction = null;
+        else signatureActions.delete(id);
+        const teacher = teachers.find(candidate => candidate.id === id);
+        if (teacher) teacher.target = randomTargetFor(teacher, now);
+        if (activeSpecialActionId === id) activeSpecialActionId = null;
+        specialReactionQueue = [];
+        teachers.forEach(candidate => {
+          candidate.bubbleUntil = Math.min(candidate.bubbleUntil, now);
+          candidate.bubbleSource = null;
+        });
+        delete gameShell.dataset.activeSpecial;
+        delete gameShell.dataset.reactionSpeaker;
+        delete gameShell.dataset.reactionText;
+        gameShell.dataset.specialEndedAt = String(Math.round(now));
+        if (scheduleNext) {
+          nextSpecialActionAt = now + 5000 + Math.random() * 4000;
+          gameShell.dataset.nextSpecialAt = String(Math.round(nextSpecialActionAt));
+        }
+        ambientDialogueLockedUntil = Math.max(ambientDialogueLockedUntil, now + 1800);
+        nextAmbientAt = Math.max(nextAmbientAt, ambientDialogueLockedUntil + 900);
+        if (!activeTeacher && currentRoom === ROOM_TEACHERS) {
+          gameStatus.textContent = "老師們正在練團室準備中";
+        }
+      }
+
+      function startSpecialAction(id, now = performance.now()) {
+        if (activeSpecialActionId || activeTeacher || currentRoom !== ROOM_TEACHERS) return false;
+        let started = false;
+        if (id === "mina") started = startMinaCatAction(now);
+        else if (id === "wanting") started = startWantingMeditationAction(now);
+        else started = startSignatureAction(id, now);
+        if (!started) return false;
+
+        activeSpecialActionId = id;
+        lastSpecialActionId = id;
+        gameShell.dataset.activeSpecial = id;
+        gameShell.dataset.specialStartedAt = String(Math.round(now));
+        ambientDialogueLockedUntil = Math.max(ambientDialogueLockedUntil, specialActionUntil(id) + 1800);
+        nextAmbientAt = Math.max(nextAmbientAt, ambientDialogueLockedUntil + 900);
+        scheduleSpecialReactions(id, now);
+        playSpecialActionSound(id);
+        return true;
+      }
+
+      function updateSpecialActionScheduler(now) {
+        if (activeSpecialActionId) {
+          if (now >= specialActionUntil(activeSpecialActionId)) {
+            clearSpecialAction(activeSpecialActionId, now, true);
+          } else {
+            updateSpecialReactions(now);
+          }
+          return;
+        }
+        if (activeTeacher || currentRoom !== ROOM_TEACHERS || now < nextSpecialActionAt) return;
+        const nextId = nextRandomSpecialActionId();
+        if (!startSpecialAction(nextId, now)) nextSpecialActionAt = now + 1000;
       }
 
       function chooseDirection(dx, dy) {
@@ -916,7 +1709,20 @@
       }
 
       function canOccupyPosition(teacher, x, y, now) {
-        if (!isWalkable(x, y) || !isPointClearOfActionZones(x, y, teacher, now)) return false;
+        if (!isWalkable(x, y)) return false;
+        if (!isPointClearOfActionZones(x, y, teacher, now)) {
+          const movingAwayFromActiveActions = teachers.every(other => {
+            if (other === teacher || !isTeacherActionActive(other, now)) return true;
+            const currentDistance =
+              ((teacher.x - other.x) / ACTION_ZONE_X) ** 2 +
+              ((teacher.y - other.y) / ACTION_ZONE_Y) ** 2;
+            const nextDistance =
+              ((x - other.x) / ACTION_ZONE_X) ** 2 +
+              ((y - other.y) / ACTION_ZONE_Y) ** 2;
+            return nextDistance > currentDistance;
+          });
+          if (!movingAwayFromActiveActions) return false;
+        }
         const radius = collisionRadius(teacher);
         return teachers.every(other => {
           if (other === teacher) return true;
@@ -952,7 +1758,7 @@
         if (distance < 8) {
           teacher.moving = false;
           teacher.idleUntil = now + 700 + Math.random() * 1800;
-          teacher.target = randomTargetFor(teacher, false, now);
+          teacher.target = randomTargetFor(teacher, now);
           if (Math.random() < .55) teacher.direction = ["down", "left", "right"][Math.floor(Math.random() * 3)];
           return;
         }
@@ -992,7 +1798,7 @@
         teacher.moving = false;
         teacher.avoidSide *= -1;
         teacher.avoidUntil = now + 480;
-        teacher.target = randomTargetFor(teacher, false, now);
+        teacher.target = randomTargetFor(teacher, now);
         teacher.idleUntil = now + 180 + Math.random() * 160;
       }
 
@@ -1005,6 +1811,113 @@
         context.arcTo(x, y + height, x, y, r);
         context.arcTo(x, y, x + width, y, r);
         context.closePath();
+      }
+
+      function participantPortraitData(participant) {
+        const portraitCanvas = document.createElement("canvas");
+        portraitCanvas.width = 240;
+        portraitCanvas.height = 300;
+        const portraitContext = portraitCanvas.getContext("2d");
+        portraitContext.imageSmoothingEnabled = false;
+        const glow = portraitContext.createRadialGradient(120, 105, 15, 120, 140, 170);
+        glow.addColorStop(0, participant.colors.accent);
+        glow.addColorStop(1, "#241020");
+        portraitContext.fillStyle = glow;
+        portraitContext.fillRect(0, 0, 240, 300);
+        portraitContext.fillStyle = "#1a1112";
+        portraitContext.fillRect(62, 248, 116, 52);
+        portraitContext.fillStyle = participant.colors.shirt;
+        portraitContext.fillRect(70, 188, 100, 72);
+        portraitContext.fillStyle = "#f2c49e";
+        portraitContext.fillRect(82, 78, 76, 112);
+        portraitContext.fillStyle = participant.colors.hair;
+        portraitContext.fillRect(72, 62, 96, 55);
+        portraitContext.fillRect(72, 92, 18, 74);
+        portraitContext.fillRect(150, 92, 18, 74);
+        portraitContext.fillStyle = "#24130f";
+        portraitContext.fillRect(100, 127, 8, 8);
+        portraitContext.fillRect(136, 127, 8, 8);
+        portraitContext.fillStyle = "#9e4d4d";
+        portraitContext.fillRect(112, 158, 24, 7);
+        portraitContext.fillStyle = participant.colors.accent;
+        portraitContext.fillRect(106, 210, 28, 28);
+        portraitContext.fillStyle = "#fff5cf";
+        portraitContext.font = '700 15px "Noto Sans TC", sans-serif';
+        portraitContext.textAlign = "center";
+        portraitContext.fillText("PARTICIPANT", 120, 282);
+        return portraitCanvas.toDataURL("image/png");
+      }
+
+      function drawParticipantRoomBackground() {
+        context.drawImage(participantBackground, 0, 0, WIDTH, HEIGHT);
+      }
+
+      function drawParticipant(participant, now) {
+        const bob = reducedMotion ? 0 : Math.sin(now * .0025 + participant.x * .01) * 3;
+        const x = participant.x;
+        const y = participant.y + bob;
+        const hovered = participant === hoveredTeacher || participant === activeTeacher;
+
+        context.save();
+        context.globalAlpha = hovered ? .8 : .28;
+        context.fillStyle = hovered ? participant.colors.accent : "#000";
+        context.beginPath();
+        context.ellipse(x, y + 5, 52, 15, 0, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+
+        context.fillStyle = "#23161a";
+        context.fillRect(x - 38, y - 42, 27, 48);
+        context.fillRect(x + 11, y - 42, 27, 48);
+        context.fillStyle = participant.colors.shirt;
+        context.fillRect(x - 57, y - 156, 114, 116);
+        context.fillStyle = participant.colors.accent;
+        context.fillRect(x - 13, y - 126, 26, 28);
+        context.fillStyle = "#f2c49e";
+        context.fillRect(x - 43, y - 238, 86, 88);
+        context.fillStyle = participant.colors.hair;
+        context.fillRect(x - 51, y - 254, 102, 52);
+        context.fillRect(x - 51, y - 226, 17, 64);
+        context.fillRect(x + 34, y - 226, 17, 64);
+        context.fillStyle = "#2a1713";
+        context.fillRect(x - 24, y - 204, 8, 8);
+        context.fillRect(x + 16, y - 204, 8, 8);
+        context.fillStyle = "#9e4d4d";
+        context.fillRect(x - 11, y - 179, 22, 7);
+
+        participant.drawBox = { x: x - 62, y: y - 258, width: 124, height: 266 };
+
+        if (participant === hoveredTeacher && participant !== activeTeacher) {
+          context.save();
+          context.font = '700 28px "Noto Sans TC", system-ui, sans-serif';
+          const width = context.measureText(participant.name).width + 46;
+          roundedRect(x - width / 2, y - 321, width, 49, 9);
+          context.fillStyle = "rgba(22, 5, 6, .92)";
+          context.fill();
+          context.strokeStyle = "#d8ad5b";
+          context.lineWidth = 3;
+          context.stroke();
+          context.fillStyle = "#f6e8c8";
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillText(participant.name, x, y - 296);
+          context.restore();
+        }
+      }
+
+      function drawParticipantRoom(now) {
+        drawParticipantRoomBackground();
+        [...participants].sort((a, b) => a.y - b.y).forEach(participant => {
+          drawParticipant(participant, now);
+          drawBubble(participant, now);
+        });
+        context.save();
+        const vignette = context.createRadialGradient(WIDTH / 2, HEIGHT / 2, 250, WIDTH / 2, HEIGHT / 2, 960);
+        vignette.addColorStop(0, "rgba(0,0,0,0)");
+        vignette.addColorStop(1, "rgba(0,0,0,.27)");
+        context.fillStyle = vignette;
+        context.fillRect(0, 0, WIDTH, HEIGHT);
+        context.restore();
       }
 
       function easeOutCubic(value) {
@@ -1091,21 +2004,19 @@
 
         const elapsed = (now - minaCatAction.startedAt) / 1000;
         const remaining = (minaCatAction.until - now) / 1000;
-        const slotDuration = 1.72;
-        const lineIndex = Math.min(minaActionLines.length - 1, Math.floor(elapsed / slotDuration));
-        const lineTime = elapsed - lineIndex * slotDuration;
-        const alpha = Math.max(0, Math.min(1, lineTime / .18, (slotDuration - lineTime) / .22, remaining / .5));
+        const alpha = Math.max(0, Math.min(1, elapsed / .2, remaining / .35));
         if (alpha <= 0) return;
 
-        const text = minaActionLines[lineIndex];
+        const dialogue = actionDialogueAt(minaCatAction, minaActionLines, 10800, now);
+        const text = dialogue.text;
         context.save();
         context.globalAlpha = alpha;
         context.font = '700 24px "Noto Sans TC", system-ui, sans-serif';
         context.textAlign = "center";
         context.textBaseline = "middle";
-        const width = context.measureText(text).width + 40;
+        const width = Math.max(...dialogue.lines.map(line => context.measureText(line).width)) + 40;
         const height = 48;
-        const x = mina.x - width / 2 + Math.sin(elapsed * 1.8) * 5;
+        const x = mina.x - width / 2;
         const y = mina.y - mina.height - 76;
 
         roundedRect(x, y, width, height, 10);
@@ -1226,21 +2137,19 @@
 
         const elapsed = (now - wantingMeditationAction.startedAt) / 1000;
         const remaining = (wantingMeditationAction.until - now) / 1000;
-        const slotDuration = 4.7;
-        const lineIndex = Math.min(wantingActionLines.length - 1, Math.floor(elapsed / slotDuration));
-        const lineTime = elapsed - lineIndex * slotDuration;
-        const alpha = Math.max(0, Math.min(1, lineTime / .22, (slotDuration - lineTime) / .3, remaining / .5));
+        const alpha = Math.max(0, Math.min(1, elapsed / .2, remaining / .35));
         if (alpha <= 0) return;
 
-        const text = wantingActionLines[lineIndex];
+        const dialogue = actionDialogueAt(wantingMeditationAction, wantingActionLines, 9800, now);
+        const text = dialogue.text;
         context.save();
         context.globalAlpha = alpha;
         context.font = '700 23px "Noto Sans TC", system-ui, sans-serif';
         context.textAlign = "center";
         context.textBaseline = "middle";
-        const width = context.measureText(text).width + 42;
+        const width = Math.max(...dialogue.lines.map(line => context.measureText(line).width)) + 42;
         const height = 48;
-        const x = wanting.x - width / 2 + Math.sin(elapsed * 1.3) * 4;
+        const x = wanting.x - width / 2;
         const y = wanting.y - 224;
         roundedRect(x, y, width, height, 10);
         context.fillStyle = "rgba(239, 251, 239, .97)";
@@ -1488,19 +2397,17 @@
 
         const elapsed = (now - action.startedAt) / 1000;
         const remaining = (action.until - now) / 1000;
-        const slotDuration = spec.duration / 1000 / spec.lines.length;
-        const lineIndex = Math.min(spec.lines.length - 1, Math.floor(elapsed / slotDuration));
-        const lineTime = elapsed - lineIndex * slotDuration;
-        const alpha = Math.max(0, Math.min(1, lineTime / .22, (slotDuration - lineTime) / .3, remaining / .5));
+        const alpha = Math.max(0, Math.min(1, elapsed / .2, remaining / .35));
         if (alpha <= 0) return;
 
-        const text = spec.lines[lineIndex];
+        const dialogue = actionDialogueAt(action, spec.lines, spec.duration, now);
+        const text = dialogue.text;
         context.save();
         context.globalAlpha = alpha;
         context.font = '700 21px "Noto Sans TC", system-ui, sans-serif';
         context.textAlign = "center";
         context.textBaseline = "middle";
-        const width = Math.min(560, context.measureText(text).width + 38);
+        const width = Math.min(560, Math.max(...dialogue.lines.map(line => context.measureText(line).width)) + 38);
         const height = 46;
         const x = Math.max(12, Math.min(WIDTH - width - 12, teacher.x - width / 2));
         const y = Math.max(18, teacher.y - spec.size - 46);
@@ -1526,6 +2433,7 @@
 
       function drawBubble(teacher, now) {
         if (!teacher.bubble || now > teacher.bubbleUntil) return;
+        if (currentRoom === ROOM_TEACHERS && activeSpecialActionId && teacher.bubbleSource !== "special") return;
         context.save();
         context.font = '600 20px "Noto Sans TC", system-ui, sans-serif';
         context.textBaseline = "middle";
@@ -1612,6 +2520,10 @@
 
       function draw(now) {
         context.imageSmoothingEnabled = false;
+        if (currentRoom === ROOM_PARTICIPANTS) {
+          drawParticipantRoom(now);
+          return;
+        }
         context.drawImage(background, 0, 0, WIDTH, HEIGHT);
 
         const ordered = [...teachers].sort((a, b) => a.y - b.y);
@@ -1642,23 +2554,36 @@
         if (!running) return;
         const delta = Math.min(42, now - lastFrame);
         lastFrame = now;
-        updateMinaCatAction(now);
-        updateWantingMeditationAction(now);
-        updateSignatureActions(now);
-        teachers.forEach(teacher => updateTeacher(teacher, delta, now));
+        if (currentRoom === ROOM_TEACHERS) {
+          updateSpecialActionScheduler(now);
+          teachers.forEach(teacher => updateTeacher(teacher, delta, now));
 
-        if (!reducedMotion && now >= nextAmbientAt) {
-          const candidates = teachers.filter(teacher =>
-            teacher !== activeTeacher &&
-            !(teacher.id === "mina" && isMinaActionActive(now)) &&
-            !(teacher.id === "wanting" && isWantingActionActive(now)) &&
-            !isSignatureActionActive(teacher.id, now)
-          );
-          const teacher = candidates[Math.floor(Math.random() * candidates.length)];
-          if (teacher) {
-            teacher.bubble = teacher.bubbles[Math.floor(Math.random() * teacher.bubbles.length)];
-            teacher.bubbleUntil = now + 1900 + Math.random() * 900;
-            teacher.pauseUntil = now + 650;
+          if (!reducedMotion &&
+              !activeSpecialActionId &&
+              now >= ambientDialogueLockedUntil &&
+              now >= nextAmbientAt) {
+            const candidates = teachers.filter(teacher =>
+              teacher !== activeTeacher &&
+              !(teacher.id === "mina" && isMinaActionActive(now)) &&
+              !(teacher.id === "wanting" && isWantingActionActive(now)) &&
+              !isSignatureActionActive(teacher.id, now)
+            );
+            const teacher = candidates[Math.floor(Math.random() * candidates.length)];
+            if (teacher) {
+              teacher.bubble = teacher.bubbles[Math.floor(Math.random() * teacher.bubbles.length)];
+              teacher.bubbleSource = "ambient";
+              teacher.bubbleUntil = now + 1900 + Math.random() * 900;
+              teacher.pauseUntil = now + 650;
+            }
+            nextAmbientAt = now + 3200 + Math.random() * 4300;
+          }
+        } else if (!reducedMotion && now >= nextAmbientAt) {
+          const candidates = participants.filter(participant => participant !== activeTeacher);
+          const participant = candidates[Math.floor(Math.random() * candidates.length)];
+          if (participant) {
+            participant.bubble = participant.bubbles[Math.floor(Math.random() * participant.bubbles.length)];
+            participant.bubbleSource = "ambient";
+            participant.bubbleUntil = now + 1900 + Math.random() * 900;
           }
           nextAmbientAt = now + 3200 + Math.random() * 4300;
         }
@@ -1676,7 +2601,8 @@
       }
 
       function teacherAt(point) {
-        return [...teachers]
+        const roomCharacters = currentRoom === ROOM_TEACHERS ? teachers : participants;
+        return [...roomCharacters]
           .sort((a, b) => b.y - a.y)
           .find(teacher => {
             const box = teacher.drawBox;
@@ -1699,45 +2625,98 @@
 
       function openDialogue(teacher, lineIndex = null) {
         if (!teacher) return;
-        if (teacher.id === "mina") minaCatAction = null;
-        if (teacher.id === "wanting") wantingMeditationAction = null;
-        if (signatureActions.has(teacher.id)) signatureActions.delete(teacher.id);
+        const dialogueOpenedAt = performance.now();
+        if (activeSpecialActionId) {
+          clearSpecialAction(activeSpecialActionId, dialogueOpenedAt, true);
+        }
+        if (teacher.kind !== "participant") {
+          if (teacher.id === "mina") {
+            minaCatAction = null;
+            if (sfxEnabled && performance.now() - lastCatSoundAt > 650) playCatMeow(55, .15);
+          }
+          if (teacher.id === "wanting") wantingMeditationAction = null;
+          if (signatureActions.has(teacher.id)) signatureActions.delete(teacher.id);
+        }
         activeTeacher = teacher;
         activeLine = lineIndex === null ? (activeLine + 1) % teacher.lines.length : lineIndex;
-        teacher.pauseUntil = performance.now() + 14000;
-        teacher.moving = false;
-        teacher.direction = "down";
+        if (teacher.kind !== "participant") {
+          teacher.pauseUntil = dialogueOpenedAt + 14000;
+          teacher.moving = false;
+          teacher.direction = "down";
+        }
         teacher.bubble = "！";
+        teacher.bubbleSource = "interaction";
         teacher.bubbleUntil = performance.now() + 900;
-        dialoguePortrait.src = asset(`${teacher.id}-dialogue-portrait-v1.png`);
-        dialoguePortrait.alt = `${teacher.name}老師對話肖像`;
+        dialoguePortrait.src = teacher.kind === "participant"
+          ? participantPortraitData(teacher)
+          : asset(`${teacher.id}-dialogue-portrait-v1.png`);
+        dialoguePortrait.alt = `${teacher.name}對話肖像`;
         dialogueName.textContent = teacher.name;
         dialogueRole.textContent = teacher.role;
         dialogue.hidden = false;
         typeDialogue(teacher.lines[activeLine]);
-        gameStatus.textContent = `正在和 ${teacher.name} 老師對話`;
+        gameStatus.textContent = `正在和 ${teacher.name} 對話`;
       }
 
       function closeDialogue() {
         typingToken += 1;
-        if (activeTeacher) {
+        if (activeTeacher && activeTeacher.kind !== "participant") {
           activeTeacher.pauseUntil = performance.now() + 800;
-          activeTeacher.target = randomTargetFor(activeTeacher, false, performance.now());
+          activeTeacher.target = randomTargetFor(activeTeacher, performance.now());
         }
         activeTeacher = null;
         dialogue.hidden = true;
-        gameStatus.textContent = "老師們正在練團室準備中";
+        gameStatus.textContent = currentRoom === ROOM_TEACHERS
+          ? "老師們正在練團室準備中"
+          : "參加者休息室目前尚未安排角色";
       }
 
       function buildTeacherNav() {
-        teachers.forEach(teacher => {
+        const roomCharacters = currentRoom === ROOM_TEACHERS ? teachers : participants;
+        teacherNav.replaceChildren();
+        teacherNav.hidden = roomCharacters.length === 0;
+        teacherNav.setAttribute("aria-label", currentRoom === ROOM_TEACHERS ? "選擇老師互動" : "選擇參加者互動");
+        roomCharacters.forEach(teacher => {
           const button = document.createElement("button");
           button.type = "button";
           button.textContent = teacher.name;
-          button.setAttribute("aria-label", `和${teacher.name}老師對話`);
+          button.setAttribute("aria-label", `和${teacher.name}對話`);
           button.addEventListener("click", () => openDialogue(teacher, 0));
           teacherNav.append(button);
         });
+      }
+
+      function switchRoom(room) {
+        if (room !== ROOM_TEACHERS && room !== ROOM_PARTICIPANTS) return;
+        if (!dialogue.hidden) closeDialogue();
+        const roomChangedAt = performance.now();
+        if (activeSpecialActionId) clearSpecialAction(activeSpecialActionId, roomChangedAt, true);
+        currentRoom = room;
+        hoveredTeacher = null;
+        activeLine = 0;
+        nextAmbientAt = performance.now() + 1800;
+        const inTeacherRoom = room === ROOM_TEACHERS;
+        if (inTeacherRoom) nextSpecialActionAt = Math.max(nextSpecialActionAt, roomChangedAt + 1500);
+        teacherRoomButton.setAttribute("aria-pressed", String(inTeacherRoom));
+        participantRoomButton.setAttribute("aria-pressed", String(!inTeacherRoom));
+        roomTitle.textContent = inTeacherRoom ? "十週年練團室" : "參加者休息室";
+        gameStatus.textContent = inTeacherRoom
+          ? "老師們正在練團室準備中"
+          : "參加者休息室目前尚未安排角色";
+        gameShell.setAttribute(
+          "aria-label",
+          inTeacherRoom ? "鹽與光十週年 RPG 練團室互動場景" : "鹽與光十週年 RPG 參加者休息室互動場景"
+        );
+        canvas.setAttribute(
+          "aria-label",
+          inTeacherRoom
+            ? "六位老師在練團室中走動；點擊角色可以互動"
+            : "參加者休息室目前沒有角色，保留沙發與家具場景"
+        );
+        roomInstructions.innerHTML = inTeacherRoom
+          ? "<strong>操作：</strong>點擊老師開始對話；特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。"
+          : "<strong>目前狀態：</strong>參加者角色將在名單與造型確認後加入；現在可先查看休息室場景。";
+        buildTeacherNav();
       }
 
       canvas.addEventListener("pointermove", event => {
@@ -1761,9 +2740,17 @@
 
       dialogueClose.addEventListener("click", closeDialogue);
 
+      teacherRoomButton.addEventListener("click", () => switchRoom(ROOM_TEACHERS));
+      participantRoomButton.addEventListener("click", () => switchRoom(ROOM_PARTICIPANTS));
+
       musicToggle.addEventListener("click", () => {
         if (musicWanted) stopMusic();
         else startMusic();
+      });
+
+      sfxToggle.addEventListener("click", () => {
+        if (sfxEnabled) disableSfx();
+        else enableSfx();
       });
 
       window.addEventListener("keydown", event => {
@@ -1777,13 +2764,27 @@
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
           running = false;
+          stopSpecialActionSound(null, true);
           resumeMusicWhenVisible = musicWanted && !bgMusic.paused;
           ++musicFadeToken;
           bgMusic.pause();
+          if (audioContext && audioContext.state === "running") audioContext.suspend().catch(() => {});
         } else if (!running) {
           running = true;
           lastFrame = performance.now();
           requestAnimationFrame(animate);
+          if (sfxEnabled && audioContext && audioContext.state === "suspended") {
+            audioContext.resume()
+              .then(() => {
+                if (
+                  activeSpecialActionId &&
+                  performance.now() < specialActionUntil(activeSpecialActionId) - 350
+                ) {
+                  playSpecialActionSound(activeSpecialActionId);
+                }
+              })
+              .catch(() => {});
+          }
           if (resumeMusicWhenVisible && musicWanted) {
             bgMusic.volume = 0;
             bgMusic.play()
