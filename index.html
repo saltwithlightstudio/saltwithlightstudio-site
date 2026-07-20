@@ -2701,6 +2701,35 @@
       font-size: 14px;
     }
 
+    .service-modal__item.is-date-highlight {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 218, 128, 0.78);
+      border-left: 4px solid #ffcf5e;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 12% 50%, rgba(255, 208, 92, 0.24), transparent 34%),
+        linear-gradient(135deg, rgba(160, 22, 19, 0.74), rgba(64, 8, 10, 0.58));
+      color: #fff6dc;
+      font-weight: 700;
+      box-shadow:
+        0 0 0 1px rgba(255, 247, 210, 0.08) inset,
+        0 0 22px rgba(255, 197, 80, 0.28),
+        0 14px 30px rgba(92, 5, 7, 0.34);
+      animation: modalDateGlow 2.8s ease-in-out infinite;
+    }
+
+    .service-modal__item.is-date-highlight::after {
+      content: "";
+      position: absolute;
+      inset: -40% auto -40% -28%;
+      width: 42%;
+      background: linear-gradient(90deg, transparent, rgba(255, 246, 214, 0.28), transparent);
+      transform: skewX(-18deg);
+      animation: modalDateSweep 3.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
     .service-modal__equipment {
       display: grid;
       gap: 14px;
@@ -3751,6 +3780,30 @@
       font-family: "Noto Sans TC", "PingFang TC", sans-serif;
       font-size: 12px;
       letter-spacing: 0.06em;
+    }
+
+    .news-card__status-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255, 225, 190, 0.62);
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(191, 22, 20, 0.94), rgba(113, 8, 12, 0.9));
+      color: #fff6e8;
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.36), 0 0 18px rgba(220, 42, 34, 0.25);
+      pointer-events: none;
     }
 
     .news-card h3 {
@@ -6437,6 +6490,28 @@
       to { opacity: 1; }
     }
 
+    @keyframes modalDateGlow {
+      0%, 100% {
+        box-shadow:
+          0 0 0 1px rgba(255, 247, 210, 0.08) inset,
+          0 0 18px rgba(255, 197, 80, 0.24),
+          0 14px 30px rgba(92, 5, 7, 0.34);
+      }
+
+      50% {
+        box-shadow:
+          0 0 0 1px rgba(255, 247, 210, 0.18) inset,
+          0 0 32px rgba(255, 212, 100, 0.46),
+          0 16px 34px rgba(132, 10, 10, 0.42);
+      }
+    }
+
+    @keyframes modalDateSweep {
+      0%, 42% { transform: translateX(0) skewX(-18deg); opacity: 0; }
+      58% { opacity: 1; }
+      100% { transform: translateX(360%) skewX(-18deg); opacity: 0; }
+    }
+
     @keyframes grainMove {
       0% { transform: translate(0, 0); }
       50% { transform: translate(2%, -1%); }
@@ -7419,6 +7494,14 @@
         padding: 14px;
       }
 
+      .news-card__status-badge {
+        top: 10px;
+        right: 10px;
+        min-height: 26px;
+        padding: 4px 9px;
+        font-size: 12px;
+      }
+
       .camp-points,
       .camp-flow,
       .camp-history {
@@ -8208,14 +8291,17 @@
         <div class="news-grid" aria-label="最新消息列表">
           <button class="news-card service-card" type="button" data-service="newsSongCamp" aria-label="查看歌唱進階團體班最美和聲第十一期已額滿">
             <img src="assets/news-harmony-11-full.jpg" alt="最美和聲第十一期已額滿">
+            <span class="news-card__status-badge">開班成功</span>
             <span class="news-card__content"><span class="news-card__tag">Harmony</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">最美和聲-第十一期已額滿</span></h3><p>和聲聆聽、聲部穩定與合唱練習。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsVocalTrial" aria-label="查看歌唱基礎團體班搶救五音大作戰第66期招生中">
             <img src="assets/news-vocal-basic-66-ig.jpg" alt="搶救五音大作戰歌唱初級班海報">
+            <span class="news-card__status-badge">開班成功</span>
             <span class="news-card__content"><span class="news-card__tag">Vocal Basic</span><h3 class="is-stacked"><span class="news-title-main">歌唱基礎團體班</span><span class="news-title-sub">搶救五音大作戰-第66期招生中</span></h3><p>從音準、節奏與開口練習開始。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsBandRoom" aria-label="查看歌唱進階團體班飆高音第八期招生中">
             <img src="assets/news-high-note-8-banner.png" alt="飆高音班第八期招生中">
+            <span class="news-card__status-badge">開班成功</span>
             <span class="news-card__content"><span class="news-card__tag">Advanced Vocal</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">飆高音-第八期招生中</span></h3><p>高音支撐、位置與歌曲應用。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsTheoryCertificate" aria-label="查看初階樂理函授線上課程最新消息">
@@ -9096,6 +9182,7 @@
         points: [
           "課程內容：共鳴認識、音色分析、節奏律動、胸音與頭音、基礎歌唱技巧。",
           "總共四堂，第一至三堂每次 2 小時，第四堂為彩排與成果發表，共 8 小時。",
+          "第66期基礎班週六上課日期：7/11 第一堂、7/18 第二堂、8/29 第三堂、9/5 第四堂成發，時間皆為晚上 8:00–10:00。",
           "新生價 3500 元；雙人成行、熟客介紹或一年內舊生優惠 3200 元；旁聽生 1500 元。",
           "4 人開班、8 人額滿；地點為高雄市鹽埕區五福四路151-1號2樓，鹽與光音樂工作室光館。",
           "報名後請先加入米娜老師 Line：minashih703，並告知已報名歌唱基礎班。"
@@ -9117,6 +9204,7 @@
         points: [
           "課程內容：胸音五度與八度、頭音五度與八度、混聲區、節奏律動與氣息位置設計。",
           "總共四堂，第一至三堂每次 2 小時，第四堂為彩排與成果發表，共 8 小時。",
+          "第8期飆高音週二上課日期：7/14 第一堂、7/28 第二堂、8/4 第三堂、8/18 第四堂成發，時間皆為晚上 8:00–10:00。",
           "7 人開班、10 人額滿；新生報名需附主歌到副歌一遍的清唱或跟伴奏音檔，老師會評估是否適合。",
           "學費 4500 元，可分兩期；旁聽生 1500 元，限 3 人。",
           "上課與成發地點為高雄市鹽埕區五福四路151-1號2樓，鹽與光音樂工作室光館。"
@@ -9581,9 +9669,10 @@
             </div>
           </div>
         ` : "";
-        serviceModalList.innerHTML = listTitle + listItems.map((point) => (
-          `<div class="service-modal__item">${point}</div>`
-        )).join("") + equipmentBox + (isCampWork ? "" : videoSection) + ctaLink + lineCard;
+        serviceModalList.innerHTML = listTitle + listItems.map((point) => {
+          const isDatePoint = /上課日期|時間皆|成發/.test(point);
+          return `<div class="service-modal__item${isDatePoint ? " is-date-highlight" : ""}">${point}</div>`;
+        }).join("") + equipmentBox + (isCampWork ? "" : videoSection) + ctaLink + lineCard;
         serviceModal.classList.add("is-open");
         serviceModal.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
