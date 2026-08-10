@@ -249,6 +249,11 @@
       image-rendering: pixelated;
     }
 
+    .dialogue__portrait img.is-full-frame {
+      object-fit: contain;
+      object-position: 50% 0;
+    }
+
     .dialogue__name {
       margin: 0 0 6px;
       color: var(--gold-soft);
@@ -390,7 +395,7 @@
 
     <section class="game-shell" id="gameShell" aria-label="鹽與光十週年 RPG 練團室互動場景">
       <div class="canvas-wrap">
-        <canvas id="game" width="1672" height="941" aria-label="六位老師在練團室中走動；點擊角色可以互動"></canvas>
+        <canvas id="game" width="1672" height="941" aria-label="七位老師在練團室中走動；點擊角色可以互動"></canvas>
         <div class="loading" id="loading">LOADING RPG ROOM</div>
 
         <section class="dialogue" id="dialogue" hidden aria-live="polite" aria-label="角色對話">
@@ -408,7 +413,7 @@
     </section>
 
     <div class="hud">
-      <span id="roomInstructions"><strong>操作：</strong>點擊老師開始對話；特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。</span>
+      <span id="roomInstructions"><strong>操作：</strong>點擊老師開始對話；部分老師的特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。</span>
       <nav class="teacher-nav" id="teacherNav" aria-label="選擇老師互動"></nav>
     </div>
     <p class="note">十週年音樂會場地已確認；完整活動資訊與節目安排，請以鹽與光後續正式公告為準。</p>
@@ -421,7 +426,7 @@
       const WIDTH = 1672;
       const HEIGHT = 941;
       const ASSET_ROOT = "assets/anniversary-rpg";
-      const ASSET_VERSION = "20260719-participant-lounge-v2";
+      const ASSET_VERSION = "20260721-hongzhu-frame-recut-v3";
       const canvas = document.querySelector("#game");
       const context = canvas.getContext("2d", { alpha: false });
       const loading = document.querySelector("#loading");
@@ -529,69 +534,39 @@
             "把『黃色月牙水果』、『旋律與節奏』和『建築的尾字』拼成五個字，就是已經確定的會場。"
           ],
           bubbles: ["啾！", "輕輕唱", "♪"]
+        },
+        {
+          id: "linyu", name: "林妤", role: "爵士鼓老師", x: 820, y: 780, height: 167,
+          lines: [
+            "嗨，我是林妤，教爵士鼓。先等一下……節拍器、鼓棒、鼓鎖，我想再確認一遍再開始。",
+            "我有時候會把一件事想成十件事，但好處是，小小的拍點和細節通常逃不過我。",
+            "打鼓不是越大聲越厲害；每一拍放在對的位置，整團才會安心往前走。",
+            "你剛剛那一下其實很好。要不要再來一次？不是你打錯，是我想確認它真的那麼好。",
+            "十週年的排練像一張很長的檢查表，我每勾掉一格，就忍不住從第一格再看一次。",
+            "日期線索被藏進四段相同的節奏裡：每段走四拍。別急著問答案，把完整循環數完。",
+            "場地提示也有順序，第一段是一種彎彎的黃色水果；後面的線索，我確認過了，交給其他老師保管比較安全。",
+            "好，所有細節都確認好了……應該吧？等一下，讓我再看一眼鼓棒。"
+          ],
+          bubbles: ["等等，再確認一次", "鼓棒有兩支……好", "1、2、3、4！"]
         }
       ];
 
       const participantSpecs = [
         {
-          id: "participant-alumni",
+          id: "hongzhu",
           kind: "participant",
-          name: "歷屆學員",
-          role: "返場參加者",
-          x: 520,
-          y: 610,
-          colors: { hair: "#372118", shirt: "#5f9fc6", accent: "#f0d49a" },
+          name: "宏竹",
+          role: "演出人員・吉他手",
+          x: 835,
+          y: 650,
+          height: 188,
           lines: [
-            "這裡是參加者休息室，不是老師辦公室喔！我們正在等十週年舞台的集合通知。",
-            "我以前曾在鹽與光上課，這次想帶著一路練習的成果回到舞台。",
-            "正式參加者名單確認後，我的名字、造型和故事就會更新在這裡。"
+            "嗨，我是宏竹，這次會帶著吉他一起參加鹽與光十週年演出。",
+            "我正在休息室確認音色和演出段落，等等就要去排練了。",
+            "黑色電吉他和我都準備好了，舞台上見！",
+            "正式上台前先保留一點神祕感，到了現場再讓音樂告訴你答案。"
           ],
-          bubbles: ["好久不見！", "一起上台", "準備中"]
-        },
-        {
-          id: "participant-band",
-          kind: "participant",
-          name: "演出夥伴",
-          role: "合作樂手",
-          x: 760,
-          y: 500,
-          colors: { hair: "#18171b", shirt: "#8b4f8f", accent: "#9bd7a8" },
-          lines: [
-            "我是受邀一起完成演出的合作夥伴，正在確認樂器、曲目和走位。",
-            "這個房間會留給非鹽與光老師的演出人員，大家可以在這裡留下自己的故事。",
-            "等名單定案後，再把我換成真正的參加者角色吧！"
-          ],
-          bubbles: ["一起合奏！", "確認曲目", "♪"]
-        },
-        {
-          id: "participant-crew",
-          kind: "participant",
-          name: "幕後夥伴",
-          role: "活動工作人員",
-          x: 990,
-          y: 670,
-          colors: { hair: "#5b3421", shirt: "#4d805d", accent: "#f2aa66" },
-          lines: [
-            "舞台上的每一道光、每一條線材，都有人在背後默默守著。",
-            "我不是鹽與光老師，是這次活動的幕後參加人員。",
-            "之後可以把工作分工、任務提示或彩蛋放進我的對話裡。"
-          ],
-          bubbles: ["線路 OK", "道具確認", "收到！"]
-        },
-        {
-          id: "participant-guest",
-          kind: "participant",
-          name: "神祕來賓",
-          role: "待公開參加者",
-          x: 1210,
-          y: 570,
-          colors: { hair: "#24202d", shirt: "#a36748", accent: "#e6d3ef" },
-          lines: [
-            "噓——我的身分還不能公開，但可以確定我不是鹽與光老師。",
-            "等正式參加者資料準備好，這個位置就會揭曉真正的名字與造型。",
-            "在那之前，先把我當成休息室裡的一個小彩蛋吧。"
-          ],
-          bubbles: ["保密中", "猜猜我是誰", "？"]
+          bubbles: ["音色確認！", "準備好了", "♪"]
         }
       ];
 
@@ -695,6 +670,11 @@
           "小麻雀說 {name} 很可以！",
           "啾～這段飛得很遠。",
           "輕輕唱，也會被聽見。"
+        ],
+        linyu: [
+          "{name} 等一下，旁邊都清空了嗎？",
+          "很好！我再確認一次進拍。",
+          "{name} 放心，拍點我數好了。"
         ]
       };
 
@@ -710,7 +690,6 @@
 
       const images = new Map();
       const teachers = [];
-      // 參加者角色先留空，等正式名單與造型確認後再加入。
       const participants = [];
       let background = null;
       let participantBackground = null;
@@ -1331,7 +1310,7 @@
             window.setTimeout(() => {
               if (!activeTeacher && !activeSpecialActionId) gameStatus.textContent = currentRoom === ROOM_TEACHERS
                 ? "老師們正在練團室準備中"
-                : "參加者休息室目前尚未安排角色";
+                : "宏竹正在參加者休息室準備演出";
             }, 1500);
           }
         } catch (error) {
@@ -1383,14 +1362,18 @@
             images.set(`signature:${id}:${frame}`, await loadImage(asset(filename)));
           }));
         }));
-        await Promise.all(teacherSpecs.flatMap(spec => directions.map(async direction => {
-          const image = await loadImage(asset(`${spec.id}-${direction}.png`));
-          images.set(`${spec.id}:${direction}`, image);
-        })));
         await Promise.all(teacherSpecs.flatMap(spec => directions.flatMap(direction => [0, 1, 2].map(async frame => {
           const image = await loadImage(asset(`${spec.id}-v5-${direction}-${frame}.png`));
           images.set(`${spec.id}-v5:${direction}:${frame}`, image);
         }))));
+        await Promise.all(participantSpecs.flatMap(spec => directions.flatMap(direction => [0, 1, 2].map(async frame => {
+          const image = await loadImage(asset(`${spec.id}-v5-${direction}-${frame}.png`));
+          images.set(`${spec.id}-v5:${direction}:${frame}`, image);
+        }))));
+        await Promise.all(participantSpecs.map(async spec => {
+          const image = await loadImage(asset(`${spec.id}-dialogue-portrait-v1.png`));
+          images.set(`participant-portrait:${spec.id}`, image);
+        }));
       }
 
       function isWalkable(x, y) {
@@ -1479,6 +1462,95 @@
           bubbleUntil: 0,
           drawBox: null
         };
+      }
+
+      function isParticipantWalkable(x, y) {
+        return x >= 540 && x <= 1120 && y >= 465 && y <= 765;
+      }
+
+      function isPointClearOfParticipants(x, y, ignoredParticipant = null) {
+        return participants.every(other => {
+          if (other === ignoredParticipant) return true;
+          const otherRadius = collisionRadius(other);
+          const ignoredRadius = ignoredParticipant ? collisionRadius(ignoredParticipant) : { x: 36, y: 18 };
+          return !ellipseOverlap(
+            x, y, other.x, other.y,
+            ignoredRadius.x + otherRadius.x,
+            ignoredRadius.y + otherRadius.y
+          );
+        });
+      }
+
+      function randomParticipantTarget(participant = null) {
+        for (let attempt = 0; attempt < 50; attempt += 1) {
+          const x = 540 + Math.random() * 580;
+          const y = 465 + Math.random() * 300;
+          if (!isParticipantWalkable(x, y)) continue;
+          if (!isPointClearOfParticipants(x, y, participant)) continue;
+          return { x, y };
+        }
+        return participant ? { x: participant.x, y: participant.y } : { x: 835, y: 650 };
+      }
+
+      function createParticipant(spec, index) {
+        return {
+          ...spec,
+          direction: index % 2 ? "left" : "right",
+          target: randomParticipantTarget(),
+          speed: reducedMotion ? 0 : 32 + Math.random() * 15,
+          moving: !reducedMotion,
+          idleUntil: 0,
+          pauseUntil: 0,
+          walkDistance: Math.random() * 28,
+          bubble: "",
+          bubbleSource: null,
+          bubbleUntil: 0,
+          drawBox: null
+        };
+      }
+
+      function updateParticipant(participant, delta, now) {
+        if (
+          reducedMotion ||
+          participant === activeTeacher ||
+          now < participant.pauseUntil ||
+          now < participant.idleUntil
+        ) {
+          participant.moving = false;
+          return;
+        }
+
+        const dx = participant.target.x - participant.x;
+        const dy = participant.target.y - participant.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 8) {
+          participant.moving = false;
+          participant.idleUntil = now + 800 + Math.random() * 1700;
+          participant.target = randomParticipantTarget(participant);
+          if (Math.random() < .55) {
+            participant.direction = ["down", "left", "right"][Math.floor(Math.random() * 3)];
+          }
+          return;
+        }
+
+        participant.direction = chooseDirection(dx, dy);
+        participant.moving = true;
+        const amount = Math.min(distance, participant.speed * delta / 1000);
+        const nextX = participant.x + dx / distance * amount;
+        const nextY = participant.y + dy / distance * amount;
+        if (
+          isParticipantWalkable(nextX, nextY) &&
+          isPointClearOfParticipants(nextX, nextY, participant)
+        ) {
+          participant.x = nextX;
+          participant.y = nextY;
+          participant.walkDistance += amount;
+          return;
+        }
+
+        participant.moving = false;
+        participant.target = randomParticipantTarget(participant);
+        participant.idleUntil = now + 180 + Math.random() * 220;
       }
 
       function isMinaActionActive(now = performance.now()) {
@@ -1814,96 +1886,12 @@
         context.closePath();
       }
 
-      function participantPortraitData(participant) {
-        const portraitCanvas = document.createElement("canvas");
-        portraitCanvas.width = 240;
-        portraitCanvas.height = 300;
-        const portraitContext = portraitCanvas.getContext("2d");
-        portraitContext.imageSmoothingEnabled = false;
-        const glow = portraitContext.createRadialGradient(120, 105, 15, 120, 140, 170);
-        glow.addColorStop(0, participant.colors.accent);
-        glow.addColorStop(1, "#241020");
-        portraitContext.fillStyle = glow;
-        portraitContext.fillRect(0, 0, 240, 300);
-        portraitContext.fillStyle = "#1a1112";
-        portraitContext.fillRect(62, 248, 116, 52);
-        portraitContext.fillStyle = participant.colors.shirt;
-        portraitContext.fillRect(70, 188, 100, 72);
-        portraitContext.fillStyle = "#f2c49e";
-        portraitContext.fillRect(82, 78, 76, 112);
-        portraitContext.fillStyle = participant.colors.hair;
-        portraitContext.fillRect(72, 62, 96, 55);
-        portraitContext.fillRect(72, 92, 18, 74);
-        portraitContext.fillRect(150, 92, 18, 74);
-        portraitContext.fillStyle = "#24130f";
-        portraitContext.fillRect(100, 127, 8, 8);
-        portraitContext.fillRect(136, 127, 8, 8);
-        portraitContext.fillStyle = "#9e4d4d";
-        portraitContext.fillRect(112, 158, 24, 7);
-        portraitContext.fillStyle = participant.colors.accent;
-        portraitContext.fillRect(106, 210, 28, 28);
-        portraitContext.fillStyle = "#fff5cf";
-        portraitContext.font = '700 15px "Noto Sans TC", sans-serif';
-        portraitContext.textAlign = "center";
-        portraitContext.fillText("PARTICIPANT", 120, 282);
-        return portraitCanvas.toDataURL("image/png");
-      }
-
       function drawParticipantRoomBackground() {
         context.drawImage(participantBackground, 0, 0, WIDTH, HEIGHT);
       }
 
       function drawParticipant(participant, now) {
-        const bob = reducedMotion ? 0 : Math.sin(now * .0025 + participant.x * .01) * 3;
-        const x = participant.x;
-        const y = participant.y + bob;
-        const hovered = participant === hoveredTeacher || participant === activeTeacher;
-
-        context.save();
-        context.globalAlpha = hovered ? .8 : .28;
-        context.fillStyle = hovered ? participant.colors.accent : "#000";
-        context.beginPath();
-        context.ellipse(x, y + 5, 52, 15, 0, 0, Math.PI * 2);
-        context.fill();
-        context.restore();
-
-        context.fillStyle = "#23161a";
-        context.fillRect(x - 38, y - 42, 27, 48);
-        context.fillRect(x + 11, y - 42, 27, 48);
-        context.fillStyle = participant.colors.shirt;
-        context.fillRect(x - 57, y - 156, 114, 116);
-        context.fillStyle = participant.colors.accent;
-        context.fillRect(x - 13, y - 126, 26, 28);
-        context.fillStyle = "#f2c49e";
-        context.fillRect(x - 43, y - 238, 86, 88);
-        context.fillStyle = participant.colors.hair;
-        context.fillRect(x - 51, y - 254, 102, 52);
-        context.fillRect(x - 51, y - 226, 17, 64);
-        context.fillRect(x + 34, y - 226, 17, 64);
-        context.fillStyle = "#2a1713";
-        context.fillRect(x - 24, y - 204, 8, 8);
-        context.fillRect(x + 16, y - 204, 8, 8);
-        context.fillStyle = "#9e4d4d";
-        context.fillRect(x - 11, y - 179, 22, 7);
-
-        participant.drawBox = { x: x - 62, y: y - 258, width: 124, height: 266 };
-
-        if (participant === hoveredTeacher && participant !== activeTeacher) {
-          context.save();
-          context.font = '700 28px "Noto Sans TC", system-ui, sans-serif';
-          const width = context.measureText(participant.name).width + 46;
-          roundedRect(x - width / 2, y - 321, width, 49, 9);
-          context.fillStyle = "rgba(22, 5, 6, .92)";
-          context.fill();
-          context.strokeStyle = "#d8ad5b";
-          context.lineWidth = 3;
-          context.stroke();
-          context.fillStyle = "#f6e8c8";
-          context.textAlign = "center";
-          context.textBaseline = "middle";
-          context.fillText(participant.name, x, y - 296);
-          context.restore();
-        }
+        drawTeacher(participant, now);
       }
 
       function drawParticipantRoom(now) {
@@ -2578,15 +2566,19 @@
             }
             nextAmbientAt = now + 3200 + Math.random() * 4300;
           }
-        } else if (!reducedMotion && now >= nextAmbientAt) {
-          const candidates = participants.filter(participant => participant !== activeTeacher);
-          const participant = candidates[Math.floor(Math.random() * candidates.length)];
-          if (participant) {
-            participant.bubble = participant.bubbles[Math.floor(Math.random() * participant.bubbles.length)];
-            participant.bubbleSource = "ambient";
-            participant.bubbleUntil = now + 1900 + Math.random() * 900;
+        } else {
+          participants.forEach(participant => updateParticipant(participant, delta, now));
+          if (!reducedMotion && now >= nextAmbientAt) {
+            const candidates = participants.filter(participant => participant !== activeTeacher);
+            const participant = candidates[Math.floor(Math.random() * candidates.length)];
+            if (participant) {
+              participant.bubble = participant.bubbles[Math.floor(Math.random() * participant.bubbles.length)];
+              participant.bubbleSource = "ambient";
+              participant.bubbleUntil = now + 1900 + Math.random() * 900;
+              participant.pauseUntil = now + 650;
+            }
+            nextAmbientAt = now + 3200 + Math.random() * 4300;
           }
-          nextAmbientAt = now + 3200 + Math.random() * 4300;
         }
 
         draw(now);
@@ -2640,17 +2632,14 @@
         }
         activeTeacher = teacher;
         activeLine = lineIndex === null ? (activeLine + 1) % teacher.lines.length : lineIndex;
-        if (teacher.kind !== "participant") {
-          teacher.pauseUntil = dialogueOpenedAt + 14000;
-          teacher.moving = false;
-          teacher.direction = "down";
-        }
+        teacher.pauseUntil = dialogueOpenedAt + 14000;
+        teacher.moving = false;
+        teacher.direction = "down";
         teacher.bubble = "！";
         teacher.bubbleSource = "interaction";
         teacher.bubbleUntil = performance.now() + 900;
-        dialoguePortrait.src = teacher.kind === "participant"
-          ? participantPortraitData(teacher)
-          : asset(`${teacher.id}-dialogue-portrait-v1.png`);
+        dialoguePortrait.classList.toggle("is-full-frame", teacher.id === "hongzhu");
+        dialoguePortrait.src = asset(`${teacher.id}-dialogue-portrait-v1.png`);
         dialoguePortrait.alt = `${teacher.name}對話肖像`;
         dialogueName.textContent = teacher.name;
         dialogueRole.textContent = teacher.role;
@@ -2661,15 +2650,17 @@
 
       function closeDialogue() {
         typingToken += 1;
-        if (activeTeacher && activeTeacher.kind !== "participant") {
+        if (activeTeacher) {
           activeTeacher.pauseUntil = performance.now() + 800;
-          activeTeacher.target = randomTargetFor(activeTeacher, performance.now());
+          activeTeacher.target = activeTeacher.kind === "participant"
+            ? randomParticipantTarget(activeTeacher)
+            : randomTargetFor(activeTeacher, performance.now());
         }
         activeTeacher = null;
         dialogue.hidden = true;
         gameStatus.textContent = currentRoom === ROOM_TEACHERS
           ? "老師們正在練團室準備中"
-          : "參加者休息室目前尚未安排角色";
+          : "宏竹正在參加者休息室準備演出";
       }
 
       function buildTeacherNav() {
@@ -2703,7 +2694,7 @@
         roomTitle.textContent = inTeacherRoom ? "十週年練團室" : "參加者休息室";
         gameStatus.textContent = inTeacherRoom
           ? "老師們正在練團室準備中"
-          : "參加者休息室目前尚未安排角色";
+          : "宏竹正在參加者休息室準備演出";
         gameShell.setAttribute(
           "aria-label",
           inTeacherRoom ? "鹽與光十週年 RPG 練團室互動場景" : "鹽與光十週年 RPG 參加者休息室互動場景"
@@ -2711,12 +2702,12 @@
         canvas.setAttribute(
           "aria-label",
           inTeacherRoom
-            ? "六位老師在練團室中走動；點擊角色可以互動"
-            : "參加者休息室目前沒有角色，保留沙發與家具場景"
+            ? "七位老師在練團室中走動；點擊角色可以互動"
+            : "演出人員宏竹正在參加者休息室走動；點擊角色可以互動"
         );
         roomInstructions.innerHTML = inTeacherRoom
-          ? "<strong>操作：</strong>點擊老師開始對話；特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。"
-          : "<strong>目前狀態：</strong>參加者角色將在名單與造型確認後加入；現在可先查看休息室場景。";
+          ? "<strong>操作：</strong>點擊老師開始對話；部分老師的特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。"
+          : "<strong>操作：</strong>點擊宏竹開始對話；目前尚未加入特殊表情與動作。";
         buildTeacherNav();
       }
 
@@ -2802,6 +2793,7 @@
       loadAssets()
         .then(() => {
           teacherSpecs.forEach((spec, index) => teachers.push(createTeacher(spec, index)));
+          participantSpecs.forEach((spec, index) => participants.push(createParticipant(spec, index)));
           buildTeacherNav();
           loading.classList.add("is-ready");
           window.setTimeout(() => loading.remove(), 450);
