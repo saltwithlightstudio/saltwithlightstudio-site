@@ -252,6 +252,7 @@
     .dialogue__portrait img.is-full-frame {
       object-fit: contain;
       object-position: 50% 0;
+      image-rendering: auto;
     }
 
     .dialogue__name {
@@ -426,7 +427,7 @@
       const WIDTH = 1672;
       const HEIGHT = 941;
       const ASSET_ROOT = "assets/anniversary-rpg";
-      const ASSET_VERSION = "20260721-hongzhu-frame-recut-v3";
+      const ASSET_VERSION = "20260818-miss-chief-cast-v1";
       const canvas = document.querySelector("#game");
       const context = canvas.getContext("2d", { alpha: false });
       const loading = document.querySelector("#loading");
@@ -557,16 +558,153 @@
           kind: "participant",
           name: "宏竹",
           role: "演出人員・吉他手",
-          x: 835,
-          y: 650,
-          height: 188,
+          x: 690,
+          y: 655,
+          height: 176,
           lines: [
-            "嗨，我是宏竹，這次會帶著吉他一起參加鹽與光十週年演出。",
-            "我正在休息室確認音色和演出段落，等等就要去排練了。",
-            "黑色電吉他和我都準備好了，舞台上見！",
-            "正式上台前先保留一點神祕感，到了現場再讓音樂告訴你答案。"
+            "我是宏竹。這次要表演的歌到底為什麼可以難成這樣！我真的快崩潰了……",
+            "這一段剛練完，後面還有更難的。等等，剛剛那段好像也還沒真的練完。",
+            "我才沒有期待上台，我只是……已經偷偷想像大家一起把這首歌完成很多次而已。",
+            "不能讓 Jerry 和鳳梨知道我其實很興奮，不然他們一定會一直笑我。",
+            "好啦，再練最後一次。今天的第十六個『最後一次』。"
           ],
-          bubbles: ["音色確認！", "準備好了", "♪"]
+          bubbles: ["這首也太難！", "我沒有期待喔", "再練一次……"]
+        },
+        {
+          id: "jerry",
+          kind: "participant",
+          name: "Jerry",
+          role: "演出人員・鼓手",
+          x: 845,
+          y: 625,
+          height: 146,
+          lines: [
+            "嗨，我是 Jerry，Chicken Banana 的鼓手。聽說這次會來很多人耶……",
+            "想到台下坐滿人，手裡的鼓棒突然好像變得有一點滑。我只有一點點緊張，真的。",
+            "可是大家願意來聽我們演出，我其實非常高興！光想到就想先敲一個開場。",
+            "宏竹一直說歌太難，我先把節拍顧穩；只要大家一起進拍，就一定撐得住。",
+            "好，深呼吸。1、2、3、4——我們舞台上見！"
+          ],
+          bubbles: ["人好多喔……", "好開心！", "1、2、3、4！"]
+        },
+        {
+          id: "pineapple",
+          kind: "participant",
+          name: "鳳梨",
+          role: "演出人員・Bass 手",
+          x: 1010,
+          y: 660,
+          height: 148,
+          lines: [
+            "我是鳳梨，Chicken Banana 的 Bass 手。宏竹又在那邊喊歌太難了。",
+            "我才不是擔心他，只是怕他練不完，最後又拖到大家的進度而已。",
+            "琴本來就永遠練不完啊。今天練完這段，明天還會有下一段。",
+            "我也沒有特別期待跟宏竹一起上台，只是 Bass 少了吉他，聽起來會有點空而已。",
+            "快去練琴啦，宏竹。……等你練好，我們再一起把那首難歌拿下。"
+          ],
+          bubbles: ["還不快練琴", "才沒有期待", "琴練不完啦"]
+        },
+        {
+          id: "mengshuang",
+          kind: "participant",
+          name: "夢霜",
+          role: "Miss Chief・主唱",
+          x: 600,
+          y: 500,
+          height: 136,
+          lines: [
+            "我是夢霜。大家好像很自然就把『大姐』的位置交給我，但今天我想先把那個角色放在休息室門外。",
+            "工作時我是律師，條文、證據和每一個字都要站得住腳；唱歌時，我只想讓聲音自由一點。",
+            "照顧大家沒有不好，只是偶爾也想有人跟我說：這次不用當大姐，放心唱就好。",
+            "舞台是我暫時不用替所有人負責的地方。吸一口氣，下一句就唱我真正想唱的。",
+            "如果自由也有旋律，我想把它唱到最後一排都聽得見。"
+          ],
+          bubbles: ["今天不當大姐", "讓聲音自由！", "異議……先唱歌"]
+        },
+        {
+          id: "beiyu",
+          kind: "participant",
+          name: "鋇玉",
+          role: "Miss Chief・吉他",
+          x: 720,
+          y: 520,
+          height: 132,
+          lines: [
+            "嗨，我是鋇玉。大家都說我脾氣很好……大概就是因為這樣，TC 才特別愛來逗我。",
+            "沒關係，我先笑笑地聽。等到 Solo 的時候，再讓他知道我其實偷偷練了多少。",
+            "溫和不代表沒有野心。我想把每一個現在還彈不好的地方，慢慢練成自己的招牌。",
+            "被虧兩句不會少一個音，但少練一次，舞台上就會真的差一個音。",
+            "總有一天我要厲害到，TC 想虧我之前會先安靜聽完整段。"
+          ],
+          bubbles: ["我有在偷偷練", "先笑，再 Solo", "溫和也有野心"]
+        },
+        {
+          id: "peichun",
+          kind: "participant",
+          name: "沛淳",
+          role: "Miss Chief・吉他",
+          x: 840,
+          y: 500,
+          height: 132,
+          lines: [
+            "我是沛淳。先說，看到 Lisa 的舞台，我真的可以研究一整晚！",
+            "那種一出場就把全場抓住的氣勢太帥了，我也想把那份自信練進自己的吉他裡。",
+            "不是只學動作喔，節奏、表情、每一次落點都要很準，帥才會有說服力。",
+            "今天如果我突然很有舞台氣場，不用懷疑，那是粉絲修煉的成果。",
+            "好，耳機戴上，再看一次舞台影片……然後真的去練琴。"
+          ],
+          bubbles: ["Lisa 太帥了！", "舞台氣場全開", "再研究一次"]
+        },
+        {
+          id: "xinying",
+          kind: "participant",
+          name: "欣穎",
+          role: "Miss Chief・Bass",
+          x: 960,
+          y: 520,
+          height: 134,
+          lines: [
+            "我是欣穎。表格、時間、器材清單都確認了嗎？沒有的話，現在去補。",
+            "我不是兇，只是行政事情如果沒人盯，最後就會全部一起爆炸。",
+            "剛認識我的時候，我話可能不多；熟了以後……你們最好準時一點。",
+            "Bass 也是一樣，平常安靜地站在下面，但該出手的時候絕對不會客氣。",
+            "好啦，資料交齊就沒事。我甚至可以對你笑一下，只有一下。"
+          ],
+          bubbles: ["表格交了嗎？", "我沒有兇", "低頻不客氣"]
+        },
+        {
+          id: "wanqi",
+          kind: "participant",
+          name: "菀琦",
+          role: "Miss Chief・鍵盤",
+          x: 1070,
+          y: 500,
+          height: 130,
+          lines: [
+            "我是菀琦，平常是國中特教老師。每個人都有自己的速度，音樂也是。",
+            "我習慣溫柔地把事情說清楚，但坐到鍵盤前，有些聲音其實很想離開規則。",
+            "白天陪學生找到適合自己的方法；晚上，我也在和聲裡找自己的出口。",
+            "不一定要大聲才叫反叛。有時候悄悄換掉一個和弦，整個世界就不一樣了。",
+            "這一段先不要太乖。讓旋律繞遠一點，再自由地回來。"
+          ],
+          bubbles: ["溫柔地反叛", "和弦想去旅行", "慢慢找到出口"]
+        },
+        {
+          id: "shanyin",
+          kind: "participant",
+          name: "善音",
+          role: "Miss Chief・爵士鼓",
+          x: 840,
+          y: 750,
+          height: 118,
+          lines: [
+            "我是善音。我話不多，可是我有在聽。",
+            "大家聊天的時候，我會笑；坐上鼓椅以後，我比較喜歡用節奏回答。",
+            "一開始數拍，旁邊的聲音就會慢慢變小，只剩下下一個落點。",
+            "我年紀最小，但排練可以很認真。沒打好的地方，再來一次就好。",
+            "準備好了。1、2、3、4。"
+          ],
+          bubbles: ["我有在聽", "再來一次", "1、2、3、4"]
         }
       ];
 
@@ -1310,7 +1448,7 @@
             window.setTimeout(() => {
               if (!activeTeacher && !activeSpecialActionId) gameStatus.textContent = currentRoom === ROOM_TEACHERS
                 ? "老師們正在練團室準備中"
-                : "宏竹正在參加者休息室準備演出";
+                : "Chicken Banana 與 Miss Chief 正在參加者休息室準備演出";
             }, 1500);
           }
         } catch (error) {
@@ -2638,7 +2776,7 @@
         teacher.bubble = "！";
         teacher.bubbleSource = "interaction";
         teacher.bubbleUntil = performance.now() + 900;
-        dialoguePortrait.classList.toggle("is-full-frame", teacher.id === "hongzhu");
+        dialoguePortrait.classList.toggle("is-full-frame", teacher.kind === "participant");
         dialoguePortrait.src = asset(`${teacher.id}-dialogue-portrait-v1.png`);
         dialoguePortrait.alt = `${teacher.name}對話肖像`;
         dialogueName.textContent = teacher.name;
@@ -2660,7 +2798,7 @@
         dialogue.hidden = true;
         gameStatus.textContent = currentRoom === ROOM_TEACHERS
           ? "老師們正在練團室準備中"
-          : "宏竹正在參加者休息室準備演出";
+          : "Chicken Banana 與 Miss Chief 正在參加者休息室準備演出";
       }
 
       function buildTeacherNav() {
@@ -2694,7 +2832,7 @@
         roomTitle.textContent = inTeacherRoom ? "十週年練團室" : "參加者休息室";
         gameStatus.textContent = inTeacherRoom
           ? "老師們正在練團室準備中"
-          : "宏竹正在參加者休息室準備演出";
+          : "Chicken Banana 與 Miss Chief 正在參加者休息室準備演出";
         gameShell.setAttribute(
           "aria-label",
           inTeacherRoom ? "鹽與光十週年 RPG 練團室互動場景" : "鹽與光十週年 RPG 參加者休息室互動場景"
@@ -2703,11 +2841,11 @@
           "aria-label",
           inTeacherRoom
             ? "七位老師在練團室中走動；點擊角色可以互動"
-            : "演出人員宏竹正在參加者休息室走動；點擊角色可以互動"
+            : "九位演出人員正在參加者休息室走動；點擊角色可以互動"
         );
         roomInstructions.innerHTML = inTeacherRoom
           ? "<strong>操作：</strong>點擊老師開始對話；部分老師的特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。"
-          : "<strong>操作：</strong>點擊宏竹開始對話；目前尚未加入特殊表情與動作。";
+          : "<strong>操作：</strong>點擊演出人員開始對話；目前尚未加入特殊表情與動作。";
         buildTeacherNav();
       }
 
