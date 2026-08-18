@@ -393,6 +393,318 @@
       transform: scale(0.985);
     }
 
+    .anniversary-signup {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(56px, 8vw, 104px) 0;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(216, 173, 91, 0.2), transparent 28%),
+        radial-gradient(circle at 88% 76%, rgba(104, 16, 21, 0.5), transparent 34%),
+        linear-gradient(145deg, #100303, #330708 58%, #170404);
+    }
+
+    .anniversary-signup::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.46;
+      background:
+        repeating-linear-gradient(90deg, rgba(246, 232, 200, 0.035) 0 1px, transparent 1px 14px),
+        linear-gradient(110deg, transparent 0 38%, rgba(216, 173, 91, 0.08) 50%, transparent 62%);
+      pointer-events: none;
+    }
+
+    .anniversary-signup__card {
+      width: min(calc(100% - 32px), 1180px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 0.36fr);
+      align-items: center;
+      gap: clamp(28px, 5vw, 72px);
+      padding: clamp(28px, 5vw, 60px);
+      border: 1px solid rgba(216, 173, 91, 0.48);
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(18, 4, 4, 0.92), rgba(85, 12, 12, 0.78)),
+        rgba(15, 3, 3, 0.9);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.46), inset 0 0 48px rgba(216, 173, 91, 0.06);
+    }
+
+    .anniversary-signup__eyebrow {
+      margin: 0 0 12px;
+      color: var(--gold-soft);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .anniversary-signup h2 {
+      margin: 0;
+      color: var(--ivory);
+      font-size: clamp(34px, 5vw, 64px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+    }
+
+    .anniversary-signup__lead {
+      max-width: 720px;
+      margin: 20px 0 0;
+      color: rgba(246, 232, 200, 0.84);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: clamp(15px, 1.8vw, 18px);
+      line-height: 1.9;
+    }
+
+    .anniversary-signup__meta {
+      display: grid;
+      gap: 10px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      color: rgba(255, 232, 176, 0.88);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .anniversary-signup__meta li {
+      display: flex;
+      gap: 10px;
+    }
+
+    .anniversary-signup__meta li::before {
+      content: "◆";
+      flex: 0 0 auto;
+      color: var(--gold);
+      font-size: 10px;
+      transform: translateY(3px);
+    }
+
+    .anniversary-signup__action {
+      display: grid;
+      justify-items: stretch;
+      gap: 12px;
+    }
+
+    .anniversary-signup__button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 62px;
+      padding: 15px 24px;
+      border: 1px solid rgba(255, 230, 158, 0.76);
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, rgba(46, 78, 155, 0.98), rgba(16, 39, 102, 0.98)),
+        #18346f;
+      color: #fff0c7;
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38), inset 0 0 18px rgba(255, 226, 136, 0.1);
+      transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+    }
+
+    .anniversary-signup__button:hover,
+    .anniversary-signup__button:focus-visible {
+      transform: translateY(-2px);
+      border-color: #fff0b0;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.46), 0 0 28px rgba(216, 173, 91, 0.32);
+      outline: none;
+    }
+
+    .anniversary-signup__button:active {
+      transform: translateY(0);
+    }
+
+    .anniversary-signup__deadline {
+      color: rgba(246, 232, 200, 0.68);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .anniversary-form-dialog {
+      width: auto;
+      max-width: none;
+      height: auto;
+      max-height: none;
+      margin: auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--ivory);
+    }
+
+    .anniversary-form-dialog::backdrop {
+      background: rgba(5, 1, 1, 0.84);
+      backdrop-filter: blur(8px);
+    }
+
+    .anniversary-form-dialog__panel {
+      width: min(960px, calc(100vw - 32px));
+      height: min(900px, calc(100svh - 32px));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      overflow: hidden;
+      border: 1px solid rgba(216, 173, 91, 0.54);
+      border-radius: 14px;
+      background: #f4efe6;
+      box-shadow: 0 38px 120px rgba(0, 0, 0, 0.7), inset 0 0 48px rgba(216, 173, 91, 0.06);
+    }
+
+    .anniversary-form-dialog__header {
+      position: relative;
+      padding: 18px 72px 18px 22px;
+      border-bottom: 1px solid rgba(216, 173, 91, 0.36);
+      background:
+        radial-gradient(circle at 12% 20%, rgba(216, 173, 91, 0.18), transparent 34%),
+        linear-gradient(135deg, #210506, #681015);
+    }
+
+    .anniversary-form-dialog__header h2 {
+      margin: 0;
+      color: var(--ivory);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .anniversary-form-dialog__header p {
+      margin: 7px 0 0;
+      color: rgba(246, 232, 200, 0.74);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .anniversary-form-dialog__close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(216, 173, 91, 0.54);
+      border-radius: 50%;
+      background: rgba(8, 2, 2, 0.58);
+      color: var(--ivory);
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .anniversary-form-dialog__close:hover,
+    .anniversary-form-dialog__close:focus-visible {
+      border-color: rgba(255, 231, 171, 0.94);
+      outline: none;
+    }
+
+    .anniversary-form-dialog__frame-wrap {
+      position: relative;
+      min-height: 0;
+      background: #f4efe6;
+    }
+
+    .anniversary-form-dialog__loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      margin: 0;
+      color: #681015;
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-weight: 700;
+    }
+
+    .anniversary-form-dialog__frame {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+      opacity: 0;
+      background: #f4efe6;
+      transition: opacity 180ms ease;
+    }
+
+    .anniversary-form-dialog__frame.is-ready {
+      opacity: 1;
+    }
+
+    .anniversary-form-dialog__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 20px;
+      border-top: 1px solid rgba(104, 16, 21, 0.18);
+      background: #f4efe6;
+      color: rgba(43, 13, 12, 0.72);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .anniversary-form-dialog__footer p {
+      margin: 0;
+    }
+
+    .anniversary-form-dialog__external {
+      flex: 0 0 auto;
+      color: #681015;
+      font-weight: 800;
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 720px) {
+      .anniversary-signup__card {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .anniversary-signup__action {
+        justify-items: stretch;
+      }
+
+      .anniversary-form-dialog__panel {
+        width: 100vw;
+        height: 100svh;
+        border: 0;
+        border-radius: 0;
+      }
+
+      .anniversary-form-dialog__header {
+        padding: 14px 62px 14px 16px;
+      }
+
+      .anniversary-form-dialog__header p {
+        font-size: 12px;
+      }
+
+      .anniversary-form-dialog__close {
+        top: 12px;
+        right: 12px;
+      }
+
+      .anniversary-form-dialog__footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px 14px;
+      }
+    }
+
     .visually-hidden {
       position: absolute;
       width: 1px;
@@ -8210,6 +8522,72 @@
       </div>
     </section>
 
+    <section class="anniversary-signup" id="anniversary-signup" aria-labelledby="anniversary-signup-title">
+      <div class="anniversary-signup__card">
+        <div>
+          <p class="anniversary-signup__eyebrow">10th Anniversary · Attendance</p>
+          <h2 id="anniversary-signup-title">十週年音樂會參加登記</h2>
+          <p class="anniversary-signup__lead">演出名額已額滿，謝謝大家熱情參與！現在開放音樂會參加登記，歡迎學生、親友與一路陪伴鹽與光的朋友填寫，方便我們統計到場人數並提供後續通知。</p>
+          <ul class="anniversary-signup__meta">
+            <li>活動日期｜2027.01.16 SAT</li>
+            <li>活動地點｜香蕉音樂館</li>
+            <li>活動時間與入場方式｜後續另行通知</li>
+            <li>填寫內容僅供活動聯絡與人數統計使用</li>
+          </ul>
+        </div>
+        <div class="anniversary-signup__action">
+          <a
+            class="anniversary-signup__button"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScEv8xHjh1sMHhEf0sFoVdYj5qQz-h0Uy0TL73e_aQj9q-gMQ/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-anniversary-form-open
+            aria-haspopup="dialog"
+            aria-controls="anniversary-form-dialog">
+            開啟參加登記表
+          </a>
+          <span class="anniversary-signup__deadline">演出名額已額滿｜參加登記開放中</span>
+        </div>
+      </div>
+    </section>
+
+    <dialog
+      class="anniversary-form-dialog"
+      id="anniversary-form-dialog"
+      aria-labelledby="anniversary-form-dialog-title"
+      aria-describedby="anniversary-form-dialog-description">
+      <div class="anniversary-form-dialog__panel">
+        <header class="anniversary-form-dialog__header">
+          <h2 id="anniversary-form-dialog-title">鹽與光十週年音樂會｜參加登記表</h2>
+          <p id="anniversary-form-dialog-description">資料會直接送至 Google 表單後台，方便統計參加人數與後續聯絡。</p>
+          <button
+            class="anniversary-form-dialog__close"
+            type="button"
+            data-anniversary-form-close
+            aria-label="關閉音樂會參加登記表">×</button>
+        </header>
+        <div class="anniversary-form-dialog__frame-wrap">
+          <p class="anniversary-form-dialog__loading" data-anniversary-form-loading>參加登記表載入中…</p>
+          <iframe
+            class="anniversary-form-dialog__frame"
+            title="鹽與光十週年音樂會參加登記表"
+            src="about:blank"
+            data-anniversary-form-frame
+            data-src="https://docs.google.com/forms/d/e/1FAIpQLScEv8xHjh1sMHhEf0sFoVdYj5qQz-h0Uy0TL73e_aQj9q-gMQ/viewform?embedded=true"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <footer class="anniversary-form-dialog__footer">
+          <p>填寫資料將儲存於 Google Forms，僅供本次音樂會聯絡與人數統計使用。</p>
+          <a
+            class="anniversary-form-dialog__external"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScEv8xHjh1sMHhEf0sFoVdYj5qQz-h0Uy0TL73e_aQj9q-gMQ/viewform"
+            target="_blank"
+            rel="noopener noreferrer">無法顯示？另開 Google 表單</a>
+        </footer>
+      </div>
+    </dialog>
+
     <section class="intro" id="studio" aria-label="工作室介紹與服務">
       <div class="intro-wrap">
         <div class="intro-copy">
@@ -8289,20 +8667,24 @@
           </div>
         </div>
         <div class="news-grid" aria-label="最新消息列表">
-          <button class="news-card service-card" type="button" data-service="newsSongCamp" aria-label="查看歌唱進階團體班最美和聲第十一期已額滿">
+          <button class="news-card service-card" type="button" data-service="newsHopeJazz" aria-label="查看Hope老師活動爵士場不可能出現的歌單">
+            <img src="assets/news-hope-jazz-20260913.png" alt="爵士場不可能出現的歌單葉賀璞老師活動海報">
+            <span class="news-card__content"><span class="news-card__tag">Jazz Event</span><h3 class="is-stacked"><span class="news-title-main">Hope老師活動</span><span class="news-title-sub">爵士場不可能出現的歌單</span></h3><p>2026/09/13 14:30–16:00。</p></span>
+          </button>
+          <button class="news-card service-card" type="button" data-service="newsSongCamp" aria-label="查看歌唱進階團體班最美和聲第十一期已額滿成發八月十八日晚上八點週五晚上八點">
             <img src="assets/news-harmony-11-full.jpg" alt="最美和聲第十一期已額滿">
             <span class="news-card__status-badge">開班成功</span>
-            <span class="news-card__content"><span class="news-card__tag">Harmony</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">最美和聲-第十一期已額滿</span></h3><p>和聲聆聽、聲部穩定與合唱練習。</p></span>
+            <span class="news-card__content"><span class="news-card__tag">Harmony</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">最美和聲-第十一期已額滿</span></h3><p>成發：8/18 20:00｜週五 20:00。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsVocalTrial" aria-label="查看歌唱基礎團體班搶救五音大作戰第66期招生中">
             <img src="assets/news-vocal-basic-66-ig.jpg" alt="搶救五音大作戰歌唱初級班海報">
             <span class="news-card__status-badge">開班成功</span>
             <span class="news-card__content"><span class="news-card__tag">Vocal Basic</span><h3 class="is-stacked"><span class="news-title-main">歌唱基礎團體班</span><span class="news-title-sub">搶救五音大作戰-第66期招生中</span></h3><p>從音準、節奏與開口練習開始。</p></span>
           </button>
-          <button class="news-card service-card" type="button" data-service="newsBandRoom" aria-label="查看歌唱進階團體班飆高音第八期招生中">
+          <button class="news-card service-card" type="button" data-service="newsBandRoom" aria-label="查看歌唱進階團體班飆高音第八期招生中成發八月十八日晚上八點">
             <img src="assets/news-high-note-8-banner.png" alt="飆高音班第八期招生中">
             <span class="news-card__status-badge">開班成功</span>
-            <span class="news-card__content"><span class="news-card__tag">Advanced Vocal</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">飆高音-第八期招生中</span></h3><p>高音支撐、位置與歌曲應用。</p></span>
+            <span class="news-card__content"><span class="news-card__tag">Advanced Vocal</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">飆高音-第八期招生中</span></h3><p>成發：8/18 20:00。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsTheoryCertificate" aria-label="查看初階樂理函授線上課程最新消息">
             <img src="assets/news-theory-certificate.jpg" alt="初階樂理函授線上課程">
@@ -8311,10 +8693,6 @@
           <button class="news-card service-card" type="button" data-service="newsArrangement" aria-label="查看智慧助理鹽小光上線最新消息">
             <img src="assets/salt-assistant-yenxiaoguang.png" alt="智慧助理鹽小光">
             <span class="news-card__content"><span class="news-card__tag">Assistant</span><h3 class="is-stacked"><span class="news-title-main">智慧助理鹽小光</span><span class="news-title-sub">上線</span></h3><p>協助整理課程與活動詢問。</p></span>
-          </button>
-          <button class="news-card service-card" type="button" data-service="newsGroupClass" aria-label="查看暑期半價體驗課最新消息">
-            <img src="assets/news-half-price-all-courses-poster.png" alt="鹽與光體驗課半價招生海報">
-            <span class="news-card__content"><span class="news-card__tag">Trial Lesson</span><h3 class="is-stacked"><span class="news-title-main">暑期半價</span><span class="news-title-sub">體驗課</span></h3><p>歌唱與樂器課皆可體驗。</p></span>
           </button>
         </div>
       </div>
@@ -8831,6 +9209,7 @@
 
     <nav class="main-menu" aria-label="主選單">
       <a href="#anniversary"><span>十週年音樂會</span></a>
+      <a href="#anniversary-signup"><span>參加登記</span></a>
       <a href="#studio"><span>工作室介紹</span></a>
       <a class="is-news-link" href="#news"><span>最新消息</span></a>
       <a href="#courses"><span>課程介紹</span></a>
@@ -8854,6 +9233,57 @@
     window.setTimeout(revealVisibleSections, 250);
     window.addEventListener("hashchange", revealVisibleSections);
     window.addEventListener("scroll", revealVisibleSections, { passive: true });
+
+    const anniversaryFormDialog = document.querySelector("#anniversary-form-dialog");
+    const anniversaryFormFrame = document.querySelector("[data-anniversary-form-frame]");
+    const anniversaryFormLoading = document.querySelector("[data-anniversary-form-loading]");
+    const anniversaryFormClose = document.querySelector("[data-anniversary-form-close]");
+    let lastAnniversaryFormTrigger = null;
+
+    const loadAnniversaryForm = () => {
+      if (!anniversaryFormFrame || anniversaryFormFrame.dataset.loaded === "true") return;
+      anniversaryFormFrame.dataset.loaded = "true";
+      anniversaryFormFrame.src = anniversaryFormFrame.dataset.src;
+    };
+
+    const finishAnniversaryFormClose = () => {
+      document.body.classList.remove("modal-open");
+      lastAnniversaryFormTrigger?.focus({ preventScroll: true });
+    };
+
+    const closeAnniversaryForm = () => {
+      if (!anniversaryFormDialog) return;
+      if (typeof anniversaryFormDialog.close === "function" && anniversaryFormDialog.open) {
+        anniversaryFormDialog.close();
+      } else {
+        anniversaryFormDialog.removeAttribute("open");
+        finishAnniversaryFormClose();
+      }
+    };
+
+    document.querySelectorAll("[data-anniversary-form-open]").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        if (!anniversaryFormDialog || typeof anniversaryFormDialog.showModal !== "function") return;
+        event.preventDefault();
+        lastAnniversaryFormTrigger = button;
+        loadAnniversaryForm();
+        document.body.classList.add("modal-open");
+        if (!anniversaryFormDialog.open) anniversaryFormDialog.showModal();
+        anniversaryFormClose?.focus();
+      });
+    });
+
+    anniversaryFormFrame?.addEventListener("load", () => {
+      if (anniversaryFormFrame.dataset.loaded !== "true") return;
+      anniversaryFormFrame.classList.add("is-ready");
+      if (anniversaryFormLoading) anniversaryFormLoading.hidden = true;
+    });
+
+    anniversaryFormClose?.addEventListener("click", closeAnniversaryForm);
+    anniversaryFormDialog?.addEventListener("close", finishAnniversaryFormClose);
+    anniversaryFormDialog?.addEventListener("click", (event) => {
+      if (event.target === anniversaryFormDialog) closeAnniversaryForm();
+    });
 
     const ROOM_CALENDAR_API_URL = "https://script.google.com/macros/s/AKfycbwMdXRncrPO3DhumMD3xYpaYp53MbkHBPyUQ8Vm_u9sPI1hKnZmdRdJy4hn3uz-XTDD/exec";
     const roomCalendarGrid = document.querySelector("[data-room-calendar-grid]");
@@ -9254,20 +9684,24 @@
           { src: "assets/salt-assistant-yenxiaoguang.png", position: "50% 50%" }
         ]
       },
-      newsGroupClass: {
+      newsHopeJazz: {
         layout: "single-poster",
-        eyebrow: "Summer Trial Lesson",
-        title: "暑期半價體驗課",
-        lead: "歌唱課、吉他課、爵士鼓課、鋼琴課等課程，都有一次半價體驗的機會。",
-        body: "這個半價體驗是給第一次想認識鹽與光課程的新朋友。你可以從歌唱、吉他、爵士鼓、鋼琴等課程中選一項先體驗看看，讓老師了解你的程度、目標與適合的上課方向。每位新生限使用一次半價體驗；如果已經用半價體驗過某一項樂器或歌唱課，就不能再用半價體驗其他樂器或歌唱課。",
+        eyebrow: "Jazz Event",
+        title: "Hope老師活動｜爵士場不可能出現的歌單",
+        lead: "葉賀璞老師掙扎登場，帶來一場 2026/09/13 的爵士主題活動。",
+        body: "這場活動以「爵士場不可能出現的歌單」為題，邀請 Hope／葉賀璞老師來到鹽與光音樂工作室，分享那些看似不該出現在爵士場、卻能被重新聽見與整理的歌曲想像。適合想聽聽不同選歌觀點、認識爵士語彙，或想近距離感受老師現場分享的朋友。",
         points: [
-          "適用課程包含歌唱、吉他、爵士鼓、鋼琴等鹽與光一對一課程。",
-          "每位新生限一次半價體驗，請先選擇最想了解的一項課程。",
-          "已用半價體驗過任一課程者，不能再以半價體驗其他樂器或歌唱課。",
-          "實際可預約時段、老師與名額，請以工作室回覆確認為準。"
+          "活動時間：2026/09/13（日）14:30–16:00。",
+          "活動地點：鹽與光音樂工作室，高雄市五福四路151-1號2F。",
+          "主講：Hope／葉賀璞老師。",
+          "名額、費用與報名細節請以報名表單公告為準。"
         ],
+        cta: {
+          label: "前往活動報名表",
+          url: "https://docs.google.com/forms/d/1YegRdFBBhOSdXWT7VE_RVjI-X5wscYViIO2ykiZQ1aE/preview"
+        },
         images: [
-          { src: "assets/news-half-price-all-courses-poster.png", position: "50% 50%" }
+          { src: "assets/news-hope-jazz-20260913.png", position: "50% 50%" }
         ]
       },
       private: {
