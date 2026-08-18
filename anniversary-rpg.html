@@ -229,6 +229,71 @@
 
     .dialogue[hidden] { display: none; }
 
+    .dialogue.is-sleep-deprived {
+      grid-template-columns: clamp(150px, 13vw, 190px) 1fr clamp(96px, 9vw, 118px);
+      min-height: clamp(230px, 20vw, 320px);
+      gap: clamp(18px, 2.2vw, 34px);
+      padding: clamp(38px, 3vw, 48px) clamp(32px, 3.5vw, 52px);
+      border: 0;
+      background: url("assets/anniversary-rpg/sleep-deprived-dialogue-frame-web-v1.png") center / 100% 100% no-repeat;
+      box-shadow: none;
+    }
+
+    .dialogue.is-sleep-deprived .dialogue__portrait {
+      justify-self: start;
+      width: auto;
+      height: clamp(155px, 14vw, 220px);
+      max-width: 100%;
+      aspect-ratio: 4 / 5;
+      border: 0;
+      background: #020202;
+    }
+
+    .dialogue.is-sleep-deprived .dialogue__portrait img.is-full-frame {
+      object-fit: cover;
+      object-position: 50% 28%;
+      image-rendering: pixelated;
+      filter: contrast(1.08);
+    }
+
+    .dialogue.is-sleep-deprived .dialogue__name {
+      color: #fff;
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: clamp(15px, 1.8vw, 22px);
+      letter-spacing: .12em;
+      text-shadow: 2px 2px 0 #5f0c11;
+    }
+
+    .dialogue.is-sleep-deprived .dialogue__role { color: #bd3138; }
+
+    .dialogue.is-sleep-deprived .dialogue__text {
+      color: #f7f4ee;
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      line-height: 1.8;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .dialogue.is-sleep-deprived .dialogue__actions {
+      justify-self: end;
+      width: 100%;
+      gap: 13px;
+    }
+
+    .dialogue.is-sleep-deprived .pixel-button {
+      min-width: 0;
+      min-height: 52px;
+      border: 2px solid #f4f1e9;
+      color: #fff;
+      background: #070707;
+      box-shadow: 3px 3px 0 #6e0f15;
+    }
+
+    .dialogue.is-sleep-deprived .pixel-button:hover,
+    .dialogue.is-sleep-deprived .pixel-button:focus-visible {
+      color: #fff;
+      background: #74151b;
+    }
+
     .dialogue__portrait {
       display: grid;
       place-items: end center;
@@ -357,6 +422,20 @@
       .dialogue__actions { grid-column: 1 / -1; flex-direction: row; justify-content: flex-end; }
       .dialogue__portrait { min-height: 0; }
       .dialogue__text { font-size: 13px; }
+      .dialogue.is-sleep-deprived {
+        grid-template-columns: 76px 1fr;
+        min-height: 205px;
+        gap: 12px;
+        padding: 29px 25px 25px;
+      }
+      .dialogue.is-sleep-deprived .dialogue__portrait { height: 96px; }
+      .dialogue.is-sleep-deprived .dialogue__actions {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: flex-end;
+        width: auto;
+      }
+      .dialogue.is-sleep-deprived .pixel-button { min-width: 76px; min-height: 38px; }
       .hud { align-items: flex-start; flex-direction: column; }
       .teacher-nav { justify-content: flex-start; }
     }
@@ -427,7 +506,7 @@
       const WIDTH = 1672;
       const HEIGHT = 941;
       const ASSET_ROOT = "assets/anniversary-rpg";
-      const ASSET_VERSION = "20260818-miss-chief-cast-v1";
+      const ASSET_VERSION = "20260818-guliu-head-repair-v5";
       const canvas = document.querySelector("#game");
       const context = canvas.getContext("2d", { alpha: false });
       const loading = document.querySelector("#loading");
@@ -558,8 +637,8 @@
           kind: "participant",
           name: "宏竹",
           role: "演出人員・吉他手",
-          x: 690,
-          y: 655,
+          x: 650,
+          y: 480,
           height: 176,
           lines: [
             "我是宏竹。這次要表演的歌到底為什麼可以難成這樣！我真的快崩潰了……",
@@ -575,8 +654,8 @@
           kind: "participant",
           name: "Jerry",
           role: "演出人員・鼓手",
-          x: 845,
-          y: 625,
+          x: 830,
+          y: 480,
           height: 146,
           lines: [
             "嗨，我是 Jerry，Chicken Banana 的鼓手。聽說這次會來很多人耶……",
@@ -593,7 +672,7 @@
           name: "鳳梨",
           role: "演出人員・Bass 手",
           x: 1010,
-          y: 660,
+          y: 480,
           height: 148,
           lines: [
             "我是鳳梨，Chicken Banana 的 Bass 手。宏竹又在那邊喊歌太難了。",
@@ -609,8 +688,8 @@
           kind: "participant",
           name: "夢霜",
           role: "Miss Chief・主唱",
-          x: 600,
-          y: 500,
+          x: 500,
+          y: 620,
           height: 136,
           lines: [
             "我是夢霜。大家好像很自然就把『大姐』的位置交給我，但今天我想先把那個角色放在休息室門外。",
@@ -626,8 +705,8 @@
           kind: "participant",
           name: "鋇玉",
           role: "Miss Chief・吉他",
-          x: 720,
-          y: 520,
+          x: 640,
+          y: 620,
           height: 132,
           lines: [
             "嗨，我是鋇玉。大家都說我脾氣很好……大概就是因為這樣，TC 才特別愛來逗我。",
@@ -643,8 +722,8 @@
           kind: "participant",
           name: "沛淳",
           role: "Miss Chief・吉他",
-          x: 840,
-          y: 500,
+          x: 780,
+          y: 620,
           height: 132,
           lines: [
             "我是沛淳。先說，看到 Lisa 的舞台，我真的可以研究一整晚！",
@@ -660,8 +739,8 @@
           kind: "participant",
           name: "欣穎",
           role: "Miss Chief・Bass",
-          x: 960,
-          y: 520,
+          x: 920,
+          y: 620,
           height: 134,
           lines: [
             "我是欣穎。表格、時間、器材清單都確認了嗎？沒有的話，現在去補。",
@@ -677,8 +756,8 @@
           kind: "participant",
           name: "菀琦",
           role: "Miss Chief・鍵盤",
-          x: 1070,
-          y: 500,
+          x: 1060,
+          y: 620,
           height: 130,
           lines: [
             "我是菀琦，平常是國中特教老師。每個人都有自己的速度，音樂也是。",
@@ -694,8 +773,8 @@
           kind: "participant",
           name: "善音",
           role: "Miss Chief・爵士鼓",
-          x: 840,
-          y: 750,
+          x: 1200,
+          y: 620,
           height: 118,
           lines: [
             "我是善音。我話不多，可是我有在聽。",
@@ -705,6 +784,124 @@
             "準備好了。1、2、3、4。"
           ],
           bubbles: ["我有在聽", "再來一次", "1、2、3、4"]
+        },
+        {
+          id: "menghang",
+          kind: "participant",
+          band: "sleep-deprived",
+          name: "孟航老師",
+          role: "睡眠不足・主唱",
+          x: 470,
+          y: 755,
+          height: 176,
+          lines: [
+            "我是孟航，睡眠不足的主唱。至於個性設定？老闆應該比我熟吧。",
+            "先讓我把歌唱完，剩下的角色介紹，請老闆本人負責補充。",
+            "我們團名叫睡眠不足，但站上舞台還是會醒。應該會吧。"
+          ],
+          bubbles: ["老闆比較熟吧", "先唱再說", "今天有睡嗎？"]
+        },
+        {
+          id: "guliu",
+          kind: "participant",
+          band: "sleep-deprived",
+          name: "古流",
+          role: "睡眠不足・鼓手",
+          x: 600,
+          y: 755,
+          height: 138,
+          lines: [
+            "我是古流，鼓手。有人說我調皮搗蛋，我覺得那只是腦袋跑得比大家快。",
+            "要我一直乖乖坐著很難，可是一拿到鼓棒，我會把每一拍都顧好。",
+            "天才鼓手不是自己說的喔……但你要這樣叫我，我也不會反對。",
+            "等一下如果休息室突然多一段過門，先別找兇手。"
+          ],
+          bubbles: ["要不要加個過門？", "我沒有搗蛋", "天才鼓手上線"]
+        },
+        {
+          id: "jianzhi",
+          kind: "participant",
+          band: "sleep-deprived",
+          name: "健誌",
+          role: "睡眠不足・主唱",
+          x: 730,
+          y: 755,
+          height: 172,
+          lines: [
+            "我是健誌，主唱。我不太擅長在人多的地方搶著說話，但唱歌時會把想說的放進每一句。",
+            "排練開始前，我會先把歌詞和情緒都想清楚。不是嚴肅，只是不想輕輕放過細節。",
+            "有些聲音不用很大，也能留在心裡很久。",
+            "子賢又想搞事了嗎？先等我把這一段確認完。"
+          ],
+          bubbles: ["先想清楚", "這句要再細一點", "安靜地唱"]
+        },
+        {
+          id: "zixian",
+          kind: "participant",
+          band: "sleep-deprived",
+          name: "子賢",
+          role: "睡眠不足・主唱",
+          x: 860,
+          y: 755,
+          height: 166,
+          lines: [
+            "我是子賢，主唱。外向、愛亂搞事，還有人補了一個『白目』——這資料也寫得太誠實了吧。",
+            "休息室這麼安靜，不做點什麼不是很浪費嗎？",
+            "放心，我通常會在事情真的失控以前……先跑遠一點。",
+            "好了啦，輪到我唱的時候還是會很認真。大概。"
+          ],
+          bubbles: ["來搞點事吧", "不是我喔", "大概會認真"]
+        },
+        {
+          id: "umi",
+          kind: "participant",
+          band: "sleep-deprived",
+          name: "Umi",
+          role: "睡眠不足・KB",
+          x: 990,
+          y: 755,
+          height: 164,
+          lines: [
+            "我是 Umi，負責 KB。人一多我就有點緊張，所以先讓我確認鍵盤、導線和譜架。",
+            "我喜歡一些很奇怪的東東。你覺得奇怪的話，代表它可能正適合收藏。",
+            "海報裡我拿著小提琴，但真正進樂團時，請往鍵盤那邊找我。",
+            "這個和弦聽起來有點不安……很好，我喜歡。"
+          ],
+          bubbles: ["等一下，好緊張", "這個東東好奇怪", "不安的和弦……"]
+        },
+        {
+          id: "jiale",
+          kind: "participant",
+          band: "sleep-deprived",
+          name: "嘉樂",
+          role: "睡眠不足・Bass",
+          x: 1120,
+          y: 755,
+          height: 166,
+          lines: [
+            "我是嘉樂，Bass。平常比較安靜，不代表我只想彈安靜的音樂。",
+            "我喜歡搖滾。低頻一進來的時候，不需要多說什麼，大家自然會感覺到。",
+            "先把音色整理得乾淨，再讓它狠狠地往前推。",
+            "安靜和猛烈可以同時存在，這就是我喜歡 Bass 的地方。"
+          ],
+          bubbles: ["低頻進來了", "安靜地搖滾", "再重一點"]
+        },
+        {
+          id: "libi",
+          kind: "participant",
+          band: "sleep-deprived",
+          name: "哩比",
+          role: "睡眠不足・弦樂",
+          x: 1250,
+          y: 755,
+          height: 166,
+          lines: [
+            "我是哩比，負責弦樂。上台以前，音準和造型都要照顧好。",
+            "有人需要幫忙就叫我，我很樂意——只要我沒有先把自己的東西放到找不到。",
+            "偶爾犯蠢不影響熱心助人，頂多讓幫忙的路線多繞兩圈。",
+            "等我一下，我的小提琴在手上……那我剛剛到底在找什麼？"
+          ],
+          bubbles: ["我來幫忙！", "剛剛在找什麼？", "造型也要顧好"]
         }
       ];
 
@@ -1448,7 +1645,7 @@
             window.setTimeout(() => {
               if (!activeTeacher && !activeSpecialActionId) gameStatus.textContent = currentRoom === ROOM_TEACHERS
                 ? "老師們正在練團室準備中"
-                : "Chicken Banana 與 Miss Chief 正在參加者休息室準備演出";
+                : "三組演出團隊正在參加者休息室準備演出";
             }, 1500);
           }
         } catch (error) {
@@ -1603,7 +1800,7 @@
       }
 
       function isParticipantWalkable(x, y) {
-        return x >= 540 && x <= 1120 && y >= 465 && y <= 765;
+        return x >= 430 && x <= 1250 && y >= 440 && y <= 775;
       }
 
       function isPointClearOfParticipants(x, y, ignoredParticipant = null) {
@@ -1621,8 +1818,8 @@
 
       function randomParticipantTarget(participant = null) {
         for (let attempt = 0; attempt < 50; attempt += 1) {
-          const x = 540 + Math.random() * 580;
-          const y = 465 + Math.random() * 300;
+          const x = 430 + Math.random() * 820;
+          const y = 440 + Math.random() * 335;
           if (!isParticipantWalkable(x, y)) continue;
           if (!isPointClearOfParticipants(x, y, participant)) continue;
           return { x, y };
@@ -2776,6 +2973,12 @@
         teacher.bubble = "！";
         teacher.bubbleSource = "interaction";
         teacher.bubbleUntil = performance.now() + 900;
+        const usesSleepDeprivedUi = teacher.band === "sleep-deprived";
+        dialogue.classList.toggle("is-sleep-deprived", usesSleepDeprivedUi);
+        dialogue.setAttribute(
+          "aria-label",
+          usesSleepDeprivedUi ? "睡眠不足樂團角色對話" : "角色對話"
+        );
         dialoguePortrait.classList.toggle("is-full-frame", teacher.kind === "participant");
         dialoguePortrait.src = asset(`${teacher.id}-dialogue-portrait-v1.png`);
         dialoguePortrait.alt = `${teacher.name}對話肖像`;
@@ -2798,7 +3001,7 @@
         dialogue.hidden = true;
         gameStatus.textContent = currentRoom === ROOM_TEACHERS
           ? "老師們正在練團室準備中"
-          : "Chicken Banana 與 Miss Chief 正在參加者休息室準備演出";
+          : "三組演出團隊正在參加者休息室準備演出";
       }
 
       function buildTeacherNav() {
@@ -2832,7 +3035,7 @@
         roomTitle.textContent = inTeacherRoom ? "十週年練團室" : "參加者休息室";
         gameStatus.textContent = inTeacherRoom
           ? "老師們正在練團室準備中"
-          : "Chicken Banana 與 Miss Chief 正在參加者休息室準備演出";
+          : "三組演出團隊正在參加者休息室準備演出";
         gameShell.setAttribute(
           "aria-label",
           inTeacherRoom ? "鹽與光十週年 RPG 練團室互動場景" : "鹽與光十週年 RPG 參加者休息室互動場景"
@@ -2841,7 +3044,7 @@
           "aria-label",
           inTeacherRoom
             ? "七位老師在練團室中走動；點擊角色可以互動"
-            : "九位演出人員正在參加者休息室走動；點擊角色可以互動"
+            : "十六位演出人員正在參加者休息室走動；點擊角色可以互動"
         );
         roomInstructions.innerHTML = inTeacherRoom
           ? "<strong>操作：</strong>點擊老師開始對話；部分老師的特殊動作會隨機逐一觸發，其他老師將依自己的個性輪流回應。"

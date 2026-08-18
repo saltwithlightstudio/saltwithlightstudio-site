@@ -340,21 +340,117 @@
       position: relative;
       min-height: 100vh;
       min-height: 100svh;
-      display: grid;
-      place-items: center;
       isolation: isolate;
       overflow: hidden;
+      padding: clamp(56px, 7vw, 104px) 0;
       background:
-        radial-gradient(circle at 50% 48%, rgba(132, 60, 17, 0.24), transparent 46%),
-        #080302;
+        radial-gradient(circle at 12% 18%, rgba(38, 88, 190, 0.22), transparent 34%),
+        radial-gradient(circle at 86% 16%, rgba(223, 21, 198, 0.18), transparent 31%),
+        radial-gradient(circle at 50% 88%, rgba(153, 20, 26, 0.2), transparent 38%),
+        linear-gradient(145deg, #03040c, #100412 52%, #080203);
+    }
+
+    .anniversary-page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.3;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+      pointer-events: none;
+    }
+
+    .anniversary-showcase {
+      width: min(calc(100% - 40px), 1480px);
+      margin: 0 auto;
+    }
+
+    .anniversary-showcase__header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 28px;
+      margin: 0 0 clamp(26px, 4vw, 48px);
+    }
+
+    .anniversary-showcase__eyebrow {
+      margin: 0 0 10px;
+      color: #ff74e8;
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .anniversary-showcase__title {
+      margin: 0;
+      color: #fff8e7;
+      font-size: clamp(34px, 5.2vw, 72px);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 28px rgba(255, 75, 218, 0.18);
+    }
+
+    .anniversary-showcase__lead {
+      max-width: 420px;
+      margin: 0;
+      color: rgba(242, 235, 255, 0.76);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .anniversary-showcase__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.64fr) minmax(360px, 0.9fr);
+      align-items: center;
+      gap: clamp(18px, 2.4vw, 34px);
+    }
+
+    .anniversary-game {
+      min-width: 0;
+    }
+
+    .anniversary-game__label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 2px 0;
+      color: rgba(255, 243, 203, 0.8);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+    }
+
+    .anniversary-game__label::before {
+      content: "PLAY";
+      padding: 4px 8px;
+      border: 1px solid rgba(255, 116, 232, 0.58);
+      border-radius: 999px;
+      color: #ffb7f3;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
     }
 
     .anniversary-frame {
       position: relative;
-      width: min(100%, calc(100svh * 1.7768));
+      width: 100%;
       aspect-ratio: 1672 / 941;
-      margin: auto;
-      box-shadow: 0 0 90px rgba(172, 92, 27, 0.2);
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255, 101, 224, 0.34);
+      border-radius: clamp(12px, 1.6vw, 22px);
+      background: #080302;
+      box-shadow:
+        0 34px 90px rgba(0, 0, 0, 0.5),
+        0 0 46px rgba(84, 58, 234, 0.17);
     }
 
     .anniversary-art {
@@ -391,6 +487,61 @@
 
     .anniversary-start:active {
       transform: scale(0.985);
+    }
+
+    .anniversary-poster-wall {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(10px, 1.3vw, 18px);
+    }
+
+    .anniversary-poster {
+      position: relative;
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: clamp(10px, 1.2vw, 16px);
+      background: rgba(7, 5, 13, 0.88);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.38);
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    }
+
+    .anniversary-poster:hover {
+      z-index: 1;
+      transform: translateY(-5px);
+      border-color: rgba(255, 117, 232, 0.66);
+      box-shadow: 0 30px 62px rgba(0, 0, 0, 0.48), 0 0 28px rgba(135, 69, 255, 0.2);
+    }
+
+    .anniversary-poster--wide {
+      grid-column: 1 / -1;
+    }
+
+    .anniversary-poster img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .anniversary-poster figcaption {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 44px;
+      padding: 18px 13px 10px;
+      background: linear-gradient(transparent, rgba(2, 2, 8, 0.92));
+      color: rgba(255, 248, 231, 0.92);
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      pointer-events: none;
     }
 
     .anniversary-signup {
@@ -524,6 +675,24 @@
 
     .anniversary-signup__button:active {
       transform: translateY(0);
+    }
+
+    .anniversary-signup__button.is-coming-soon {
+      cursor: default;
+      border-color: rgba(255, 230, 158, 0.42);
+      background:
+        linear-gradient(180deg, rgba(52, 41, 70, 0.96), rgba(24, 18, 38, 0.98)),
+        #211a31;
+      color: rgba(255, 240, 199, 0.86);
+      letter-spacing: 0.16em;
+      box-shadow: inset 0 0 22px rgba(255, 226, 136, 0.06);
+    }
+
+    .anniversary-signup__button.is-coming-soon:hover,
+    .anniversary-signup__button.is-coming-soon:focus-visible {
+      transform: none;
+      border-color: rgba(255, 230, 158, 0.42);
+      box-shadow: inset 0 0 22px rgba(255, 226, 136, 0.06);
     }
 
     .anniversary-signup__deadline {
@@ -667,7 +836,53 @@
       text-underline-offset: 3px;
     }
 
+    @media (max-width: 1100px) {
+      .anniversary-showcase__layout {
+        grid-template-columns: 1fr;
+      }
+
+      .anniversary-poster-wall {
+        width: min(100%, 820px);
+        margin: 0 auto;
+      }
+    }
+
     @media (max-width: 720px) {
+      .anniversary-page {
+        padding: 48px 0 64px;
+      }
+
+      .anniversary-showcase {
+        width: min(calc(100% - 24px), 1480px);
+      }
+
+      .anniversary-showcase__header {
+        display: block;
+        margin-bottom: 24px;
+      }
+
+      .anniversary-showcase__lead {
+        margin-top: 14px;
+        font-size: 13px;
+      }
+
+      .anniversary-poster-wall {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .anniversary-poster--mickey {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - 4.5px);
+      }
+
+      .anniversary-poster figcaption {
+        min-height: 38px;
+        padding: 15px 9px 8px;
+        font-size: 10px;
+      }
+
       .anniversary-signup__card {
         grid-template-columns: 1fr;
         gap: 28px;
@@ -8513,12 +8728,45 @@
   </main>
 
     <section class="anniversary-page" id="anniversary" aria-labelledby="anniversary-title">
-      <h2 class="visually-hidden" id="anniversary-title">鹽與光十週年音樂會</h2>
-      <div class="anniversary-frame">
-        <img class="anniversary-art" src="assets/anniversary-game-entry.png" alt="鹽與光十週年音樂會，六位音樂夥伴站在舞台上，中央有開始遊戲按鈕">
-        <a class="anniversary-start" href="anniversary-rpg.html" target="_blank" aria-label="在新分頁開始鹽與光十週年 RPG 遊戲">
-          <span class="visually-hidden">開始遊戲</span>
-        </a>
+      <div class="anniversary-showcase">
+        <header class="anniversary-showcase__header">
+          <div>
+            <p class="anniversary-showcase__eyebrow">Salt &amp; Light · 10th Anniversary</p>
+            <h2 class="anniversary-showcase__title" id="anniversary-title">十週年音樂會</h2>
+          </div>
+          <p class="anniversary-showcase__lead">從 RPG 練團室開始探索，再看看陸續公開的演出樂團主視覺。</p>
+        </header>
+
+        <div class="anniversary-showcase__layout">
+          <div class="anniversary-game">
+            <div class="anniversary-frame">
+              <img class="anniversary-art" src="assets/anniversary-game-entry.png" alt="鹽與光十週年音樂會，六位音樂夥伴站在舞台上，中央有開始遊戲按鈕">
+              <a class="anniversary-start" href="anniversary-rpg.html" target="_blank" aria-label="在新分頁開始鹽與光十週年 RPG 遊戲">
+                <span class="visually-hidden">開始遊戲</span>
+              </a>
+            </div>
+            <p class="anniversary-game__label">點擊主視覺上的按鈕，進入十週年 RPG 練團室</p>
+          </div>
+
+          <div class="anniversary-poster-wall" aria-label="十週年音樂會樂團海報">
+            <figure class="anniversary-poster">
+              <img src="assets/anniversary-poster-miss-chief.png" alt="Miss Chief 六人女子樂團十週年音樂會海報" loading="lazy" decoding="async">
+              <figcaption>Miss Chief</figcaption>
+            </figure>
+            <figure class="anniversary-poster">
+              <img src="assets/anniversary-poster-chicken-banana.png" alt="Chicken Banana 三人海底卡通樂團海報" loading="lazy" decoding="async">
+              <figcaption>Chicken Banana</figcaption>
+            </figure>
+            <figure class="anniversary-poster anniversary-poster--mickey">
+              <img src="assets/anniversary-poster-mickey-wonder-house.png" alt="米奇妙妙屋五人彩色卡通樂團十週年音樂會海報" loading="lazy" decoding="async">
+              <figcaption>米奇妙妙屋</figcaption>
+            </figure>
+            <figure class="anniversary-poster anniversary-poster--wide">
+              <img src="assets/anniversary-poster-sleep-deprived.png" alt="睡眠不足七人黑白紅色恐怖漫畫風樂團海報" loading="lazy" decoding="async">
+              <figcaption>睡眠不足</figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -8527,66 +8775,20 @@
         <div>
           <p class="anniversary-signup__eyebrow">10th Anniversary · Attendance</p>
           <h2 id="anniversary-signup-title">十週年音樂會參加登記</h2>
-          <p class="anniversary-signup__lead">演出名額已額滿，謝謝大家熱情參與！現在開放音樂會參加登記，歡迎學生、親友與一路陪伴鹽與光的朋友填寫，方便我們統計到場人數並提供後續通知。</p>
+          <p class="anniversary-signup__lead">演出名額已額滿，謝謝大家熱情參與！參加登記將搭配十週年周邊商品資訊一起開放，詳細內容正在整理中，敬請期待。</p>
           <ul class="anniversary-signup__meta">
             <li>活動日期｜2027.01.16 SAT</li>
             <li>活動地點｜香蕉音樂館</li>
             <li>活動時間與入場方式｜後續另行通知</li>
-            <li>填寫內容僅供活動聯絡與人數統計使用</li>
+            <li>參加登記與十週年周邊商品｜即將公開</li>
           </ul>
         </div>
         <div class="anniversary-signup__action">
-          <a
-            class="anniversary-signup__button"
-            href="https://docs.google.com/forms/d/e/1FAIpQLScEv8xHjh1sMHhEf0sFoVdYj5qQz-h0Uy0TL73e_aQj9q-gMQ/viewform"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-anniversary-form-open
-            aria-haspopup="dialog"
-            aria-controls="anniversary-form-dialog">
-            開啟參加登記表
-          </a>
-          <span class="anniversary-signup__deadline">演出名額已額滿｜參加登記開放中</span>
+          <span class="anniversary-signup__button is-coming-soon" aria-label="十週年音樂會參加登記即將開放">COMING SOON</span>
+          <span class="anniversary-signup__deadline">演出名額已額滿｜參加登記尚未開放</span>
         </div>
       </div>
     </section>
-
-    <dialog
-      class="anniversary-form-dialog"
-      id="anniversary-form-dialog"
-      aria-labelledby="anniversary-form-dialog-title"
-      aria-describedby="anniversary-form-dialog-description">
-      <div class="anniversary-form-dialog__panel">
-        <header class="anniversary-form-dialog__header">
-          <h2 id="anniversary-form-dialog-title">鹽與光十週年音樂會｜參加登記表</h2>
-          <p id="anniversary-form-dialog-description">資料會直接送至 Google 表單後台，方便統計參加人數與後續聯絡。</p>
-          <button
-            class="anniversary-form-dialog__close"
-            type="button"
-            data-anniversary-form-close
-            aria-label="關閉音樂會參加登記表">×</button>
-        </header>
-        <div class="anniversary-form-dialog__frame-wrap">
-          <p class="anniversary-form-dialog__loading" data-anniversary-form-loading>參加登記表載入中…</p>
-          <iframe
-            class="anniversary-form-dialog__frame"
-            title="鹽與光十週年音樂會參加登記表"
-            src="about:blank"
-            data-anniversary-form-frame
-            data-src="https://docs.google.com/forms/d/e/1FAIpQLScEv8xHjh1sMHhEf0sFoVdYj5qQz-h0Uy0TL73e_aQj9q-gMQ/viewform?embedded=true"
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <footer class="anniversary-form-dialog__footer">
-          <p>填寫資料將儲存於 Google Forms，僅供本次音樂會聯絡與人數統計使用。</p>
-          <a
-            class="anniversary-form-dialog__external"
-            href="https://docs.google.com/forms/d/e/1FAIpQLScEv8xHjh1sMHhEf0sFoVdYj5qQz-h0Uy0TL73e_aQj9q-gMQ/viewform"
-            target="_blank"
-            rel="noopener noreferrer">無法顯示？另開 Google 表單</a>
-        </footer>
-      </div>
-    </dialog>
 
     <section class="intro" id="studio" aria-label="工作室介紹與服務">
       <div class="intro-wrap">
@@ -9233,57 +9435,6 @@
     window.setTimeout(revealVisibleSections, 250);
     window.addEventListener("hashchange", revealVisibleSections);
     window.addEventListener("scroll", revealVisibleSections, { passive: true });
-
-    const anniversaryFormDialog = document.querySelector("#anniversary-form-dialog");
-    const anniversaryFormFrame = document.querySelector("[data-anniversary-form-frame]");
-    const anniversaryFormLoading = document.querySelector("[data-anniversary-form-loading]");
-    const anniversaryFormClose = document.querySelector("[data-anniversary-form-close]");
-    let lastAnniversaryFormTrigger = null;
-
-    const loadAnniversaryForm = () => {
-      if (!anniversaryFormFrame || anniversaryFormFrame.dataset.loaded === "true") return;
-      anniversaryFormFrame.dataset.loaded = "true";
-      anniversaryFormFrame.src = anniversaryFormFrame.dataset.src;
-    };
-
-    const finishAnniversaryFormClose = () => {
-      document.body.classList.remove("modal-open");
-      lastAnniversaryFormTrigger?.focus({ preventScroll: true });
-    };
-
-    const closeAnniversaryForm = () => {
-      if (!anniversaryFormDialog) return;
-      if (typeof anniversaryFormDialog.close === "function" && anniversaryFormDialog.open) {
-        anniversaryFormDialog.close();
-      } else {
-        anniversaryFormDialog.removeAttribute("open");
-        finishAnniversaryFormClose();
-      }
-    };
-
-    document.querySelectorAll("[data-anniversary-form-open]").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        if (!anniversaryFormDialog || typeof anniversaryFormDialog.showModal !== "function") return;
-        event.preventDefault();
-        lastAnniversaryFormTrigger = button;
-        loadAnniversaryForm();
-        document.body.classList.add("modal-open");
-        if (!anniversaryFormDialog.open) anniversaryFormDialog.showModal();
-        anniversaryFormClose?.focus();
-      });
-    });
-
-    anniversaryFormFrame?.addEventListener("load", () => {
-      if (anniversaryFormFrame.dataset.loaded !== "true") return;
-      anniversaryFormFrame.classList.add("is-ready");
-      if (anniversaryFormLoading) anniversaryFormLoading.hidden = true;
-    });
-
-    anniversaryFormClose?.addEventListener("click", closeAnniversaryForm);
-    anniversaryFormDialog?.addEventListener("close", finishAnniversaryFormClose);
-    anniversaryFormDialog?.addEventListener("click", (event) => {
-      if (event.target === anniversaryFormDialog) closeAnniversaryForm();
-    });
 
     const ROOM_CALENDAR_API_URL = "https://script.google.com/macros/s/AKfycbwMdXRncrPO3DhumMD3xYpaYp53MbkHBPyUQ8Vm_u9sPI1hKnZmdRdJy4hn3uz-XTDD/exec";
     const roomCalendarGrid = document.querySelector("[data-room-calendar-grid]");
