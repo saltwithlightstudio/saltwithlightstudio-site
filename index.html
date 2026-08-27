@@ -2257,13 +2257,18 @@
       grid-column: 1 / -1;
     }
 
-    .service-modal__shot img {
+    .service-modal__shot img,
+    .service-modal__shot video {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
       filter: sepia(0.14) saturate(1.08) brightness(0.88) contrast(0.98);
       transform: scale(1.03);
+    }
+
+    .service-modal__shot video {
+      background: #050208;
     }
 
     .service-modal__gallery.is-single-poster .service-modal__shot {
@@ -2371,7 +2376,8 @@
       aspect-ratio: auto;
     }
 
-    .service-modal__gallery.is-theory-wall .service-modal__shot img {
+    .service-modal__gallery.is-theory-wall .service-modal__shot img,
+    .service-modal__gallery.is-theory-wall .service-modal__shot video {
       object-fit: cover;
       filter: saturate(1.04) brightness(0.98) contrast(1.02);
       transform: none;
@@ -3201,6 +3207,28 @@
       font-size: clamp(34px, 4vw, 54px);
       line-height: 1.08;
       font-weight: 600;
+    }
+
+    .service-modal__intro-video {
+      position: relative;
+      overflow: hidden;
+      margin: 20px 0 0;
+      aspect-ratio: 16 / 9;
+      border: 1px solid rgba(216, 173, 91, 0.38);
+      border-radius: 8px;
+      background: #050208;
+      box-shadow: 0 20px 46px rgba(0, 0, 0, 0.34), inset 0 0 28px rgba(216, 173, 91, 0.08);
+    }
+
+    .service-modal__intro-video[hidden] {
+      display: none;
+    }
+
+    .service-modal__intro-video video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
     }
 
     .service-modal__lead {
@@ -4331,6 +4359,56 @@
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.36), 0 0 18px rgba(220, 42, 34, 0.25);
       pointer-events: none;
+    }
+
+    .news-card__date-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255, 231, 170, 0.72);
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(55, 28, 8, 0.86), rgba(168, 93, 16, 0.9));
+      color: #fff0bd;
+      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.42);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32), 0 0 18px rgba(255, 178, 52, 0.22);
+      pointer-events: none;
+    }
+
+    .news-card__status-badge--hot {
+      min-width: 52px;
+      gap: 5px;
+      padding-left: 8px;
+      border-color: rgba(255, 235, 198, 0.86);
+      background: linear-gradient(135deg, rgba(240, 36, 25, 0.98), rgba(130, 7, 16, 0.95));
+      color: #fff8ea;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38), 0 0 22px rgba(255, 61, 42, 0.48);
+      animation: hotBadgePulse 1.65s ease-in-out infinite;
+    }
+
+    .news-card__status-badge--hot::before {
+      content: "";
+      width: 11px;
+      height: 15px;
+      flex: 0 0 auto;
+      border-radius: 72% 48% 68% 42%;
+      background:
+        radial-gradient(circle at 52% 74%, rgba(255, 246, 154, 0.96) 0 24%, transparent 25%),
+        radial-gradient(circle at 46% 57%, rgba(255, 145, 32, 0.98) 0 42%, transparent 43%),
+        linear-gradient(155deg, #fff4a3 5%, #ffb12e 38%, #f13b1e 78%);
+      filter: drop-shadow(0 0 5px rgba(255, 190, 47, 0.88));
+      transform: rotate(-18deg) translateY(1px);
+      animation: hotFlameFlicker 0.72s ease-in-out infinite alternate;
     }
 
     .news-card h3 {
@@ -7039,6 +7117,17 @@
       100% { transform: translateX(360%) skewX(-18deg); opacity: 0; }
     }
 
+    @keyframes hotBadgePulse {
+      0%, 100% { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38), 0 0 18px rgba(255, 61, 42, 0.42); }
+      50% { box-shadow: 0 12px 32px rgba(0, 0, 0, 0.42), 0 0 28px rgba(255, 108, 35, 0.72); }
+    }
+
+    @keyframes hotFlameFlicker {
+      0% { transform: rotate(-21deg) translateY(1px) scale(0.94, 1.04); opacity: 0.86; }
+      55% { transform: rotate(-12deg) translateY(-1px) scale(1.06, 0.95); opacity: 1; }
+      100% { transform: rotate(-18deg) translateY(1px) scale(0.98, 1.1); opacity: 0.9; }
+    }
+
     @keyframes grainMove {
       0% { transform: translate(0, 0); }
       50% { transform: translate(2%, -1%); }
@@ -7480,7 +7569,8 @@
         padding: 14px;
       }
 
-      .service-modal__gallery.is-theory-wall .service-modal__shot img {
+      .service-modal__gallery.is-theory-wall .service-modal__shot img,
+      .service-modal__gallery.is-theory-wall .service-modal__shot video {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -8027,6 +8117,14 @@
         min-height: 26px;
         padding: 4px 9px;
         font-size: 12px;
+      }
+
+      .news-card__date-badge {
+        top: 10px;
+        left: 10px;
+        min-height: 26px;
+        padding: 4px 9px;
+        font-size: 11px;
       }
 
       .camp-points,
@@ -8843,6 +8941,7 @@
           <p class="service-modal__eyebrow" id="service-modal-eyebrow">Studio Service</p>
           <div class="service-modal__status" id="service-modal-status" hidden></div>
           <h3 id="service-modal-title">個人課程</h3>
+          <div class="service-modal__intro-video" id="service-modal-intro-video" hidden></div>
           <p class="service-modal__lead" id="service-modal-lead">依照每個人的目標，安排合適的學習方式。</p>
           <p class="service-modal__body" id="service-modal-body">鹽與光提供流行歌唱、吉他與 Bass、爵士鼓、鋼琴鍵盤等個人課程，從基礎建立到歌曲應用都可以慢慢陪你整理。</p>
           <div class="service-modal__list" id="service-modal-list"></div>
@@ -8871,25 +8970,24 @@
         <div class="news-grid" aria-label="最新消息列表">
           <button class="news-card service-card" type="button" data-service="newsHopeJazz" aria-label="查看Hope老師活動爵士場不可能出現的歌單">
             <img src="assets/news-hope-jazz-20260913.png" alt="爵士場不可能出現的歌單葉賀璞老師活動海報">
-            <span class="news-card__content"><span class="news-card__tag">Jazz Event</span><h3 class="is-stacked"><span class="news-title-main">Hope老師活動</span><span class="news-title-sub">爵士場不可能出現的歌單</span></h3><p>2026/09/13 14:30–16:00。</p></span>
+            <span class="news-card__date-badge">2026.09.13</span>
+            <span class="news-card__status-badge news-card__status-badge--hot">HOT</span>
+            <span class="news-card__content"><span class="news-card__tag">Jazz Event</span><h3 class="is-stacked"><span class="news-title-main">Hope老師活動</span><span class="news-title-sub">爵士場不可能出現的歌單</span></h3><p>9/13（日）14:30–16:00。</p></span>
           </button>
-          <button class="news-card service-card" type="button" data-service="newsSongCamp" aria-label="查看歌唱進階團體班最美和聲第十一期已額滿成發八月十八日晚上八點週五晚上八點">
-            <img src="assets/news-harmony-11-full.jpg" alt="最美和聲第十一期已額滿">
-            <span class="news-card__status-badge">開班成功</span>
-            <span class="news-card__content"><span class="news-card__tag">Harmony</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">最美和聲-第十一期已額滿</span></h3><p>成發：8/18 20:00｜週五 20:00。</p></span>
+          <button class="news-card service-card" type="button" data-service="newsVocalTrial" aria-label="查看歌唱基礎班搶救五音大作戰第67期">
+            <img src="assets/news-vocal-basic-jojo-vertical-v1.png" alt="搶救五音大作戰歌唱基礎第67期直式漫畫風海報">
+            <span class="news-card__content"><span class="news-card__tag">Vocal Basic</span><h3 class="is-stacked"><span class="news-title-main">歌唱基礎班</span><span class="news-title-sub">搶救五音大作戰-第67期</span></h3><p>零基礎與音準節奏扎根。</p></span>
           </button>
-          <button class="news-card service-card" type="button" data-service="newsVocalTrial" aria-label="查看歌唱基礎團體班搶救五音大作戰第66期招生中">
-            <img src="assets/news-vocal-basic-66-ig.jpg" alt="搶救五音大作戰歌唱初級班海報">
-            <span class="news-card__status-badge">開班成功</span>
-            <span class="news-card__content"><span class="news-card__tag">Vocal Basic</span><h3 class="is-stacked"><span class="news-title-main">歌唱基礎團體班</span><span class="news-title-sub">搶救五音大作戰-第66期招生中</span></h3><p>從音準、節奏與開口練習開始。</p></span>
+          <button class="news-card service-card" type="button" data-service="newsEmotionExpression" aria-label="查看唱得比說得還好聽情感表達第7期">
+            <img src="assets/news-mina-emotion-expression-v2.png" alt="唱得比說得還好聽情感表達第7期">
+            <span class="news-card__content"><span class="news-card__tag">Emotion Vocal</span><h3 class="is-stacked"><span class="news-title-main">情感表達班</span><span class="news-title-sub">唱得比說得還好聽-第7期</span></h3><p>設計音色、節奏與故事張力。</p></span>
           </button>
-          <button class="news-card service-card" type="button" data-service="newsBandRoom" aria-label="查看歌唱進階團體班飆高音第八期招生中成發八月十八日晚上八點">
-            <img src="assets/news-high-note-8-banner.png" alt="飆高音班第八期招生中">
-            <span class="news-card__status-badge">開班成功</span>
-            <span class="news-card__content"><span class="news-card__tag">Advanced Vocal</span><h3 class="is-stacked"><span class="news-title-main">歌唱進階團體班</span><span class="news-title-sub">飆高音-第八期招生中</span></h3><p>成發：8/18 20:00。</p></span>
+          <button class="news-card service-card" type="button" data-service="newsGrooveStyle" aria-label="查看曲風律動即興班第10期">
+            <img src="assets/news-mina-groove-style-v3-angle.png" alt="曲風律動即興班第10期">
+            <span class="news-card__content"><span class="news-card__tag">Groove & Style</span><h3 class="is-stacked"><span class="news-title-main">曲風律動即興班</span><span class="news-title-sub">曲風大飆歌-第10期</span></h3><p>Rock、Funk、R&B、爵士等曲風應用。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsTheoryCertificate" aria-label="查看初階樂理函授線上課程最新消息">
-            <img src="assets/news-theory-certificate.jpg" alt="初階樂理函授線上課程">
+            <img src="assets/news-theory-correspondence-anime-cover-v1.png" alt="初階樂理函授線上課程飛行員漫畫風封面">
             <span class="news-card__content"><span class="news-card__tag">Music Theory</span><h3 class="is-stacked"><span class="news-title-main">初階樂理函授</span><span class="news-title-sub">線上課程</span></h3><p>線上學習，建立樂理基礎。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsArrangement" aria-label="查看智慧助理鹽小光上線最新消息">
@@ -9728,6 +9826,11 @@
           label: "前往樂理函授報名表",
           url: "https://forms.gle/9sUAYSgnm3hDRcAV8"
         },
+        introVideo: {
+          src: "assets/news-theory-correspondence-intro-v1.mp4",
+          poster: "assets/news-theory-correspondence-anime-cover-v1.png",
+          label: "樂理函授課程前導影片"
+        },
         images: [
           { src: "assets/news-theory-correspondence-02.jpg", position: "50% 50%" },
           { src: "assets/news-theory-correspondence-03.jpg", position: "50% 50%" },
@@ -9757,61 +9860,67 @@
       newsVocalTrial: {
         layout: "single-poster",
         eyebrow: "Vocal Basic Class",
-        title: "歌唱基礎團體班｜搶救五音大作戰-第66期招生中",
-        lead: "針對零基礎、想拯救音準，或想把歌唱基礎重新扎穩的同學設計。",
-        body: "這堂課會從歌手最重要的基礎能力開始整理，包含共鳴認識、音色分析、節奏律動、胸音與頭音發聲、基礎歌唱技巧，以及個人演唱指導。課程採小班制，透過老師示範、同學互相觀察與實際上台練習，讓唱歌不再只是憑感覺，而是能慢慢找到可練習的方法。",
+        title: "歌唱基礎班｜搶救五音大作戰-第67期",
+        lead: "五音班是 Mina 歌唱系統的基礎入口，適合零基礎、想救音準，或想把發聲概念重新扎穩的同學。",
+        body: "這堂課從歌手最重要的基礎能力開始整理：共鳴認識、音色分析、基礎節奏律動、胸音與頭音發聲、基礎歌唱技巧，以及個人演唱指導。小班制課程會透過老師示範、同學彼此觀察和上台練習，讓唱歌從憑感覺變成有方法地練習。",
         points: [
-          "課程內容：共鳴認識、音色分析、節奏律動、胸音與頭音、基礎歌唱技巧。",
-          "總共四堂，第一至三堂每次 2 小時，第四堂為彩排與成果發表，共 8 小時。",
-          "第66期基礎班週六上課日期：7/11 第一堂、7/18 第二堂、8/29 第三堂、9/5 第四堂成發，時間皆為晚上 8:00–10:00。",
+          "課程內容：共鳴認識與音色分析、基礎節奏律動、胸音與頭音、基礎歌唱技巧、個人演唱指導。",
+          "共四堂課，第一至三堂每次 2 小時，第四堂為彩排與成果發表，共 8 小時。",
+          "上課時段可選週二或週六晚上 7:30–9:30，或 8:00–10:00；實際時間依開班群組討論確認。",
           "新生價 3500 元；雙人成行、熟客介紹或一年內舊生優惠 3200 元；旁聽生 1500 元。",
-          "4 人開班、8 人額滿；地點為高雄市鹽埕區五福四路151-1號2樓，鹽與光音樂工作室光館。",
+          "4 人開班、8 人額滿；上課與成發地點為鹽與光音樂工作室光館。",
           "報名後請先加入米娜老師 Line：minashih703，並告知已報名歌唱基礎班。"
         ],
         cta: {
-          label: "前往基礎班報名表",
-          url: "https://docs.google.com/forms/d/1a5GWDaA0qmHl4wvW1SSO8QvOSUPgLsFUxZ2r8oEYnLM/viewform"
+          label: "前往五音基礎班報名表",
+          url: "https://reurl.cc/bdknxE"
         },
         images: [
-          { src: "assets/news-vocal-basic-rescue-poster.png", position: "50% 50%" }
+          { src: "assets/news-vocal-basic-jojo-vertical-v1.png", position: "50% 50%" }
         ]
       },
-      newsBandRoom: {
+      newsEmotionExpression: {
         layout: "single-poster",
-        eyebrow: "High Note Group Class",
-        title: "歌唱進階團體班｜飆高音-第八期招生中",
-        lead: "專門整理高音的進階團體班，帶你找到屬於自己的高音。",
-        body: "如果你喜歡飆高音，卻常遇到唱不上去、唱到燒聲鎖喉、聲音不穩或不喜歡自己高音音色，這堂課就是為了這些問題設計。課程會從胸音、頭音、混聲區、節奏律動與氣息位置設計開始，最後以自選曲進行成果發表，讓高音不只是用力衝，而是更穩、更亮、也更有掌控感。",
+        eyebrow: "Emotion Vocal Class",
+        title: "情感表達班｜唱得比說得還好聽-第7期",
+        lead: "不是只有投入情緒就會有感情，而是要把音準、音色、節奏和情緒一起設計成自己的故事。",
+        body: "情感表達班會從歌曲與歌詞分析開始，整理聲音如何演繹故事張力，並把歌唱技巧、發音練習、節奏安排與情緒連結在一起。Mina 老師會透過演唱分析與設計建議，協助學生找到屬於自己的說唱故事方式。",
         points: [
-          "課程內容：胸音五度與八度、頭音五度與八度、混聲區、節奏律動與氣息位置設計。",
-          "總共四堂，第一至三堂每次 2 小時，第四堂為彩排與成果發表，共 8 小時。",
-          "第8期飆高音週二上課日期：7/14 第一堂、7/28 第二堂、8/4 第三堂、8/18 第四堂成發，時間皆為晚上 8:00–10:00。",
-          "7 人開班、10 人額滿；新生報名需附主歌到副歌一遍的清唱或跟伴奏音檔，老師會評估是否適合。",
-          "學費 4500 元，可分兩期；旁聽生 1500 元，限 3 人。",
-          "上課與成發地點為高雄市鹽埕區五福四路151-1號2樓，鹽與光音樂工作室光館。"
+          "課程內容：歌曲與歌詞分析、聲音故事張力、歌唱技巧與情緒連結、發音練習與歌曲實作。",
+          "包含診療時間、課後影片作業建議指導，並加送一堂 55 分鐘個人一對一課程。",
+          "第四堂為成果發表，可選老師指定曲或學生自選曲，搭配 Live band 發表。",
+          "正班生 4500 元，可分兩期；旁聽生 1500 元。",
+          "5 人開班、8 人額滿；上課地點為鹽館，成果發表地點為光館。",
+          "此為進階課程，新生需先提供一首最有自信的錄影或音檔給 Mina 老師評估。"
         ],
         cta: {
-          label: "前往飆高音班報名表",
-          url: "https://docs.google.com/forms/d/1goBMPShCrZWB9Q3KZ4ag-g73askFAprrUY2qZYFXvuc/viewform?edit_requested=true"
+          label: "前往情感表達班報名表",
+          url: "https://reurl.cc/N2pZDx"
         },
         images: [
-          { src: "assets/news-high-note-8-banner.png", position: "50% 50%" }
+          { src: "assets/news-mina-emotion-expression-v2.png", position: "50% 50%" }
         ]
       },
-      newsSongCamp: {
+      newsGrooveStyle: {
         layout: "single-poster",
-        eyebrow: "Harmony Group Class",
-        status: "已額滿",
-        title: "歌唱進階團體班｜最美和聲-第十一期已額滿",
-        lead: "第 11 期已額滿，感謝同學們的支持與肯定。",
-        body: "Mina IG 公開貼文提到，週五最美和聲班第十一期未宣傳就已經接近額滿；目前依網站資料標示為已額滿。這堂進階團體班適合想學合音、想和朋友一起唱歌，或想在團體中更穩定掌握自己聲部的人。",
+        eyebrow: "Groove & Style Class",
+        title: "曲風律動即興班｜曲風大飆歌-第10期",
+        lead: "把 Rock、Funk、R&B、雷鬼、爵士等曲風拆開理解，練出節奏、重拍和即興改編的身體感。",
+        body: "曲風律動即興班會用歌手的角度分析不同曲風，整理節奏律動、重拍、音色與技巧在演唱中的關係。課堂會示範常見流行歌曲元素，並依學生投票選出曲風指定曲，讓你不只唱對旋律，也能唱出曲風的韻味。",
         points: [
-          "適合想練合音、合唱、樂團 backing vocal 或團體演出的人。",
-          "從簡單聲部開始，慢慢建立聆聽與和聲穩定度。",
-          "本期已額滿；下一期開課時間、費用與名額請以 Mina IG 或私訊確認為準。"
+          "課程內容：曲風元素分析、節奏律動與重拍分析、歌曲改編節奏運用、節奏變化與發音練習。",
+          "曲風包含 Rock、Funk、R&B、雷鬼、爵士等，實際練習曲目依學生投票確認。",
+          "共四堂課，第一至三堂每次 2 小時，第四堂為彩排與成果發表，共 8 小時。",
+          "正班生 4500 元，可分兩期；旁聽生 1500 元。",
+          "7 人開班、10 人額滿；上課地點為鹽館，成果發表地點為光館。",
+          "新生需提供清唱或跟伴奏錄音檔連結，並附上原曲連結，供 Mina 老師評估。"
         ],
+        cta: {
+          label: "前往曲風律動即興班報名表",
+          url: "https://reurl.cc/N2pZDm"
+        },
         images: [
-          { src: "assets/news-harmony-11-soldout-poster.png", position: "50% 50%" }
+          { src: "assets/news-mina-groove-style-v3-angle.png", position: "50% 50%" }
         ]
       },
       newsArrangement: {
@@ -10150,6 +10259,7 @@
     const serviceModalEyebrow = document.querySelector("#service-modal-eyebrow");
     const serviceModalStatus = document.querySelector("#service-modal-status");
     const serviceModalTitle = document.querySelector("#service-modal-title");
+    const serviceModalIntroVideo = document.querySelector("#service-modal-intro-video");
     const serviceModalLead = document.querySelector("#service-modal-lead");
     const serviceModalBody = document.querySelector("#service-modal-body");
     const serviceModalList = document.querySelector("#service-modal-list");
@@ -10161,6 +10271,10 @@
       serviceModal.classList.remove("is-open");
       serviceModal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("modal-open");
+      if (serviceModalIntroVideo) {
+        serviceModalIntroVideo.innerHTML = "";
+        serviceModalIntroVideo.hidden = true;
+      }
       if (lastServiceTrigger) lastServiceTrigger.focus();
     };
 
@@ -10178,6 +10292,15 @@
           serviceModalStatus.hidden = true;
         }
         serviceModalTitle.textContent = service.title;
+        if (service.introVideo && serviceModalIntroVideo) {
+          const poster = service.introVideo.poster ? ` poster="${service.introVideo.poster}"` : "";
+          const label = service.introVideo.label || `${service.title}影片`;
+          serviceModalIntroVideo.innerHTML = `<video controls playsinline preload="metadata"${poster} aria-label="${label}"><source src="${service.introVideo.src}" type="video/mp4"></video>`;
+          serviceModalIntroVideo.hidden = false;
+        } else if (serviceModalIntroVideo) {
+          serviceModalIntroVideo.innerHTML = "";
+          serviceModalIntroVideo.hidden = true;
+        }
         serviceModalLead.textContent = service.lead;
         serviceModalBody.textContent = service.body;
         serviceModalGallery.className = `service-modal__gallery${service.layout ? ` is-${service.layout}` : ""}`;
@@ -10210,6 +10333,10 @@
           const videoUrl = typeof image === "string" ? "" : image.url || image.videoUrl || "";
           const videoLabel = typeof image === "string" || !image.videoLabel ? "觀看影片" : image.videoLabel;
           const videoLink = videoUrl ? `<a class="service-modal__video-link" href="${videoUrl}" target="_blank" rel="noopener noreferrer" aria-label="${videoLabel}"><span class="service-modal__video-label">${videoLabel}</span></a>` : "";
+          if (typeof image !== "string" && image.type === "video") {
+            const poster = image.poster ? ` poster="${image.poster}"` : "";
+            return `<figure class="service-modal__shot service-modal__shot--video"><video controls playsinline preload="metadata"${poster} aria-label="${service.title}影片 ${index + 1}" style="object-position: ${position};"><source src="${src}" type="video/mp4"></video>${badge}${caption}</figure>`;
+          }
           return `<figure class="service-modal__shot"><img src="${src}" alt="${service.title}照片 ${index + 1}" style="object-position: ${position};">${videoLink}${badge}${caption}</figure>`;
         }).join("");
         serviceModalList.className = `service-modal__list${service.layout ? ` is-${service.layout}` : ""}`;
