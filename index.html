@@ -8804,6 +8804,88 @@
         transform: none !important;
       }
     }
+    .service-modal.is-theory-world .service-modal__panel {
+      background: #102623;
+      border-color: #b99b61;
+    }
+    .service-modal__gallery.is-theory-world {
+      display: block;
+      min-height: 0;
+      height: 100%;
+      overflow-y: auto;
+      padding: 0 0 22px;
+      background: #101d1c;
+    }
+    .theory-world-cover {
+      position: relative;
+      min-height: 250px;
+      aspect-ratio: 16 / 10;
+      isolation: isolate;
+    }
+    .theory-world-cover > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .theory-world-cover > div {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 50px 24px 24px;
+      background: linear-gradient(transparent, #101d1cf5);
+    }
+    .theory-world-cover span { font-size: 10px; color: #e5ce9c; }
+    .theory-world-cover strong { display: block; font-family: var(--font-serif, serif); font-size: 38px; line-height: 1.5; color: #fff0cf; }
+    .theory-world-cover p { margin: 4px 0 0; color: #e2e6dc; font-size: 14px; }
+    .theory-world-heading { margin: 20px 20px 14px; font-size: 17px; color: #eed4a2; }
+    .theory-world-chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 20px; }
+    .theory-world-chapter { margin: 0; min-width: 0; overflow: hidden; border: 1px solid #b99b614d; border-radius: 4px; background: #172c28; }
+    .theory-world-chapter img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+    .theory-world-chapter figcaption { padding: 10px 12px 12px; }
+    .theory-world-chapter span { display: block; color: #c5ab78; font-size: 10px; }
+    .theory-world-chapter strong { display: block; margin: 3px 0; color: #fff0cf; font-size: 16px; }
+    .theory-world-chapter p { margin: 0; color: #c8d6cb; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+    .service-modal.is-theory-world .service-modal__content { min-width: 0; }
+    .service-modal.is-theory-world .service-modal__content h3 { font-size: 32px; letter-spacing: 0; }
+    .service-modal.is-theory-world .service-modal__item { padding: 12px 0; border: 0; border-radius: 0; border-bottom: 1px solid #b99b6133; background: transparent; }
+    .theory-world-plans h4 { margin: 0 0 14px; font-size: 19px; color: #eed4a2; }
+    .theory-world-plan { padding: 14px 0; border-top: 1px solid #b99b614d; }
+    .theory-world-plan strong { display: block; font-size: 16px; color: #f5eddb; }
+    .theory-world-plan b { display: block; margin: 5px 0; font-size: 19px; color: #efd08a; }
+    .theory-world-plan p { margin: 0; font-size: 13px; line-height: 1.8; color: #c8d6cb; }
+    .theory-world-plans > a { display: inline-block; margin: 8px 0 18px; color: #efd08a; text-underline-offset: 4px; }
+    .service-modal.is-theory-world .service-modal__cta { background: #e4c78c; color: #142b24; letter-spacing: 0; text-align: center; white-space: normal; }
+    @media (max-width: 800px) {
+      .service-modal.is-theory-world .service-modal__panel { display: flex; flex-direction: column; }
+      .service-modal.is-theory-world .service-modal__content { order: 1; max-height: none; overflow: visible; flex: none; }
+      .service-modal__gallery.is-theory-world { display: contents; }
+      .theory-world-cover { order: 0; flex: none; min-height: 240px; }
+      .theory-world-heading { order: 2; }
+      .theory-world-chapters { order: 3; margin-bottom: 22px; }
+      .service-modal.is-theory-world .service-modal__content h3 { font-size: 28px; }
+      .theory-world-chapters { padding: 0 14px; gap: 10px; }
+      .theory-world-chapter figcaption { padding: 8px; }
+      .theory-world-chapter strong { font-size: 15px; }
+    }
+    @media (max-width: 360px) {
+      .theory-world-chapters { grid-template-columns: 1fr; }
+    }
+    .news-card--theory-poster { display: flex; flex-direction: column; background: #101d1c; }
+    .news-card--theory-poster img { height: auto; min-height: 0; aspect-ratio: 4 / 5; object-fit: contain; transform: none; filter: none; }
+    .news-card--theory-poster .news-card__content { position: relative; inset: auto; padding: 14px; text-align: left; }
+    .news-card--theory-poster::before { background: transparent; }
+    .news-card--theory-poster:hover img,
+    .news-card--theory-poster:focus-visible img { transform: none; filter: brightness(0.65); }
+    .theory-world-cover.theory-world-cover--poster { aspect-ratio: 1122 / 1402; min-height: 0; }
+    .theory-world-cover--poster > img { object-fit: contain; }
+    .theory-world-cinema { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 12px 20px 0; }
+    .theory-world-cinema img { display: block; width: 100%; height: auto; aspect-ratio: 1122 / 1402; object-fit: contain; }
+    @media (max-width: 800px) {
+      .theory-world-cinema { order: 2; grid-template-columns: 1fr; padding: 14px; }
+      .service-modal.is-theory-world .theory-world-heading { order: 3; }
+      .service-modal.is-theory-world .theory-world-chapters { order: 4; }
+    }
   </style>
 </head>
 <body>
@@ -8968,6 +9050,10 @@
           </div>
         </div>
         <div class="news-grid" aria-label="最新消息列表">
+          <button class="news-card service-card news-card--theory-poster" type="button" data-service="newsTheoryCertificate" aria-label="查看初階樂理函授線上課程最新消息">
+            <img src="assets/news-theory-world/cinema-03.png" alt="樂理時空電影海報：鹽小光戴著耳機聆聽，先聽見，再找到答案">
+            <span class="news-card__content"><span class="news-card__tag">Music Theory Chronicles</span><h3 class="is-stacked"><span class="news-title-main">初階樂理函授</span><span class="news-title-sub">樂理時空</span></h3><p>11 課影片 × 12 章遊戲，音符之間，啟程。</p></span>
+          </button>
           <button class="news-card service-card" type="button" data-service="newsDrumRoom" aria-label="查看鼓房租借價格調整">
             <img src="assets/news-drum-room-rental-202610.png" alt="鼓房租借價格調整，每小時200元">
             <span class="news-card__content"><span class="news-card__tag">Drum Room</span><h3 class="is-stacked"><span class="news-title-main">鼓房租借</span><span class="news-title-sub">價格調整</span></h3><p>每小時 200 元。</p></span>
@@ -8987,10 +9073,6 @@
           <button class="news-card service-card" type="button" data-service="newsGrooveStyle" aria-label="查看曲風律動即興班第10期">
             <img src="assets/news-mina-groove-style-v3-angle.png" alt="曲風律動即興班第10期">
             <span class="news-card__content"><span class="news-card__tag">Groove & Style</span><h3 class="is-stacked"><span class="news-title-main">曲風律動即興班</span><span class="news-title-sub">曲風大飆歌-第10期</span></h3><p>Rock、Funk、R&B、爵士等曲風應用。</p></span>
-          </button>
-          <button class="news-card service-card" type="button" data-service="newsTheoryCertificate" aria-label="查看初階樂理函授線上課程最新消息">
-            <img src="assets/news-theory-correspondence-anime-cover-v1.png" alt="初階樂理函授線上課程飛行員漫畫風封面">
-            <span class="news-card__content"><span class="news-card__tag">Music Theory</span><h3 class="is-stacked"><span class="news-title-main">初階樂理函授</span><span class="news-title-sub">線上課程</span></h3><p>線上學習，建立樂理基礎。</p></span>
           </button>
           <button class="news-card service-card" type="button" data-service="newsArrangement" aria-label="查看智慧助理鹽小光上線最新消息">
             <img src="assets/salt-assistant-yenxiaoguang.png" alt="智慧助理鹽小光">
@@ -9812,52 +9894,47 @@
         ]
       },
       newsTheoryCertificate: {
-        layout: "theory-wall",
-        eyebrow: "Online Music Theory",
-        title: "初階樂理檢定函授課程",
-        lead: "三個月、共十堂課，從零基礎開始建立流行音樂需要的樂理能力。",
-        body: "這是一套針對完全初學者設計的初階樂理函授課程。每週會收到上課進度影片，並搭配臉書私密社團直播或影片複習；課程中會透過每堂考試確認學習狀況，最後測試通過後可取得鹽與光初階檢定證書，未來也可作為參與鹽與光師資培訓的基礎證明。",
+        layout: "theory-world",
+        eyebrow: "TC'S MUSIC WORLD",
+        title: "初階樂理函授｜樂理時空",
+        lead: "11 課中文函授影片，12 個樂理世界。看懂、聽懂，再親手練習。",
+        body: "從讀懂第一個音符，到聽見和弦的色彩，跟著 TC 走進樂理時空。函授第 1～11 課依序帶你認識讀譜、音程、調性、節奏、和弦與調式；看完影片，再透過琴鍵作答、聽辨與節奏練習，把觀念變成直覺。第十二章「時刻魔龍」則是綜合試煉，不是另一堂函授影片。",
         points: [
-          "課程共十堂，內容依照 TC 的基礎樂理教材編修，加入聽力訓練、節奏訓練與調式音階基礎概念。",
-          "涵蓋流行音樂系所入學考試與必修基礎，也適合想寫歌、想整理創作語彙的人。",
-          "函授形式可依進度觀看影片；若需請假可事先告知補影片，考試缺漏需另約補考。",
-          "費用 4500 元，可分三期繳清，每期 1500 元；填表後等人數達四人以上才會確認開課並通知付款方式。",
-          "不需要任何樂理基礎，適合想從音名、讀譜、節奏、和弦與調式觀念慢慢扎穩的學生。"
+          "免費體驗：Google 登入後，第 1～11 章每天每關可挑戰 7 次，台灣時間午夜重置。不含練習、測驗與魔龍關卡。",
+          "開通後可使用練習、測驗及適用的挑戰模式：不限時熟悉題型、依章節規則通關，再以限時快答挑戰自己。",
+          "函授影片為中文授課；遊戲介面可切換繁體中文、英文與日文。實際開通內容與交易說明以課程網站為準。"
         ],
         cta: {
-          label: "前往樂理函授報名表",
-          url: "https://forms.gle/9sUAYSgnm3hDRcAV8"
+          label: "前往樂理時空・免費試玩",
+          url: "https://music-theory-clocktown-tc.gtluto721.chatgpt.site/"
         },
-        introVideo: {
-          src: "assets/news-theory-correspondence-intro-v1.mp4",
-          poster: "assets/news-theory-correspondence-anime-cover-v1.png",
-          label: "樂理函授課程前導影片"
-        },
-        images: [
-          { src: "assets/news-theory-correspondence-02.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-03.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-04.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-05.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-01.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-06.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-07.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-08.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-09.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-10.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-11.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-12.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-13.jpg", position: "50% 50%" },
-          { src: "assets/news-theory-correspondence-14.jpg", position: "50% 50%" }
+        images: [{ src: "assets/news-theory-world/cinema-01.png", alt: "樂理時空：從一個音，開始冒險。鹽小光走向晨光中的鐘樓小鎮。" }],
+        coverPoster: true,
+        cinemaPosters: [
+          { src: "assets/news-theory-world/cinema-02.png", alt: "浮島探索：讓和弦，帶你走得更遠。三和弦、七和弦、調式。" },
+          { src: "assets/news-theory-world/cinema-03.png", alt: "靜心聆聽：先聽見，再找到答案。看譜、聽辨、點選作答。" },
+          { src: "assets/news-theory-world/cinema-04.png", alt: "直面魔龍：時刻魔龍，用樂理迎戰時間。" },
+          { src: "assets/news-theory-world/cinema-05.png", alt: "守住最後的90分：五型態、20題、完成挑戰。" }
         ],
-        editorial: {
-          kicker: "Online Course",
-          headline: "初階樂理檢定函授",
-          copy: "每週影片、每堂考試，把基礎樂理整理成能真的用在演奏與創作裡的能力。",
-          listTitle: "學習重點",
-          lines: ["聽力與節奏訓練", "音名讀譜與基礎和弦", "調式音階基礎概念"],
-          noteLabel: "Salt with Light",
-          note: "Music Theory Course elementary"
-        }
+        chapters: [
+          { name: "鐘樓小鎮", topic: "音名與五線譜" },
+          { name: "螢光森林", topic: "音程、調性與唱名" },
+          { name: "水晶礦窟", topic: "調性的介紹" },
+          { name: "砂時計遺跡", topic: "五度圈" },
+          { name: "潮汐港灣", topic: "節奏" },
+          { name: "冰鏡山脈", topic: "再談節奏" },
+          { name: "風之浮島", topic: "三和弦" },
+          { name: "月影古城", topic: "七和弦基礎介紹" },
+          { name: "齒輪工都", topic: "七和弦的變化" },
+          { name: "星軌天文台", topic: "調式音階" },
+          { name: "熔火鍛造廠", topic: "順階和弦" },
+          { name: "時刻魔龍", topic: "師資綜合試煉" }
+        ],
+        plans: [
+          { title: "30 天通關方案", price: "NT$150／30 天", detail: "依序通關解鎖章節，到期手動續購；不含函授影片。" },
+          { title: "全章遊戲買斷", price: "NT$500／一次付費", detail: "第 1～12 章自由選擇，包含魔龍試煉；不含函授影片。" },
+          { title: "遊戲＋樂理函授", price: "NT$1,200／一次付費", detail: "包含全章遊戲與第 1～11 課中文函授影片，可在網站內觀看。" }
+        ]
       },
       newsVocalTrial: {
         layout: "single-poster",
@@ -10305,6 +10382,7 @@
         const service = serviceModalData[card.dataset.service];
         if (!service) return;
         lastServiceTrigger = card;
+        serviceModal.classList.toggle("is-theory-world", service.layout === "theory-world");
         serviceModalEyebrow.textContent = service.eyebrow;
         if (service.status) {
           serviceModalStatus.textContent = service.status;
@@ -10388,6 +10466,19 @@
         serviceModalGallery.innerHTML = isCampWork
           ? `<div class="service-modal__works-title">${service.points.length} 首作品｜點縮圖觀看</div>${videoCards}`
           : `${moodTitle}${editorialTitle}${editorialList}${editorialNote}${galleryShots}`;
+        if (service.chapters) {
+          serviceModalGallery.innerHTML = `
+            <div class="theory-world-cover${service.coverPoster ? " theory-world-cover--poster" : ""}">
+              <img src="${service.images[0].src}" alt="${service.images[0].alt || (service.coverPoster ? "鹽小光樂理時空宣傳海報" : "時律儀與樂理時空世界")}">
+              ${service.coverPoster ? "" : "<div><span>MUSIC THEORY CHRONICLES</span><strong>樂理時空</strong><p>音符之間，啟程。</p></div>"}
+            </div>
+            ${service.cinemaPosters ? `<div class="theory-world-cinema" aria-label="樂理時空電影海報">${service.cinemaPosters.map((poster) => `<img src="${poster.src}" alt="${poster.alt}" loading="lazy">`).join("")}</div>` : ""}
+            <h4 class="theory-world-heading">十二個世界，一段音樂旅程</h4>
+            <div class="theory-world-chapters">${service.chapters.map((chapter, index) => {
+              const number = String(index + 1).padStart(2, "0");
+              return `<figure class="theory-world-chapter"><img src="assets/news-theory-world/chapter-${number}.${index === 11 ? "png" : "webp"}" alt="${chapter.name}場景" loading="lazy"><figcaption><span>CHAPTER ${number}</span><strong>${chapter.name}</strong><p>${chapter.topic}</p></figcaption></figure>`;
+            }).join("")}</div>`;
+        }
         const listItems = isCampWork ? service.instructors || [] : service.points;
         const listTitle = isCampWork ? `<div class="service-modal__works-title">指導老師</div>` : "";
         const equipmentBox = Array.isArray(service.equipment) ? `
@@ -10403,7 +10494,8 @@
             </div>
           </div>
         ` : "";
-        serviceModalList.innerHTML = listTitle + listItems.map((point) => {
+        const plansSection = service.plans ? `<section class="theory-world-plans" aria-label="學習方案"><h4>選擇你的學習步調</h4>${service.plans.map((plan) => `<div class="theory-world-plan"><strong>${plan.title}</strong><b>${plan.price}</b><p>${plan.detail}</p></div>`).join("")}<a href="${service.cta.url}#plans" target="_blank" rel="noopener noreferrer">查看方案與購買說明 →</a></section>` : "";
+        serviceModalList.innerHTML = plansSection + listTitle + listItems.map((point) => {
           const isDatePoint = /上課日期|時間皆|成發/.test(point);
           return `<div class="service-modal__item${isDatePoint ? " is-date-highlight" : ""}">${point}</div>`;
         }).join("") + equipmentBox + (isCampWork ? "" : videoSection) + ctaLink + lineCard;
