@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>購票登記｜鹽與光十週年音樂會</title>
+  <link rel="stylesheet" href="anniversary-tickets.css?v=9">
+  <link rel="stylesheet" href="assets/anniversary-program.css?v=2">
+  <script src="anniversary-tickets.js?v=7" defer></script>
+  <script src="assets/anniversary-program.js" defer></script>
+</head>
+<body>
+  <main class="ticket-page">
+    <a class="back-link" href="index.html#anniversary-signup">← 回十週年音樂會</a>
+    <div class="ticket-layout">
+      <section class="event" aria-labelledby="event-title">
+        <div class="event-photo" aria-hidden="true"></div>
+        <div class="event-content">
+          <p class="eyebrow">SALT &amp; LIGHT · 10TH ANNIVERSARY</p>
+          <h1 id="event-title">鹽與光<br class="desktop-break">十週年音樂會</h1>
+          <p class="event-intro">十年來在教室和練團室裡練過的歌，這次一起搬上舞台。邀請你來駁二聽鹽與光的學員、老師和樂團現場演出，和親友一起度過有音樂、鹹點與甜點的午後。</p>
+          <dl class="event-info">
+            <div><dt>演出時間</dt><dd><time datetime="2027-01-16T14:00:00+08:00">2027.01.16（六）</time><br>14:00–18:00</dd></div>
+            <div><dt>活動地點</dt><dd>BANANA 音樂館<small>高雄駁二藝術特區</small></dd></div>
+            <div><dt>報名費</dt><dd>每人 NT$700<small>含歐式下午茶餐費</small></dd></div>
+            <div><dt>歐式下午茶</dt><dd>供餐時間為 2 小時</dd></div>
+          </dl>
+          <div class="event-links">
+            <button type="button" data-open-tea-menu aria-haspopup="dialog" aria-controls="tea-menu" hidden>查看歐式下午茶菜單</button>
+            <button type="button" data-open-anniversary-program aria-haspopup="dialog" aria-controls="anniversary-program" hidden>查看演出節目與曲目</button>
+          </div>
+          <dialog class="anniversary-program-dialog tea-menu-dialog" id="tea-menu" aria-labelledby="tea-menu-title">
+            <header class="anniversary-program__head">
+              <div>
+                <p class="anniversary-program__eyebrow">10TH ANNIVERSARY · AFTERNOON TEA</p>
+                <h2 id="tea-menu-title">歐式下午茶菜單</h2>
+                <p class="anniversary-program__note">供餐時間為 2 小時</p>
+              </div>
+              <button type="button" class="anniversary-program__close" aria-label="關閉下午茶菜單" autofocus>×</button>
+            </header>
+            <div class="anniversary-program__body tea-menu-items">
+              <section aria-labelledby="savory-title">
+                <h3 id="savory-title">鹹點</h3>
+                <ul>
+                  <li>明太子乾酪培根貝果</li>
+                  <li>煙燻培根香蔥棒棒乳酪球</li>
+                  <li>熱那亞青醬章魚達茲</li>
+                  <li>南洋咖椰鹽奶油烤吐司</li>
+                  <li>海風鮪魚乳酪旅人蛋糕</li>
+                  <li>約維克蕃茄鮪魚鹹塔</li>
+                  <li>挪威燻鮭魚沙布列</li>
+                </ul>
+              </section>
+              <section aria-labelledby="sweets-title">
+                <h3 id="sweets-title">甜點</h3>
+                <ul>
+                  <li>布朗尼、巨峰葡萄香堤</li>
+                  <li>可可藍莓塔、檸檬小塔</li>
+                  <li>迷你甜甜圈（綜合）</li>
+                  <li>古典堅果巧克力餅乾</li>
+                  <li>海鹽摩卡堅果捲</li>
+                  <li>巴斯克乳酪球</li>
+                  <li>焦糖海鹽鮮奶泡芙</li>
+                </ul>
+              </section>
+              <section aria-labelledby="drinks-title">
+                <h3 id="drinks-title">冰飲</h3>
+                <ul><li>100% 蘋果汁</li><li>泰式綠奶茶</li><li>梔子花青茶</li></ul>
+              </section>
+              <section aria-labelledby="fruit-title">
+                <h3 id="fruit-title">鮮果</h3>
+                <ul><li>當季鮮果拼盤</li></ul>
+              </section>
+            </div>
+          </dialog>
+        </div>
+      </section>
+      <section class="ticket-card" aria-labelledby="form-title">
+        <h2 id="form-title">購票登記</h2>
+        <p id="orders-status" class="intro-copy" role="status">正在確認購票服務，請先不要匯款。</p>
+        <noscript><p>請開啟瀏覽器的 JavaScript 後再購票，暫時不要匯款。</p></noscript>
+        <div id="google-forms-bridge" hidden>
+          <p class="intro-copy">請到 Google 表單填寫購買人姓名、聯絡電話、購買人數、參加者姓名與匯款末五碼。</p>
+          <a id="google-forms-link" class="submit-button google-forms-link" target="_blank" rel="noopener noreferrer">開啟 Google 購票測試表單 ↗</a>
+          <p class="preview-note">這是本機預覽，只供工作室測試。請使用有權限的 Google 帳號，填入假資料，不要匯款。</p>
+        </div>
+        <div id="official-purchase" hidden>
+          <p class="intro-copy">可替親友一起購票。請依人數匯款，再到 Google 表單填寫購買人、電話、人數、每位參加者姓名和匯款末五碼。</p>
+          <div class="payment-box">
+            <div class="payment-total"><h3>匯款資訊</h3><strong>NT$700 × 購買人數</strong></div>
+            <div class="bank-details">
+              <dl class="bank-info">
+                <div><dt>收款銀行</dt><dd>連線商業銀行（824）<small>總行（6880）</small></dd></div>
+                <div><dt>戶名</dt><dd>李德昌</dd></div>
+                <div><dt>收款帳號</dt><dd class="bank-account">111012370474</dd></div>
+              </dl>
+              <figure class="bank-qr">
+                <div class="bank-qr-image"><img src="assets/anniversary-transfer-reference.png" width="1125" height="1154" alt="連線商業銀行收款帳戶 QR Code"></div>
+                <figcaption>收款帳戶 QR Code</figcaption>
+              </figure>
+            </div>
+          </div>
+          <a id="official-ticket-form" class="submit-button google-forms-link" href="https://docs.google.com/forms/d/e/1FAIpQLScoVD8b4I-CF6GJ2VtCfz9zD2RnrT5fa9UXcn00uaDNbJ3i7g/viewform" target="_blank" rel="noopener noreferrer">填寫 Google 購票表單 ↗</a>
+          <p class="preview-note">送出後由工作室核對匯款。資料僅供對帳、聯繫與入場安排使用，請保留匯款紀錄。</p>
+        </div>
+        <section class="ticket-band-posters" id="band-posters" aria-labelledby="band-posters-title">
+          <p class="eyebrow">10TH ANNIVERSARY · BANDS</p>
+          <h3 id="band-posters-title">樂團海報</h3>
+          <p class="ticket-band-posters__note">活動時間以本頁為準：14:00–18:00。</p>
+          <div class="ticket-band-posters__wall">
+            <figure>
+              <img src="assets/anniversary-poster-miss-chief.png" alt="Miss Chief 六人女子樂團海報" width="1003" height="1568" loading="lazy" decoding="async">
+              <figcaption>Miss Chief</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/anniversary-poster-chicken-banana.png" alt="Chicken Banana 的海底卡通樂團海報" width="1024" height="1536" loading="lazy" decoding="async">
+              <figcaption>Chicken Banana</figcaption>
+            </figure>
+            <figure class="ticket-band-posters__center">
+              <img src="assets/anniversary-poster-mickey-wonder-house.png" alt="米奇妙妙屋的彩色卡通樂團海報" width="1003" height="1568" loading="lazy" decoding="async">
+              <figcaption>米奇妙妙屋</figcaption>
+            </figure>
+            <figure class="ticket-band-posters__wide">
+              <img src="assets/anniversary-poster-sleep-deprived.png" alt="睡眠不足的黑白紅色漫畫風樂團海報" width="1671" height="941" loading="lazy" decoding="async">
+              <figcaption>睡眠不足</figcaption>
+            </figure>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
